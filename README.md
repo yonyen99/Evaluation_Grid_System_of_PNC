@@ -1,3 +1,22 @@
+
+
+[G]()ROUP 10
+
+    Project Nname: Evaluation_Grid_System_of_PNC
+INSTALLATION
+
+- cd to the app directory and copy from .env.example
+- ``cp .env.example .env``
+- change the the .env content (admin, database, stmp, social client id )
+- ``composer install``
+- ``php artisan key:generate``
+- ``php artisan migrate``
+- ``php artisan db:seed``
+- To create symlink folder on linux
+- ``php artisan storage:link``
+- On windows cmd run on project directory
+- ``mklink /D "public\storage" "..\storage\app\public"``
+
 <p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
 
 <p align="center">
