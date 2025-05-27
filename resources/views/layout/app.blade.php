@@ -12,7 +12,7 @@
     <link href="https://fonts.googleapis.com/css?family=Poppins:200,300,400,600,700,800" rel="stylesheet" />
     <link href="https://use.fontawesome.com/releases/v5.0.6/css/all.css" rel="stylesheet">
     <link href="{{ asset('dashboard/css/nucleo-icons.css') }}" rel="stylesheet" />
-    <link href="{{ asset('dashboard/css/black-dashboard.css?v=1.0.0') }}" rel="stylesheet" />
+    <link href="{{ asset('dashboard/css/dashboard.css?v=1.0.0') }}" rel="stylesheet" />
     <link href="{{ asset('dashboard/demo/demo.css') }}" rel="stylesheet" />
     @yield('stylesheet')
 </head>
@@ -35,7 +35,7 @@
                 @include('partials.footer')
 
                 <!-- setting change color-->
-                <div class="fixed-plugin">
+                {{-- <div class="fixed-plugin">
                     <div class="dropdown show-dropdown">
                         <a href="#" data-toggle="dropdown">
                             <i class="fa fa-cog fa-2x"> </i>
@@ -45,9 +45,7 @@
                             <li class="adjustments-line">
                                 <a href="javascript:void(0)" class="switch-trigger background-color">
                                     <div class="badge-colors text-center">
-                                        <span class="badge filter badge-primary active" data-color="primary"></span>
                                         <span class="badge filter badge-info" data-color="blue"></span>
-                                        <span class="badge filter badge-success" data-color="green"></span>
                                     </div>
                                     <div class="clearfix"></div>
                                 </a>
@@ -60,7 +58,7 @@
                             </li>
                         </ul>
                     </div>
-                </div>
+                </div> --}}
             </div>
         </div>
     </div>
@@ -114,7 +112,7 @@
                     $(this).siblings().removeClass('active');
                     $(this).addClass('active');
 
-                    var new_color = $(this).data('color');
+                    var new_color = $(this).data('color');                    
 
                     if ($sidebar.length != 0) {
                         $sidebar.attr('data', new_color);
@@ -178,8 +176,6 @@
 
                         white_color = true;
                     }
-
-
                 });
 
                 $('.light-badge').click(function() {

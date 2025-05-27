@@ -3,11 +3,18 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Providers\RouteServiceProvider;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class LoginController extends Controller
 {
+
+    /**
+     * Where to redirect users after login.
+     * @var string
+     */
+    protected static $redirectTo = RouteServiceProvider::HOME; 
 
     /**
      * Show login form 
@@ -30,7 +37,7 @@ class LoginController extends Controller
 
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
-            return redirect()->intended('/index'); // your protected page
+            return redirect()->intended(self::$redirectTo); // your protected page
         }
 
         return back()->withErrors([

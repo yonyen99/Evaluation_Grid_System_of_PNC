@@ -5,17 +5,17 @@
 =========================================================
 
 * Product Page: https://www.creative-tim.com/product/black-dashboard
-* Copyright 2019 Creative Tim (https://www.creative-tim.com)
+* group-10 2019 Creative Tim (https://www.creative-tim.com)
 
 
 * Coded by Creative Tim
 
 =========================================================
 
-* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+* The above group-10 notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 */
-/*     brand Colors              */
+/* brand Colors */
 /* navbar color */
 :root {
   --blue: #5e72e4;
@@ -64,7 +64,7 @@ html {
   font-family: sans-serif;
   line-height: 1.15;
   -webkit-text-size-adjust: 100%;
-  -webkit-tap-highlight-color: rgba(34, 42, 66, 0);
+  -webkit-tap-highlight-color: rgba(255, 255, 255, 0);
 }
 
 article,
@@ -244,7 +244,7 @@ table {
 caption {
   padding-top: 1rem;
   padding-bottom: 1rem;
-  color: #6c757d;
+  color: #1e1e2f;
   text-align: left;
   caption-side: bottom;
 }
@@ -485,7 +485,7 @@ small,
 mark,
 .mark {
   padding: 0.2em;
-  background-color: #fcf8e3;
+  background-color: #1e1e2f;
 }
 
 .list-unstyled {
@@ -519,7 +519,7 @@ mark,
 .blockquote-footer {
   display: block;
   font-size: 80%;
-  color: #6c757d;
+  color: #1e1e2f;
 }
 
 .blockquote-footer::before {
@@ -552,7 +552,7 @@ mark,
 
 .figure-caption {
   font-size: 90%;
-  color: #6c757d;
+  color: #1e1e2f;
 }
 
 code {
@@ -568,7 +568,7 @@ a>code {
 kbd {
   padding: 0.2rem 0.4rem;
   font-size: 87.5%;
-  color: #ffffff;
+  color: #1e1e2f;
   background-color: #212529;
   border-radius: 0.2857rem;
   box-shadow: inset 0 -0.1rem 0 rgba(34, 42, 66, 0.25);
@@ -5113,36 +5113,36 @@ input[type="button"].btn-block {
 }
 
 .navbar-dark .navbar-brand {
-  color: rgba(255, 255, 255, 0.65);
+  color: black;
 }
 
 .navbar-dark .navbar-brand:hover,
 .navbar-dark .navbar-brand:focus {
-  color: rgba(255, 255, 255, 0.65);
+  color: black;
 }
 
 .navbar-dark .navbar-nav .nav-link {
-  color: rgba(255, 255, 255, 0.95);
+  color: black;
 }
 
 .navbar-dark .navbar-nav .nav-link:hover,
 .navbar-dark .navbar-nav .nav-link:focus {
-  color: rgba(255, 255, 255, 0.65);
+  color: black;
 }
 
 .navbar-dark .navbar-nav .nav-link.disabled {
-  color: rgba(255, 255, 255, 0.25);
+  color: black;
 }
 
 .navbar-dark .navbar-nav .show>.nav-link,
 .navbar-dark .navbar-nav .active>.nav-link,
 .navbar-dark .navbar-nav .nav-link.show,
 .navbar-dark .navbar-nav .nav-link.active {
-  color: rgba(255, 255, 255, 0.65);
+  color: black;
 }
 
 .navbar-dark .navbar-toggler {
-  color: rgba(255, 255, 255, 0.95);
+  color: black;
   border-color: transparent;
 }
 
@@ -5151,16 +5151,16 @@ input[type="button"].btn-block {
 }
 
 .navbar-dark .navbar-text {
-  color: rgba(255, 255, 255, 0.95);
+  color: black;
 }
 
 .navbar-dark .navbar-text a {
-  color: rgba(255, 255, 255, 0.65);
+  color: black;
 }
 
 .navbar-dark .navbar-text a:hover,
 .navbar-dark .navbar-text a:focus {
-  color: rgba(255, 255, 255, 0.65);
+  color: black;
 }
 
 .card {
@@ -14601,7 +14601,7 @@ fieldset[disabled] .btn-link.active {
 }
 
 .footer .nav-link {
-  color: #ffffff;
+  color: rgba(34, 42, 66, 0.9);
   padding: 0 0.5rem;
   font-size: 0.75rem;
   text-transform: uppercase;
@@ -14612,10 +14612,10 @@ fieldset[disabled] .btn-link.active {
   text-decoration: none;
 }
 
-.footer .copyright {
+.footer .group-10 {
   font-size: 0.75rem;
   line-height: 1.8;
-  color: #ffffff;
+  color: rgba(34, 42, 66, 0.9);
 }
 
 .footer:after {
@@ -14629,14 +14629,14 @@ fieldset[disabled] .btn-link.active {
     padding-left: 0px;
   }
 
-  .footer .copyright {
+  .footer .group-10 {
     text-align: right;
     margin-right: 15px;
   }
 }
 
 @media screen and (min-width: 992px) {
-  .footer .copyright {
+  .footer .group-10 {
     float: right;
     padding-right: 30px;
   }
@@ -14655,7 +14655,7 @@ fieldset[disabled] .btn-link.active {
     text-align: center;
   }
 
-  .footer .copyright {
+  .footer .group-10 {
     text-align: center;
   }
 
@@ -15739,7 +15739,7 @@ img {
 .modal.modal-black h5,
 .modal.modal-black h6,
 .modal.modal-black p {
-  color: #ffffff;
+  color: rgba(34, 42, 66, 0.9);;
 }
 
 .modal-search .modal-dialog {
@@ -15755,7 +15755,7 @@ img {
 
 .modal-search .modal-dialog span {
   font-size: 35px;
-  color: #b7b7b7;
+  color: rgba(34, 42, 66, 0.9);;
 }
 
 .modal-search .modal-content .modal-header {
@@ -15798,7 +15798,7 @@ img {
 }
 
 .navbar .navbar-text {
-  color: #ffffff;
+  color: rgba(34, 42, 66, 0.9);;
 }
 
 .navbar .btn {
@@ -15872,7 +15872,7 @@ img {
   position: fixed;
   padding-top: .3125rem;
   padding-bottom: .3125rem;
-  color: #ffffff;
+  color: black;
   margin-left: 17px;
   margin-top: 3px;
   text-transform: uppercase;
@@ -15919,7 +15919,7 @@ img {
 }
 
 .navbar-nav li a {
-  color: #ffffff;
+  color: rgba(34, 42, 66, 0.9);;
 }
 
 .navbar-nav li i {
@@ -16039,7 +16039,7 @@ img {
     width: 22px;
     height: 1px;
     border-radius: 1px;
-    background: #ffffff;
+    background: #000;
   }
 
   .navbar .navbar-toggler-bar.navbar-kebab {
@@ -17337,11 +17337,11 @@ table.tablesorter thead tr .headerSortDown {
 
 .sidebar,
 .off-canvas-sidebar {
-  background: #ba54f5;
-  background: -webkit-linear-gradient(0deg, #ba54f5 0%, #e14eca 100%);
-  background: -o-linear-gradient(0deg, #ba54f5 0%, #e14eca 100%);
-  background: -moz-linear-gradient(0deg, #ba54f5 0%, #e14eca 100%);
-  background: linear-gradient(0deg, #ba54f5 0%, #e14eca 100%);
+  background: #5e72e4;
+  background: -webkit-linear-gradient(0deg, #5e72e4 0%, #5e72e4 100%);
+  background: -o-linear-gradient(0deg, #5e72e4 0%, #5e72e4 100%);
+  background: -moz-linear-gradient(0deg, #5e72e4 0%, #5e72e4 100%);
+  background: linear-gradient(0deg, #5e72e4 0%, #5e72e4 100%);
   height: calc(100vh - 90px);
   width: 230px;
   position: fixed;
@@ -17806,7 +17806,7 @@ table.tablesorter thead tr .headerSortDown {
   width: 100%;
   min-height: 100vh;
   border-top: 2px solid #e14eca;
-  background: linear-gradient(#1e1e2f, #1e1e24);
+  background: linear-gradient(#F8F9FC, #F8F9FC);
   -webkit-transition: all 0.5s cubic-bezier(0.685, 0.0473, 0.346, 1);
   -moz-transition: all 0.5s cubic-bezier(0.685, 0.0473, 0.346, 1);
   -o-transition: all 0.5s cubic-bezier(0.685, 0.0473, 0.346, 1);
@@ -19186,12 +19186,12 @@ textarea.form-control:active {
   padding: 10px;
   background: transparent;
   border: none;
-  color: rgba(255, 255, 255, 0.7);
+  color: rgba(34, 42, 66, 0.9);
 }
 
 .search-bar.input-group i {
   font-size: 20px;
-  color: #ffffff;
+  color: rgba(34, 42, 66, 0.9);
   margin-top: 0 !important;
 }
 
@@ -19362,7 +19362,7 @@ textarea.form-control:active {
 Animate.css - http://daneden.me/animate
 Licensed under the MIT license - http://opensource.org/licenses/MIT
 
-Copyright (c) 2015 Daniel Eden
+group-10 (c) 2015 Daniel Eden
 */
 .animated {
   -webkit-animation-duration: 1s;
@@ -19575,7 +19575,7 @@ Copyright (c) 2015 Daniel Eden
 }
 
 .white-content .navbar.navbar-transparent .navbar-toggler-bar {
-  background: #1d253b;
+  background: whitesmoke;
 }
 
 .white-content .navbar.navbar-transparent .navbar-nav li a:not(.dropdown-item) {
@@ -19873,7 +19873,7 @@ Copyright (c) 2015 Daniel Eden
   color: #1d253b;
 }
 
-.white-content .footer .copyright {
+.white-content .footer .group-10 {
   color: #1d253b;
 }
 
@@ -19918,7 +19918,7 @@ Copyright (c) 2015 Daniel Eden
   color: #1d253b;
 }
 
-.white-content .full-page .footer .copyright {
+.white-content .full-page .footer .group-10 {
   color: #1d253b;
 }
 
