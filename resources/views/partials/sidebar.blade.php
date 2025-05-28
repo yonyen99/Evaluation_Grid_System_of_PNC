@@ -14,11 +14,17 @@
                       <i class="tim-icons icon-chart-pie-36"></i>
                       <p>Dashboard</p>
                   </a>
-              </li>  
+              </li>
               <li>
                   <a href="{{route('test')}}">
                       <i class="tim-icons icon-puzzle-10"></i>
                       <p>Table List</p>
+                  </a>
+              </li>
+              <li>
+                  <a href="{{route('generate')}}">
+                      <i class="tim-icons icon-puzzle-10"></i>
+                      <p>Generation List</p>
                   </a>
               </li>
           </ul>

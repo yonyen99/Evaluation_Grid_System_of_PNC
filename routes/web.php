@@ -3,6 +3,7 @@
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Dashboard\DashboardController;
 use App\Http\Controllers\Dashboard\TestController;
+use App\Http\Controllers\Dashboard\GenerateController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -29,10 +30,17 @@ Route::group(['middleware'=>'auth'], function(){
     Route::get('/home', [DashboardController::class, 'index'])->name('home');
     Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 
+
     // your new feature
     Route::group(['prefix' => 'test' ], function(){
         Route::get('/',[TestController::class, 'index'])->name('test');
 
-        // your crud .................route
+    // your crud .................route
+    });
+
+    // Generate route
+     Route::group(['prefix' => 'generate' ], function(){
+        Route::get('/',[GenerateController::class, 'index'])->name('generate');
+
     });
 });

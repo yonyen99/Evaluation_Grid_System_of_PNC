@@ -19931,6 +19931,10 @@ group-10 (c) 2015 Daniel Eden
   background: #cccccc;
 }
 
+.title {
+    color: #27293d;
+}
+
 .card {
   background: #27293d;
   border: 0;
