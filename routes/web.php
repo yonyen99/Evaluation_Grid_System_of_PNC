@@ -1,5 +1,8 @@
 <?php
 
+use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\Dashboard\DashboardController;
+use App\Http\Controllers\Dashboard\TestController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -15,4 +18,21 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('welcome');
+});
+
+Route::group(['middleware' => 'guest'], function(){
+    Route::get('/login', [LoginController::class, 'showLogin'])->name('login');
+    Route::post('/login', [LoginController::class, 'login'])->name('login');
+});
+
+Route::group(['middleware'=>'auth'], function(){
+    Route::get('/home', [DashboardController::class, 'index'])->name('home');
+    Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
+
+    // your new feature
+    Route::group(['prefix' => 'test' ], function(){
+        Route::get('/',[TestController::class, 'index'])->name('test');
+
+        // your crud .................route
+    });
 });
