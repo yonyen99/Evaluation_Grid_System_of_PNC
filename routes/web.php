@@ -3,7 +3,7 @@
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Dashboard\DashboardController;
 use App\Http\Controllers\Dashboard\TestController;
-use App\Http\Controllers\Dashboard\GenerateController;
+use App\Http\Controllers\Dashboard\GenerationController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -39,8 +39,8 @@ Route::group(['middleware'=>'auth'], function(){
     });
 
     // Generate route
-     Route::group(['prefix' => 'generate' ], function(){
-        Route::get('/',[GenerateController::class, 'index'])->name('generate');
+     Route::group(['prefix' => 'generation' ], function(){
+        Route::get('/',[GenerationController::class, 'index'])->name('generation');
 
     });
 });

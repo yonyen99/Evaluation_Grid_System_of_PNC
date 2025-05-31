@@ -22,7 +22,7 @@
                   </a>
               </li>
               <li>
-                  <a href="{{route('generate')}}">
+                  <a href="{{route('generation')}}">
                       <i class="tim-icons icon-puzzle-10"></i>
                       <p>Generation List</p>
                   </a>

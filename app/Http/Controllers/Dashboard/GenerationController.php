@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Dashboard;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
-class GenerateController extends Controller
+class GenerationController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -13,6 +13,6 @@ class GenerateController extends Controller
      */
     public function index()
     {
-        return view('feature.generate');
+        return view('feature.generation.generation');
     }
 }
