@@ -1,7 +1,16 @@
 @extends('layout.app')
 @section('page_title', 'Test')
 @section('stylesheet')
-<!-- your style.......... -->
+<style>
+    .table {
+        margin-bottom: 0;
+    }
+
+    .modal-bg {
+        background: #27293d;
+    }
+</style>
+
 @endsection
 {{-- BEGIN:: Table Content --}}
 @section('content')
@@ -12,7 +21,6 @@
             class="btn btn-outline-primary d-flex align-items-center"
             data-bs-toggle="modal"
             data-bs-target="#exampleModal"
-            data-bs-whatever="@mdo"
             aria-label="Open New Generate Modal">
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
                 fill="currentColor" class="bi bi-plus-circle-fill me-2"
@@ -129,23 +137,27 @@
             </div>
         </div>
     </div>
-    <!-- Modal Crate Generate -->
-    <div class="modal fade" id="exampleModal" tabindex="-1"
-        aria-labelledby="exampleModalToggleLabel" aria-hidden="true">
+</div>
+<!-- Modal Crate Generate -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-content modal-bg">
         <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalToggleLabel">Create New Generate</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"
-                        aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    Show a second modal and hide this one with the button below.
-                </div>
-                <div class="modal-footer">
-                    <button class="btn btn-primary" data-bs-target="#exampleModalToggle2"
-                        data-bs-toggle="modal">Open Second Modal</button>
-                </div>
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Create New Generate</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <!-- Your form or content here -->
+                <form id="generateForm">
+                    <div class="mb-3">
+                        <label for="generationName" class="form-label">Generation Name</label>
+                        <input type="text" class="form-control" id="generationName" name="name" required>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="submit" class="btn btn-primary" id="saveGenerate">Save</button>
             </div>
         </div>
     </div>
@@ -155,5 +167,38 @@
 
 {{-- custom script --}}
 @section('script')
-// your script ..........................
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+    $(document).ready(function() {
+        // CSRF token setup for Laravel
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+
+        // Handle Save button
+        $('#saveGenerate').on('click', function() {
+            const formData = {
+                name: $('#generationName').val()
+            };
+
+            $.ajax({
+                url: '/generations', // Laravel route to store
+                type: 'POST',
+                data: formData,
+                success: function(response) {
+                    $('#exampleModal').modal('hide');
+                    $('#generateForm')[0].reset();
+                    alert('Generation Created!');
+                    // You can also call a function to reload the list
+                },
+                error: function(xhr) {
+                    alert('Failed to create. Check input or server.');
+                }
+            });
+        });
+    });
+</script>
 @endsection
