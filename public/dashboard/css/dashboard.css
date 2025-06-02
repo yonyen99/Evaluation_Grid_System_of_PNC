@@ -17337,11 +17337,11 @@ table.tablesorter thead tr .headerSortDown {
 
 .sidebar,
 .off-canvas-sidebar {
-  background: #5e72e4;
-  background: -webkit-linear-gradient(0deg, #5e72e4 0%, #5e72e4 100%);
-  background: -o-linear-gradient(0deg, #5e72e4 0%, #5e72e4 100%);
-  background: -moz-linear-gradient(0deg, #5e72e4 0%, #5e72e4 100%);
-  background: linear-gradient(0deg, #5e72e4 0%, #5e72e4 100%);
+  background: #4e73df;
+  background: -webkit-linear-gradient(0deg, #4e73df 0%, #4e73df 100%);
+  background: -o-linear-gradient(0deg, #4e73df 0%, #4e73df 100%);
+  background: -moz-linear-gradient(0deg, #4e73df 0%, #4e73df 100%);
+  background: linear-gradient(0deg, #4e73df 0%, #4e73df 100%);
   height: calc(100vh - 90px);
   width: 230px;
   position: fixed;
@@ -17351,7 +17351,7 @@ table.tablesorter thead tr .headerSortDown {
   background-size: cover;
   background-position: center center;
   display: block;
-  box-shadow: 0px 0px 45px 0px rgba(0, 0, 0, 0.6);
+  box-shadow: 0px 0px 45px 0px whitesmoke;
   margin-top: 80px;
   margin-left: 20px;
   border-radius: 5px;
@@ -17806,7 +17806,7 @@ table.tablesorter thead tr .headerSortDown {
   width: 100%;
   min-height: 100vh;
   border-top: 2px solid #e14eca;
-  background: linear-gradient(#F8F9FC, #F8F9FC);
+  background: linear-gradient(#ffffff, #ffffff);
   -webkit-transition: all 0.5s cubic-bezier(0.685, 0.0473, 0.346, 1);
   -moz-transition: all 0.5s cubic-bezier(0.685, 0.0473, 0.346, 1);
   -o-transition: all 0.5s cubic-bezier(0.685, 0.0473, 0.346, 1);

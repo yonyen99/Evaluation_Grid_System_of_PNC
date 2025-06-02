@@ -14572,7 +14572,7 @@ table.tablesorter thead tr .headerSortDown {
     background-size: cover;
     background-position: 50%;
     display: block;
-    box-shadow: 0 0 45px 0 rgba(0, 0, 0, .6);
+    box-shadow: 0 0 45px 0 #ffffff;
     margin-top: 80px;
     margin-left: 20px;
     border-radius: 5px;
