@@ -2,8 +2,8 @@
 
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Dashboard\DashboardController;
+use App\Http\Controllers\dashboard\GenerationController;
 use App\Http\Controllers\Dashboard\TestController;
-use App\Http\Controllers\Dashboard\GenerationController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -38,9 +38,10 @@ Route::group(['middleware'=>'auth'], function(){
     // your crud .................route
     });
 
-    // Generate route
+    // Generation route
      Route::group(['prefix' => 'generation' ], function(){
         Route::get('/',[GenerationController::class, 'index'])->name('generation');
+        Route::get('/add',[GenerationController::class, 'create'])->name('add');
 
     });
 });

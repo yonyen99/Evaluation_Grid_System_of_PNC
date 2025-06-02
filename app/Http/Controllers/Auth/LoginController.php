@@ -14,10 +14,10 @@ class LoginController extends Controller
      * Where to redirect users after login.
      * @var string
      */
-    protected static $redirectTo = RouteServiceProvider::HOME; 
+    protected static $redirectTo = RouteServiceProvider::HOME;
 
     /**
-     * Show login form 
+     * Show login form
      * @return void
      */
      public function showLogin()

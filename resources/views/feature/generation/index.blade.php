@@ -2,13 +2,7 @@
 @section('page_title', 'Test')
 @section('stylesheet')
 <style>
-    .table {
-        margin-bottom: 0;
-    }
 
-    .modal-bg {
-        background: #27293d;
-    }
 </style>
 
 @endsection
@@ -18,16 +12,13 @@
     <div class="col-md-12 d-flex justify-content-between">
         <h4 class="title"> Generation List</h4>
         <button type="button"
-            class="btn btn-outline-primary d-flex align-items-center"
-            data-bs-toggle="modal"
-            data-bs-target="#exampleModal"
-            aria-label="Open New Generate Modal">
+            class="btn btn-outline-primary d-flex align-items-center">
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
                 fill="currentColor" class="bi bi-plus-circle-fill me-2"
                 viewBox="0 0 16 16">
                 <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M8.5 4.5a.5.5 0 0 0-1 0v3h-3a.5.5 0 0 0 0 1h3v3a.5.5 0 0 0 1 0v-3h3a.5.5 0 0 0 0-1h-3z" />
             </svg>
-            <span>New Generate</span>
+           <a href="{{route('add')}}">New Generate</a>
         </button>
     </div>
     <!-- Table List -->
@@ -39,7 +30,9 @@
                         <thead class=" text-primary">
                             <tr>
                                 <th>No</th>
-                                <th class="text-center">Generation</th>
+                                <th class="text-center">Generation's Name</th>
+                                <th class="text-center">Grade</th>
+                                <th class="text-center">Description</th>
                                 <th class="text-center">Create Date</th>
                                 <th class="text-center">Create By</th>
                                 <th class="text-center">Position</th>
@@ -50,6 +43,8 @@
                             <tr>
                                 <td>1</td>
                                 <td class="text-center">PNC-2020</td>
+                                <td class="text-center">-</td>
+                                <td class="text-center">-</td>
                                 <td class="text-center">28-05-2025</td>
                                 <td class="text-center">YEN Yon</td>
                                 <td class="text-center">Trainer</td>
@@ -78,6 +73,8 @@
                             <tr>
                                 <td>2</td>
                                 <td class="text-center">PNC-2021</td>
+                                <td class="text-center">-</td>
+                                <td class="text-center">-</td>
                                 <td class="text-center">28-05-2025</td>
                                 <td class="text-center">Y Rady</td>
                                 <td class="text-center">Trainer</td>
@@ -106,6 +103,8 @@
                             <tr>
                                 <td>3</td>
                                 <td class="text-center">PNC-2022</td>
+                                <td class="text-center">-</td>
+                                <td class="text-center">-</td>
                                 <td class="text-center">28-05-2025</td>
                                 <td class="text-center">HUL Sim</td>
                                 <td class="text-center">Trainer</td>
@@ -138,29 +137,7 @@
         </div>
     </div>
 </div>
-<!-- Modal Crate Generate -->
-<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-content modal-bg">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Create New Generate</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <!-- Your form or content here -->
-                <form id="generateForm">
-                    <div class="mb-3">
-                        <label for="generationName" class="form-label">Generation Name</label>
-                        <input type="text" class="form-control" id="generationName" name="name" required>
-                    </div>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="submit" class="btn btn-primary" id="saveGenerate">Save</button>
-            </div>
-        </div>
-    </div>
+
 </div>
 @endsection
 {{-- END:: Table Content --}}
