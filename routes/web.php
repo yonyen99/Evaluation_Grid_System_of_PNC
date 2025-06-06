@@ -5,6 +5,7 @@ use App\Http\Controllers\StudentController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Dashboard\TestController;
 use App\Http\Controllers\Dashboard\DashboardController;
+use App\Http\Controllers\Dashboard\GenerationController;
 
 // Login Routes (Accessible without authentication)
 Route::get('/login', [LoginController::class, 'showLogin'])->name('login')->middleware('guest');
@@ -25,5 +26,15 @@ Route::middleware(['auth'])->group(function () {
         Route::patch('{id}/edit',[TestController::class, 'update'])->name('test-update');
         Route::delete('{id}',[TestController::class, 'destroy'])->name('test-delete');
         // your crud .................route
+    });
+
+    // Generation route
+    Route::group(['prefix' => 'generation'], function() {
+        Route::get('/', [GenerationController::class, 'index'])->name('generation');
+        Route::get('/add', [GenerationController::class, 'create'])->name('generation-add');
+        Route::post('/create', [GenerationController::class, 'store'])->name('generation-create');
+        Route::get('{id}/edit', [GenerationController::class, 'edit'])->name('generation-edit');
+        Route::patch('{id}/edit', [GenerationController::class, 'update'])->name('generation-update');
+        Route::delete('{id}', [GenerationController::class, 'destroy'])->name('generation-delete');
     });
 });
