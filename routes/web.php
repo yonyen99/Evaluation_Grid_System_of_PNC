@@ -1,34 +1,21 @@
 <?php
+use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Dashboard\DashboardController;
 use App\Http\Controllers\Dashboard\TestController;
 use App\Http\Controllers\Dashboard\SubjectController;
-use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\StudentController;
 
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider and all of them will
-| be assigned to the "web" middleware group. Make something great!
-|
-*/
+// Login Routes (Accessible without authentication)
+Route::get('/login', [LoginController::class, 'showLogin'])->name('login')->middleware('guest');
+Route::post('/login', [LoginController::class, 'login'])->middleware('guest');
 
-Route::get('/', function () {
-    return view('welcome');
-});
-
-Route::group(['middleware' => 'guest'], function(){
-    Route::get('/login', [LoginController::class, 'showLogin'])->name('login');
-    Route::post('/login', [LoginController::class, 'login'])->name('login');
-});
-
-Route::group(['middleware'=>'auth'], function(){
-    Route::get('/home', [DashboardController::class, 'index'])->name('home');
+// Routes requiring authentication
+Route::middleware(['auth'])->group(function () {
+    Route::get('/', [DashboardController::class, 'index'])->name('home');
     Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
+    Route::resource('students', StudentController::class);
 
     // your new feature
     Route::group(['prefix' => 'test' ], function(){
