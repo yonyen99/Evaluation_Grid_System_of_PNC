@@ -21,6 +21,12 @@
                       <p>Table List</p>
                   </a>
               </li>
+               <li>
+                  <a href="{{route('subject')}}">
+                      <i class="tim-icons icon-puzzle-10"></i>
+                      <p>Subject</p>
+                  </a>
+              </li>
           </ul>
       </div>
   </div>

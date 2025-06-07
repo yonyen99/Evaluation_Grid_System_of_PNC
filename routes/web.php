@@ -3,6 +3,7 @@
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Dashboard\DashboardController;
 use App\Http\Controllers\Dashboard\TestController;
+use App\Http\Controllers\Dashboard\SubjectController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -37,6 +38,17 @@ Route::group(['middleware'=>'auth'], function(){
         Route::get('{id}/edit',[TestController::class, 'edit'])->name('test-edit');
         Route::patch('{id}/edit',[TestController::class, 'update'])->name('test-update');
         Route::delete('{id}',[TestController::class, 'destroy'])->name('test-delete');
+        // your crud .................route
+    });
+    // Subject 
+
+      Route::group(['prefix' => 'subject' ], function(){
+        Route::get('/',[SubjectController::class, 'index'])->name('subject');
+        Route::get('/add',[SubjectController::class, 'create'])->name('subject-add');
+        Route::post('/create',[SubjectController::class, 'store'])->name('subject-create');
+        Route::get('{id}/edit',[SubjectController::class, 'edit'])->name('subject-edit');
+        Route::patch('{id}/edit',[SubjectController::class, 'update'])->name('subject-update');
+        Route::delete('{id}',[SubjectController::class, 'destroy'])->name('subject-delete');
         // your crud .................route
     });
 });
