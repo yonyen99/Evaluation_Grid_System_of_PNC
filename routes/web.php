@@ -31,10 +31,10 @@ Route::middleware(['auth'])->group(function () {
     // Generation route
     Route::group(['prefix' => 'generation'], function() {
         Route::get('/', [GenerationController::class, 'index'])->name('generation');
-        Route::get('/add', [GenerationController::class, 'create'])->name('generation-add');
-        Route::post('/create', [GenerationController::class, 'store'])->name('generation-create');
-        Route::get('{id}/edit', [GenerationController::class, 'edit'])->name('generation-edit');
-        Route::patch('{id}/edit', [GenerationController::class, 'update'])->name('generation-update');
-        Route::delete('{id}', [GenerationController::class, 'destroy'])->name('generation-delete');
+        Route::get('/add', [GenerationController::class, 'create'])->name('generation-add'); // Show form create
+        Route::post('/create', [GenerationController::class, 'store'])->name('generation-create'); // input data form to database
+        Route::get('{id}/edit', [GenerationController::class, 'edit'])->name('generation-edit'); // show form update
+        Route::patch('{id}/edit', [GenerationController::class, 'update'])->name('generation-update'); // update data to database
+        Route::delete('{id}', [GenerationController::class, 'destroy'])->name('generation-delete'); // delete data
     });
 });

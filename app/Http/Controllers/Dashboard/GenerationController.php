@@ -32,7 +32,7 @@ class GenerationController extends Controller
      */
     public function create()
     {
-        return view('feature.generation.create');
+        return view('feature.generation.add');
     }
 
     /**

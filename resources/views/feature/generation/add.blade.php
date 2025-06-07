@@ -19,7 +19,7 @@
             <h3 class="title">New Generation</h3>
         </div>
 
-        <form action="{{ route('create') }}" method="POST" enctype="multipart/form-data" class="form mb-3">
+        <form action="{{ route('generation-create') }}" method="POST" enctype="multipart/form-data" class="form mb-3">
             @csrf
 
             {{-- Generation Name --}}
