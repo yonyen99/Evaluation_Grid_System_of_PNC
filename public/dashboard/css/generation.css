@@ -1,0 +1,26 @@
+.box {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.logo-form {
+    width: 125px;
+    padding: 20px;
+    border: 1px solid #27293d;
+    border-radius: 50%;
+}
+
+.title {
+    color:  #27293d;
+}
+
+.form {
+    width: 900px !important;
+}
+
+.table {
+    margin-bottom: 0;
+}
+
