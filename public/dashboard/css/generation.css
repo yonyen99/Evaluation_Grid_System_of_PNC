@@ -12,6 +12,20 @@
     border-radius: 50%;
 }
 
+.card-header {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.card-body {
+    text-align: center;
+}
+
+.btn {
+    border: none;
+    background: unset;
+}
+
 .title {
     color:  #27293d;
 }
