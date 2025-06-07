@@ -21,18 +21,20 @@
     text-align: center;
 }
 
-.btn {
+.btn-term {
     border: none;
     background: unset;
+}
+
+.btn-term:hover {
+    background: grey;
+    border-radius: 5px;
 }
 
 .title {
     color:  #27293d;
 }
 
-.form {
-    width: 900px !important;
-}
 
 .table {
     margin-bottom: 0;

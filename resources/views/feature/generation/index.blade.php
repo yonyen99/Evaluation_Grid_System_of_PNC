@@ -26,26 +26,18 @@
                     <table class="table tablesorter " id="">
                         <thead class=" text-primary">
                             <tr>
-                                <th>No</th>
-                                <th class="text-center">Generation's Name</th>
-                                <th class="text-center">Grade</th>
-                                <th class="text-center">Create Date</th>
-                                <th class="text-center">Create By</th>
-                                <th class="text-center">Position</th>
-                                <th class="text-center">Description</th>
+                                <th class="text-left">No</th>
+                                <th class="text-center">Generation</th>
+                                <th class="text-center">List term</th>
                                 <th class="text-right">Action</th>
                             </tr>
                         </thead>
                         <tbody>
                             @foreach ($generations as $index => $generation)
                             <tr>
-                                <td>{{ $index + 1 }}</td>
-                                <td class="text-center">{{ $generation->name }}</td>
-                                <td class="text-center">{{ $generation->grade }}</td>
-                                <td class="text-center">{{ $generation->created_At }}</td>
-                                <td class="text-center">{{ $generation->teacher->name }}</td>
-                                <td class="text-center">{{ $generation->teacher->position }}</td>
-                                <td class="text-center">{{ $generation->description}}</td>
+                                <td class="text-left">{{ $index + 1 }}</td>
+                                <td class="text-center">{{ $generation->generation }}</td>
+                                <td class="text-center">{{ $generation->term_list }}</td>
                                 <td class="text-right">
                                     <button type="button" class="btn btn-sm btn-danger" click="">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-trash-fill" viewBox="0 0 16 16">

@@ -8,17 +8,9 @@
 
 {{-- BEGIN:: Table Content --}}
 @section('content')
-<div class="row justify-content-center">
-    <div class="col-md-8">
-        <div class="box text-center">
-            <div class="logo-form mb-3">
-                <svg xmlns="http://www.w3.org/2000/svg" width="80" height="80" fill="currentColor" class="bi bi-people" viewBox="0 0 16 16">
-                    <path d="..." /> <!-- trimmed for brevity -->
-                </svg>
-            </div>
-            <h3 class="title">New Generation</h3>
-        </div>
-
+<div class="row d-flex justify-content-center">
+    <div class="col-sm-12 col-md-12 col-xl-12">
+        <h3 class="title text-center mt-5">New Generation</h3>
         <form action="{{ route('generation-create') }}" method="POST" enctype="multipart/form-data" class="form mb-3">
             @csrf
 
@@ -28,28 +20,31 @@
                 <input type="text" name="name" id="generation_name" class="form-control" placeholder="Enter generation name" required>
             </div>
 
-
             {{-- Terms card --}}
-
-            <div class="row">
-                <div class="col-md-4">
+            <div class="row justify-content-center">
+                <div class="col-sm-6 col-md-4 col-xl-3">
                     <div class="card" style="width: 18rem; height: 10rem;">
-                        <div class="card-header">
-                            <button class="btn btn-menu">
+                        <div class="card-header dropstart">
+                            <button class="btn-term" data-bs-toggle="dropdown">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-three-dots-vertical" viewBox="0 0 16 16">
                                     <path d="M9.5 13a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0m0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0m0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0" />
                                 </svg>
                             </button>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" href="#">Delete</a></li>
+                                <li><a class="dropdown-item" href="#">Edit</a></li>
+                                <li><a class="dropdown-item" href="#">View</a></li>
+                            </ul>
                         </div>
                         <div class="card-body">
                             <h5 class="card-title">Term-1</h5>
                         </div>
                     </div>
                 </div>
-                <div class="col-md-4">
+                <div class="col-sm-6 col-md-4 col-xl-3">
                     <div class="card" style="width: 18rem; height: 10rem;">
                         <div class="card-header">
-                            <button class="btn btn-menu">
+                            <button class="btn-t btn-term">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-three-dots-vertical" viewBox="0 0 16 16">
                                     <path d="M9.5 13a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0m0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0m0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0" />
                                 </svg>
@@ -60,10 +55,10 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-md-4">
+                <div class="col-sm-6 col-md-4 col-xl-3">
                     <div class="card" style="width: 18rem; height: 10rem;">
                         <div class="card-header">
-                            <button class="btn btn-menu">
+                            <button class="btn-t btn-term">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-three-dots-vertical" viewBox="0 0 16 16">
                                     <path d="M9.5 13a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0m0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0m0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0" />
                                 </svg>
@@ -74,10 +69,10 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-md-4">
+                <div class="col-sm-6 col-md-4 col-xl-3">
                     <div class="card" style="width: 18rem; height: 10rem;">
                         <div class="card-header">
-                            <button class="btn btn-menu">
+                            <button class="btn-t btn-term">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-three-dots-vertical" viewBox="0 0 16 16">
                                     <path d="M9.5 13a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0m0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0m0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0" />
                                 </svg>
@@ -88,7 +83,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-md-4">
+                <div class="col-sm-6 col-md-3">
                     <div class="card" style="width: 18rem; height: 10rem;">
                         <div class="card-body d-flex justify-content-center align-items-center">
                             <h5 class="card-title" style="color: black;">
@@ -98,43 +93,14 @@
                                 </svg>
                                 Add term
                             </h5>
-                            <!-- <a href="#" class="btn btn-primary">Add term</a> -->
                         </div>
                     </div>
                 </div>
             </div>
 
-            {{-- Select Class --}}
-            <!-- <div class="mb-3">
-                <label for="class_select" class="form-label">Select Class</label>
-                <select name="grade" id="class_select" class="form-select" required>
-                    <option value="" disabled selected>Select one</option>
-                    <option value="1">Web-A</option>
-                    <option value="2">Web-B</option>
-                    <option value="3">SNA</option>
-                </select>
-            </div> -->
-
-            {{-- Select Terms --}}
-            <!-- <div class="mb-3">
-                <label for="term_select" class="form-label">Select Terms</label>
-                <select name="terms" id="term_select" class="form-select" required>
-                    <option value="" disabled selected>Select one</option>
-                    <option value="1">2 Terms</option>
-                    <option value="2">3 Terms</option>
-                    <option value="3">4 Terms</option>
-                </select>
-            </div> -->
-
-            {{-- Description --}}
-            <!-- <div class="mb-3">
-                <label for="description_text" class="form-label">Description</label>
-                <textarea name="description" id="description_text" class="form-control" rows="3" placeholder="Enter description"></textarea>
-            </div> -->
-
             {{-- Buttons --}}
             <div class="d-flex justify-content-end">
-                <button type="submit" class="btn btn-primary">Submit</button>
+                <button type="submit" class="btn btn-submit">Submit</button>
             </div>
         </form>
     </div>
