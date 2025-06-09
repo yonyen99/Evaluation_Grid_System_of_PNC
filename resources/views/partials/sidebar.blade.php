@@ -1,9 +1,9 @@
   <div class="sidebar">
       <div class="sidebar-wrapper">
         <div class="d-flex flex-column justify-content-center align-items-center flex-shrink-0 p-3 bg-white">
-            <img src="https://avpn.asia/wp-content/uploads/2024/02/PN-Round-Logo1.png" 
-                alt="User" 
-                class="rounded-circle bg-secondary mb-3" 
+            <img src="https://avpn.asia/wp-content/uploads/2024/02/PN-Round-Logo1.png"
+                alt="User"
+                class="rounded-circle bg-secondary mb-3"
                 width="80" height="80">
         </div>
 
@@ -19,7 +19,7 @@
                 </a>
             </li>
             <li>
-                <a href="#" class="nav-link text-dark fs-6 hover-active">
+                <a href="{{route('term')}}" class="nav-link text-dark fs-6 hover-active">
                     <i class="bi bi-calendar3 me-2"></i> Term
                 </a>
             </li>

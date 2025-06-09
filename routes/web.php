@@ -5,6 +5,7 @@ use App\Http\Controllers\StudentController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Dashboard\TestController;
 use App\Http\Controllers\Dashboard\DashboardController;
+use App\Http\Controllers\Dashboard\TermController;
 
 // Login Routes (Accessible without authentication)
 Route::get('/login', [LoginController::class, 'showLogin'])->name('login')->middleware('guest');
@@ -25,5 +26,12 @@ Route::middleware(['auth'])->group(function () {
         Route::patch('{id}/edit',[TestController::class, 'update'])->name('test-update');
         Route::delete('{id}',[TestController::class, 'destroy'])->name('test-delete');
         // your crud .................route
+    });
+
+
+    // Terms of Generation route
+    Route::group(['prefix' => 'term'], function(){
+        Route::get('/', [TermController::class, 'index'])->name('term');
+
     });
 });
