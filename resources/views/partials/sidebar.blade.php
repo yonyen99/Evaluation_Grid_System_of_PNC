@@ -14,7 +14,7 @@
                 </a>
             </li>
             <li>
-                <a href="{{route('students.index')}}" class="nav-link text-dark fs-6 hover-active">
+                <a href="{{route('student')}}" class="nav-link text-dark fs-6 hover-active">
                     <i class="bi bi-people me-2"></i> Student
                 </a>
             </li>

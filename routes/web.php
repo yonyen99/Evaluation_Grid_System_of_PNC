@@ -15,7 +15,7 @@ Route::post('/login', [LoginController::class, 'login'])->middleware('guest');
 Route::middleware(['auth'])->group(function () {
     Route::get('/', [DashboardController::class, 'index'])->name('home');
     Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
-    Route::resource('students', StudentController::class);
+
 
     // your new feature
     Route::group(['prefix' => 'test' ], function(){
@@ -36,5 +36,11 @@ Route::middleware(['auth'])->group(function () {
         Route::get('{id}/edit', [GenerationController::class, 'edit'])->name('generation-edit'); // show form update
         Route::patch('{id}/edit', [GenerationController::class, 'update'])->name('generation-update'); // update data to database
         Route::delete('{id}', [GenerationController::class, 'destroy'])->name('generation-delete'); // delete data
+    });
+
+    // student 
+    Route::group(['prefix' => 'student'], function(){
+        Route::get('/',[StudentController::class, 'index'])->name('student');
+
     });
 });

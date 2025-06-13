@@ -10,69 +10,90 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 class Generation extends Model
 {
     use HasFactory;
-
     /**
-     * Table name = generation
+     * Table name.
+     * @var String
      */
     protected $table = 'generations';
 
-
-
     /**
-     * primary key = id
+     * Primary key.
+     * @var String
      */
     protected $primaryKey = 'id';
 
-
-
     /**
-     * The attribute key that in generation page
+     * The attributes that are mass assignable.
+     * @var Array
      */
-    protected $fillable = ['name', 'grade', 'description', 'terms', 'teacher_id'];
+    protected $fillable = [
+        'name',
+    ];
 
-
+    
     /**
-     * Get all data of generation from database
-     *
+     * *********************************
+     *      Relationship table
+     * *********************************
      */
 
-    public static function getGenerations()
-    {
-        $response = (object)[];
-
-        try {
-            $generations = self::all();
-
-            $response->data = $generations;
-            $response->message = 'Generation get successfully!';
-
-        } catch (Exception $e) {
-            $response->data = false;
-            $response->message = 'Generation have any problem';
+        /**
+         * Many Terms to one Generation relationship.
+         * @return App\Models\Term
+         */
+        public function terms(){
+            return $this->hasMany(Term::class);
         }
 
-        return $response;
-    }
-
-
     /**
-     * Get data of generation by id
+     * *****************************
+     *      Modules function
+     * *****************************
      */
 
-    public static function  getGenerationById($id)
-    {
-        $response = (object)[];
+        /**
+         * Get all data of generation from database
+         * @return response
+         */
 
-        try {
-            $generation = self::findOrFail($id);
-            $response->data = $generation;
-            $response->message = 'Generation get by id successfully!';
+        public static function getGenerations()
+        {
+            $response = (object)[];
 
-        } catch (ModelNotFoundException $e) {
-            $response->data = false;
-            $response->message = 'Generation not found!';
+            try {
+                $generations = self::all();
+
+                $response->data = $generations;
+                $response->message = 'Generation get successfully!';
+
+            } catch (Exception $e) {
+                $response->data = false;
+                $response->message = 'Generation have any problem';
+            }
+
+            return $response;
         }
 
-        return $response;
-    }
+
+        /**
+         * Get data of generation by id.
+         * @return response
+         */
+
+        public static function  getGenerationById($id)
+        {
+            $response = (object)[];
+
+            try {
+                $generation = self::findOrFail($id);
+                $response->data = $generation;
+                $response->message = 'Generation get by id successfully!';
+
+            } catch (ModelNotFoundException $e) {
+                $response->data = false;
+                $response->message = 'Generation not found!';
+            }
+
+            return $response;
+        }
 }

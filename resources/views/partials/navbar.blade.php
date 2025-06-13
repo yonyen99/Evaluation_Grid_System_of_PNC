@@ -38,11 +38,6 @@
                          <li class="nav-link"><a href="javascript:void(0)" class="nav-item dropdown-item">You have 5
                                  more tasks</a></li>
                          <li class="nav-link"><a href="javascript:void(0)" class="nav-item dropdown-item">Your friend
-                                 Michael is in town</a></li>
-                         <li class="nav-link"><a href="javascript:void(0)" class="nav-item dropdown-item">Another
-                                 notification</a></li>
-                         <li class="nav-link"><a href="javascript:void(0)" class="nav-item dropdown-item">Another
-                                 one</a></li>
                      </ul>
                  </li>
                  <li class="dropdown nav-item">

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Dashboard;
 
 use App\Http\Controllers\Controller;
 use App\Models\Generation;
+use App\Models\Term;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -16,12 +17,10 @@ class GenerationController extends Controller
      */
     public function index()
     {
-        //
         $generations = Generation::getGenerations();
         if (!$generations->data) {
             return back()->with('error', $generations->message);
         }
-
         $generations = $generations->data;
 
         return view('feature.generation.index', compact('generations'));
@@ -43,26 +42,37 @@ class GenerationController extends Controller
         try {
             DB::beginTransaction();
             $generation = new Generation([
-                'name' => $request['name'],
-                'grade' =>  $request['grade'],
-                'description' => $request['description'],
-                'teacher_id'  => $request['teacher_id']
+                'name'         => $request['name'],
             ]);
             $generation->save();
+            try {
+                $termNames = $request['term_name'];
+                foreach ($termNames as $key => $value) {
+                    $Terms = new Term([
+                        'name'           => $termNames[$key],
+                        'generation_id'  => $generation->id,
+                    ]);
+                    $Terms->save();
+                }
+                
+            } catch (\Throwable $th) {
+                DB::rollBack();
+                return back()->with('error', 'Terms cant add, pls try again!');
+            }
         } catch (\Throwable $th) {
             DB::rollBack();
-            return back()->with('error', 'Have any problem, pls try again!');
+            return back()->with('error', 'Generation cant add , pls try again!');
         }
         DB::commit();
-        return view('feature.generation.index');
+        return redirect()->route('generation');
     }
 
     /**
      * Display the specified resource.
      */
     public function edit($id)
-    {
-        $generation = Generation::getGenerations();
+    {   
+        $generation = Generation::getGenerationById($id);
         if (!$generation->data) {
             return back()->with('error', $generation->message);
         }
@@ -76,31 +86,49 @@ class GenerationController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $generation = Generation::getGenerations($id);
+        $generation = Generation::getGenerationById($id);
         if (!$generation->data) {
             return back()->with('error', $generation->message);
-
         }
 
-        $generation = $generation->data;
+        $generation      = $generation->data;
         try {
+            // edit generation
             DB::beginTransaction();
-            $generation->name = $request['name'];
-            $generation->grade = $request['grade'];
-            $generation->description = $request['description'];
-            $generation->teacher_id = $request['teacher_id'];
+            $generation->name  = $request['name'];
             $generation->update();
 
+            // edit terms
+            try {
+                $termNames  =  $request['term_name'];
+                if( count($generation->terms) != 0){
+                    foreach ($generation->terms as $key => $term) {
+                        $term->name          = $termNames[$key];
+                        $term->generation_id = $generation->id;
+                        $term->update();
+                     }
+                }
+                // add new term
+                foreach ($termNames as $key => $value) {
+                    $Terms = new Term([
+                        'name'           => $termNames[$key],
+                        'generation_id'  => $generation->id,
+                    ]);
+                    $Terms->save();
+                } 
+            } catch (\Throwable $th) {
+                 DB::rollBack();
+                return back()->with('error', 'Something went wrong, when you try update term!');
+            }
         } catch (\Throwable $th) {
             DB::rollBack();
-            return back()->with('error', 'Something went wrong!');
+            return back()->with('error', 'Something went wrong, when you try update generation!');
         }
 
         DB::commit();
-
         return redirect()
-               ->route('generation')
-               ->with('200', 'Generation updated successfully!');
+            ->route('generation')
+            ->with('200', 'Generation updated successfully!');
     }
 
     /**
@@ -108,11 +136,10 @@ class GenerationController extends Controller
      */
     public function destroy(string $id)
     {
-        $generation = Generation::getGenerations($id);
+        $generation = Generation::getGenerationById($id);
         if (!$generation->data) {
             return back()->with('error', $generation->message);
         }
-
         $generation = $generation->data;
 
         try {
@@ -124,9 +151,8 @@ class GenerationController extends Controller
             return back()->with('error', 'Something went wrong!');
         }
         DB::commit();
-
         return redirect()
-                ->route('generation')
-                ->with('200', 'Delete successfully!');
+            ->route('generation')
+            ->with('200', 'Delete successfully!');
     }
 }

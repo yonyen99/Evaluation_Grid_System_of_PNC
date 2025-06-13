@@ -11,9 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('generations', function (Blueprint $table) {
+        Schema::create('terms', function (Blueprint $table) {
             $table->id();
-            $table->string('name')->unique();
+            $table->string('name')->nullable();
+            $table->unsignedBigInteger('generation_id')->nullable();
+            $table->foreign('generation_id')->references('id')->on('generations')->onDelete('cascade');
+            
             $table->timestamps();
         });
     }
@@ -23,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('generations');
+        Schema::dropIfExists('terms');
     }
 };
