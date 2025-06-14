@@ -34,7 +34,7 @@
                 </a>
             </li>
             <li>
-                <a href="#" class="nav-link text-dark  fs-6 hover-active">
+                <a href="{{route('subject')}}" class="nav-link text-dark  fs-6 hover-active">
                     <i class="bi bi-journal-bookmark me-2"></i> Subject
                 </a>
             </li>
