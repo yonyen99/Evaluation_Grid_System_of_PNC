@@ -5,10 +5,10 @@
 @endsection
 {{-- BEGIN:: Table Content --}}
 @section('content')
-    <div class="row">
+    <div class="row">   
         <div class="col-md-12">
             <div class="create-link-wrapper">
-                <a href="{{ route('students.store') }}" class="btn btn-outline-success">New Test</a>
+                {{-- <a href="{{ route('students.store') }}" class="btn btn-outline-success">New Test</a> --}}
             </div>
             <div class="card ">
                 <div class="card-header">

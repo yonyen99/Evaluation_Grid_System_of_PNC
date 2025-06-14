@@ -3,8 +3,9 @@ use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Dashboard\DashboardController;
-use App\Http\Controllers\Dashboard\TestController;
+use App\Http\Controllers\Dashboard\GenerationController;
 use App\Http\Controllers\Dashboard\SubjectController;
+use App\Http\Controllers\Dashboard\TestController;
 use App\Http\Controllers\StudentController;
 
 // Login Routes (Accessible without authentication)
@@ -15,7 +16,7 @@ Route::post('/login', [LoginController::class, 'login'])->middleware('guest');
 Route::middleware(['auth'])->group(function () {
     Route::get('/', [DashboardController::class, 'index'])->name('home');
     Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
-    Route::resource('students', StudentController::class);
+
 
     // your new feature
     Route::group(['prefix' => 'test' ], function(){
@@ -27,9 +28,25 @@ Route::middleware(['auth'])->group(function () {
         Route::delete('{id}',[TestController::class, 'destroy'])->name('test-delete');
         // your crud .................route
     });
-    // Subject 
 
-      Route::group(['prefix' => 'subject' ], function(){
+    // Generation route
+    Route::group(['prefix' => 'generation'], function() {
+        Route::get('/', [GenerationController::class, 'index'])->name('generation');
+        Route::get('/add', [GenerationController::class, 'create'])->name('generation-add'); // Show form create
+        Route::post('/create', [GenerationController::class, 'store'])->name('generation-create'); // input data form to database
+        Route::get('{id}/edit', [GenerationController::class, 'edit'])->name('generation-edit'); // show form update
+        Route::patch('{id}/edit', [GenerationController::class, 'update'])->name('generation-update'); // update data to database
+        Route::delete('{id}', [GenerationController::class, 'destroy'])->name('generation-delete'); // delete data
+    });
+
+    // student 
+    Route::group(['prefix' => 'student'], function(){
+        Route::get('/',[StudentController::class, 'index'])->name('student');
+
+    });
+
+    // Subject 
+    Route::group(['prefix' => 'subject' ], function(){
         Route::get('/',[SubjectController::class, 'index'])->name('subject');
         Route::get('/add',[SubjectController::class, 'create'])->name('subject-add');
         Route::post('/create',[SubjectController::class, 'store'])->name('subject-create');

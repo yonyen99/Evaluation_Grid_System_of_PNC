@@ -1,0 +1,61 @@
+.box {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.logo-form {
+    width: 125px;
+    padding: 20px;
+    border: 1px solid #27293d;
+    border-radius: 50%;
+}
+
+.card-title {
+    font-weight: bold !important;
+
+}
+
+.add {
+    color: #ffff !important;
+}
+
+.card-header {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.card-body {
+    text-align: center;
+}
+
+.card-add {
+    background: #4E6688;
+    border-radius: 2px;
+    color: #ffff !important;
+}
+
+.btn-term {
+    border: none;
+    background: unset;
+}
+
+.btn-term:hover {
+    background: grey;
+    border-radius: 5px;
+}
+
+.btn-submit {
+    color: #ffff !important;
+}
+
+.title {
+    color:  #27293d;
+}
+
+
+.table {
+    margin-bottom: 0;
+}
+
