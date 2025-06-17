@@ -33,9 +33,9 @@
                     <i class="bi bi-door-open me-2"></i> Class
                 </a>
             </li>
-            <li>
-                <a href="{{route('subject')}}" class="nav-link text-dark  fs-6 hover-active">
-                    <i class="bi bi-journal-bookmark me-2"></i> Subject
+             <li class="nav-item">
+                <a href="{{route('teacher')}}" class="nav-link text-dark fs-6 hover-active ">
+                    <i class="bi bi-clock-history me-2"></i> Teacher
                 </a>
             </li>
         </ul>
