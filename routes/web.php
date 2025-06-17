@@ -6,6 +6,7 @@ use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Dashboard\DashboardController;
 use App\Http\Controllers\Dashboard\GenerationController;
 use App\Http\Controllers\Dashboard\SubjectController;
+use App\Http\Controllers\dashboard\TeacherController;
 use App\Http\Controllers\Dashboard\TestController;
 use App\Http\Controllers\StudentController;
 
@@ -58,4 +59,15 @@ Route::middleware(['auth'])->group(function () {
         Route::delete('{id}', [SubjectController::class, 'destroy'])->name('subject-delete');
         // your crud .................route
     });
+    
+    Route::group(['prefix' => 'teacher' ], function(){
+        Route::get('/',[TeacherController::class, 'index'])->name('teacher');
+        Route::get('/add',[TeacherController::class, 'create'])->name('teacher-add');
+        Route::post('/create',[TeacherController::class, 'store'])->name('teacher-create');
+        Route::get('{id}/edit',[TeacherController::class, 'edit'])->name('teacher-edit');
+        Route::patch('{id}/edit',[TeacherController::class, 'update'])->name('teacher-update');
+        Route::delete('{id}',[TeacherController::class, 'destroy'])->name('teacher-delete');
+        // your crud .................route
+    });
+    
 });
