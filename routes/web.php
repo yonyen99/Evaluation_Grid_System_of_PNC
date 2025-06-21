@@ -69,6 +69,7 @@ Route::middleware(['auth'])->group(function () {
         Route::delete('{id}',[TeacherController::class, 'destroy'])->name('teacher-delete');
         // your crud .................route
         // your crud .................route
+        // your crud .................route
     });
     
 });
