@@ -7,8 +7,10 @@ use App\Http\Controllers\Dashboard\DashboardController;
 use App\Http\Controllers\Dashboard\GenerationController;
 use App\Http\Controllers\Dashboard\SubjectController;
 use App\Http\Controllers\dashboard\TeacherController;
+use App\Http\Controllers\Dashboard\TermController;
 use App\Http\Controllers\Dashboard\TestController;
 use App\Http\Controllers\StudentController;
+
 
 // Login Routes (Accessible without authentication)
 Route::get('/login', [LoginController::class, 'showLogin'])->name('login')->middleware('guest');
@@ -58,6 +60,13 @@ Route::middleware(['auth'])->group(function () {
         Route::patch('{id}/edit', [SubjectController::class, 'update'])->name('subject-update');
         Route::delete('{id}', [SubjectController::class, 'destroy'])->name('subject-delete');
         // your crud .................route
+    });
+
+    // Terms of Generation route
+
+
+    Route::group(['prefix' => 'term'], function(){
+        Route::get('/', [TermController::class, 'index'])->name('term');
     });
 
     Route::group(['prefix' => 'teacher' ], function(){
