@@ -70,6 +70,7 @@ Route::middleware(['auth'])->group(function () {
         // your crud .................route
         // your crud .................route
         // your crud .................route
+        // your crud .................route
     });
     
 });
