@@ -9,12 +9,12 @@
 
         <ul class="nav nav-pills flex-column mb-auto">
             <li class="nav-item">
-                <a href="#" class="nav-link text-dark fs-6 hover-active ">
+                <a href="{{route('generation')}}" class="nav-link text-dark fs-6 hover-active ">
                     <i class="bi bi-clock-history me-2"></i> Generation
                 </a>
             </li>
             <li>
-                <a href="{{route('students.index')}}" class="nav-link text-dark fs-6 hover-active">
+                <a href="{{route('student')}}" class="nav-link text-dark fs-6 hover-active">
                     <i class="bi bi-people me-2"></i> Student
                 </a>
             </li>
@@ -33,9 +33,9 @@
                     <i class="bi bi-door-open me-2"></i> Class
                 </a>
             </li>
-            <li>
-                <a href="#" class="nav-link text-dark  fs-6 hover-active">
-                    <i class="bi bi-journal-bookmark me-2"></i> Subject
+             <li class="nav-item">
+                <a href="{{route('teacher')}}" class="nav-link text-dark fs-6 hover-active ">
+                    <i class="bi bi-clock-history me-2"></i> Teacher
                 </a>
             </li>
         </ul>
