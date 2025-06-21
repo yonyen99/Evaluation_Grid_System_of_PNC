@@ -19081,7 +19081,7 @@ fieldset[disabled] .form-control {
   margin-left: 0;
 }
 
-textarea.form-control {
+/* textarea.form-control {
   max-width: 100%;
   max-height: 80px;
   padding: 10px 10px 0 0;
@@ -19090,7 +19090,7 @@ textarea.form-control {
   border-bottom: 1px solid #2b3553;
   border-radius: 0;
   line-height: 2;
-}
+} */
 
 textarea.form-control:focus,
 textarea.form-control:active {
@@ -19965,7 +19965,7 @@ group-10 (c) 2015 Daniel Eden
 }
 
 .card .card-body .card-title {
-  color: #ffffff;
+  color: #27293d;
   text-transform: inherit;
   font-weight: 300;
   margin-bottom: .75rem;
