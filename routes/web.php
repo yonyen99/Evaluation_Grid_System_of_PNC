@@ -67,9 +67,6 @@ Route::middleware(['auth'])->group(function () {
         Route::get('{id}/edit',[TeacherController::class, 'edit'])->name('teacher-edit');
         Route::patch('{id}/edit',[TeacherController::class, 'update'])->name('teacher-update');
         Route::delete('{id}',[TeacherController::class, 'destroy'])->name('teacher-delete');
-        // your crud .................route
-        // your crud .................route
-        // your crud .................route
     });
     
 });
