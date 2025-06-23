@@ -20,17 +20,6 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 
 
-    // your new feature
-    Route::group(['prefix' => 'test'], function () {
-        Route::get('/', [TestController::class, 'index'])->name('test');
-        Route::get('/add', [TestController::class, 'create'])->name('test-add');
-        Route::post('/create', [TestController::class, 'store'])->name('test-create');
-        Route::get('{id}/edit', [TestController::class, 'edit'])->name('test-edit');
-        Route::patch('{id}/edit', [TestController::class, 'update'])->name('test-update');
-        Route::delete('{id}', [TestController::class, 'destroy'])->name('test-delete');
-        // your crud .................route
-    });
-
     // Generation route
     Route::group(['prefix' => 'generation'], function () {
         Route::get('/', [GenerationController::class, 'index'])->name('generation');
@@ -44,9 +33,11 @@ Route::middleware(['auth'])->group(function () {
     // student 
     Route::group(['prefix' => 'student'], function () {
         Route::get('/', [StudentController::class, 'index'])->name('student');
-        Route::get('/add', [StudentController::class, 'create'])->name('student-add'); // Show form create
-        Route::post('/create', [StudentController::class, 'store'])->name('student-create'); // input data form to database
-
+        Route::get('/add', [StudentController::class, 'create'])->name('student-add');
+        Route::post('/create', [StudentController::class, 'store'])->name('student-create');
+        Route::get('{id}/edit', [StudentController::class, 'edit'])->name('student-edit');
+        Route::patch('{id}/edit', [StudentController::class, 'update'])->name('student-update');
+        Route::delete('{id}', [StudentController::class, 'destroy'])->name('student-delete');
     });
 
     // Subject 

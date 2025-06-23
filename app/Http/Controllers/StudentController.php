@@ -6,7 +6,7 @@ use App\Models\Student;
 use App\Models\Generation;
 use App\Models\Province;
 use Illuminate\Http\Request;
-
+use Illuminate\Support\Facades\DB;
 class StudentController extends Controller
 {
     public function index()
@@ -63,9 +63,79 @@ class StudentController extends Controller
         return view('students.show', compact('student'));
     }
 
-    public function edit(Student $student) {}
+    public function edit($id)
+    {
+        $student = Student::find($id);
+        $generations = Generation::all();
 
-    public function update(Request $request, Student $student) {}
+        if (!$student) {
+            return back()->with('error', 'Student not found.');
+        }
 
-    public function destroy(Student $student) {}
+        return view('feature.students.edit', compact('student','generations'));
+    }
+
+    /**
+     * Update the specified student in storage.
+     */
+    public function update(Request $request, $id)
+    {
+        $student = Student::find($id);
+
+        if (!$student) {
+            return back()->with('error', 'Student not found.');
+        }
+
+        $request->validate([
+            'first_name'   => 'required|string',
+            'last_name'    => 'required|string',
+            'profile'      => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'generation_id'=> 'nullable|integer',
+        ]);
+
+        try {
+            DB::beginTransaction();
+
+            if ($request->hasFile('profile')) {
+                $filePath = $request->file('profile')->store('profiles', 'public');
+                $student->profile = $filePath;
+            }
+
+            $student->first_name    = $request->first_name;
+            $student->last_name     = $request->last_name;
+            $student->generation_id = $request->generation_id;
+            $student->save();
+
+            DB::commit();
+            return redirect()->route('student')->with('success', 'Student updated successfully.');
+        } catch (\Throwable $e) {
+            DB::rollBack();
+            return back()->with('error', 'Error occurred while updating the student: ' . $e->getMessage());
+        }
+    }
+
+    /**
+     * Remove the specified student from storage.
+     */
+    public function destroy($id)
+    {
+        $student = Student::find($id);
+
+        if (!$student) {
+            return back()->with('error', 'Student not found.');
+        }
+
+        try {
+            DB::beginTransaction();
+
+            $student->delete();
+
+            DB::commit();
+
+            return redirect()->route('student')->with('success', 'Student deleted successfully.');
+        } catch (\Throwable $e) {
+            DB::rollBack();
+            return back()->with('error', 'Error occurred while deleting the student: ' . $e->getMessage());
+        }
+    }
 }
