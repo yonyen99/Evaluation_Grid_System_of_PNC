@@ -28,4 +28,9 @@ class Classe extends Model
     {
         return $this->belongsToMany(Student::class, 'classe_students', 'class_id', 'student_id');
     }
+
+    public function terms()
+    {
+        return $this->belongsToMany(Term::class, 'add_class_to_terms', 'class_id', 'term_id');
+    }
 }
