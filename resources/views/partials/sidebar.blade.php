@@ -24,7 +24,7 @@
                 </a>
             </li>
             <li>
-                <a href="#" class="nav-link text-white hover-active">
+                <a href="{{ route('term.index') }}" class="nav-link text-white hover-active">
                     <i class="bi bi-calendar-week me-2"></i> Term
                 </a>
             </li>

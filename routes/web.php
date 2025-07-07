@@ -10,6 +10,7 @@ use App\Http\Controllers\dashboard\TeacherController;
 use App\Http\Controllers\Dashboard\TestController;
 use App\Http\Controllers\StudentController;
 use App\Http\Controllers\Dashboard\ClassController;
+use App\Http\Controllers\Dashboard\TermController;
 
 // Login Routes (Accessible without authentication)
 Route::get('/login', [LoginController::class, 'showLogin'])->name('login')->middleware('guest');
@@ -51,24 +52,28 @@ Route::middleware(['auth'])->group(function () {
         Route::delete('{id}', [SubjectController::class, 'destroy'])->name('subject-delete');
         // your crud .................route
     });
-    
-    Route::group(['prefix' => 'teacher' ], function(){
-        Route::get('/',[TeacherController::class, 'index'])->name('teacher');
-        Route::get('/add',[TeacherController::class, 'create'])->name('teacher-add');
-        Route::post('/create',[TeacherController::class, 'store'])->name('teacher-create');
-        Route::get('{id}/edit',[TeacherController::class, 'edit'])->name('teacher-edit');
-        Route::patch('{id}/edit',[TeacherController::class, 'update'])->name('teacher-update');
-        Route::delete('{id}',[TeacherController::class, 'destroy'])->name('teacher-delete');
+
+    Route::group(['prefix' => 'teacher'], function () {
+        Route::get('/', [TeacherController::class, 'index'])->name('teacher');
+        Route::get('/add', [TeacherController::class, 'create'])->name('teacher-add');
+        Route::post('/create', [TeacherController::class, 'store'])->name('teacher-create');
+        Route::get('{id}/edit', [TeacherController::class, 'edit'])->name('teacher-edit');
+        Route::patch('{id}/edit', [TeacherController::class, 'update'])->name('teacher-update');
+        Route::delete('{id}', [TeacherController::class, 'destroy'])->name('teacher-delete');
         // your crud .................route
     });
-    
-     // Class 
+
+    // Class 
     Route::group(['prefix' => 'class'], function () {
         Route::get('/', [ClassController::class, 'index'])->name('class');
         Route::get('/add', [ClassController::class, 'create'])->name('class-add');
         Route::post('/create', [ClassController::class, 'store'])->name('class-create');
-         Route::get('/{id}/students', [ClassController::class, 'assignStudentForm'])->name('class-student-form');
-    Route::post('/{id}/students', [ClassController::class, 'storeAssignedStudents'])->name('class-student-store');
+        Route::get('/{id}/students', [ClassController::class, 'assignStudentForm'])->name('class-student-form');
+        Route::post('/{id}/students', [ClassController::class, 'storeAssignedStudents'])->name('class-student-store');
     });
-    
+
+    Route::group(['prefix' => 'term'], function () {
+        Route::get('/', [TermController::class, 'index'])->name('term.index');         // List all terms grouped by generation
+        Route::post('/{term}/add-class', [TermController::class, 'storeClass'])->name('term.class.store');
+    });
 });

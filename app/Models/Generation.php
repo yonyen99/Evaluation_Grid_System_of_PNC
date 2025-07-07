@@ -30,20 +30,28 @@ class Generation extends Model
         'name',
     ];
 
-    
+
     /**
      * *********************************
      *      Relationship table
      * *********************************
      */
 
-        /**
-         * Many Terms to one Generation relationship.
-         * @return App\Models\Term
-         */
-        public function terms(){
-            return $this->hasMany(Term::class);
-        }
+    /**
+     * Many Terms to one Generation relationship.
+     * @return App\Models\Term
+     */
+    public function terms()
+    {
+        return $this->hasMany(Term::class);
+    }
+
+
+    public function classes()
+    {
+        return $this->hasMany(Classe::class);
+    }
+
 
     /**
      * *****************************
@@ -51,49 +59,47 @@ class Generation extends Model
      * *****************************
      */
 
-        /**
-         * Get all data of generation from database
-         * @return response
-         */
+    /**
+     * Get all data of generation from database
+     * @return response
+     */
 
-        public static function getGenerations()
-        {
-            $response = (object)[];
+    public static function getGenerations()
+    {
+        $response = (object)[];
 
-            try {
-                $generations = self::all();
+        try {
+            $generations = self::all();
 
-                $response->data = $generations;
-                $response->message = 'Generation get successfully!';
-
-            } catch (Exception $e) {
-                $response->data = false;
-                $response->message = 'Generation have any problem';
-            }
-
-            return $response;
+            $response->data = $generations;
+            $response->message = 'Generation get successfully!';
+        } catch (Exception $e) {
+            $response->data = false;
+            $response->message = 'Generation have any problem';
         }
 
+        return $response;
+    }
 
-        /**
-         * Get data of generation by id.
-         * @return response
-         */
 
-        public static function  getGenerationById($id)
-        {
-            $response = (object)[];
+    /**
+     * Get data of generation by id.
+     * @return response
+     */
 
-            try {
-                $generation = self::findOrFail($id);
-                $response->data = $generation;
-                $response->message = 'Generation get by id successfully!';
+    public static function  getGenerationById($id)
+    {
+        $response = (object)[];
 
-            } catch (ModelNotFoundException $e) {
-                $response->data = false;
-                $response->message = 'Generation not found!';
-            }
-
-            return $response;
+        try {
+            $generation = self::findOrFail($id);
+            $response->data = $generation;
+            $response->message = 'Generation get by id successfully!';
+        } catch (ModelNotFoundException $e) {
+            $response->data = false;
+            $response->message = 'Generation not found!';
         }
+
+        return $response;
+    }
 }
