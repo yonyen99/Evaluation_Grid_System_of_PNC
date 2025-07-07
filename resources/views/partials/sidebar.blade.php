@@ -9,10 +9,8 @@
 <div class="collapse d-md-block sidebar" id="sidebarMenu">
     <div class="sidebar-wrapper d-flex flex-column justify-content-center align-items-center py-4">
         <a href="/">
-          <img src="https://avpn.asia/wp-content/uploads/2024/02/PN-Round-Logo1.png"
-              alt="User"
-              class="rounded-circle bg-secondary mb-3"
-              width="80" height="80">
+            <img src="https://avpn.asia/wp-content/uploads/2024/02/PN-Round-Logo1.png" alt="User"
+                class="rounded-circle bg-secondary mb-3" width="80" height="80">
         </a>
         <ul class="nav nav-pills flex-column text-center justify-center w-100">
             <li class="nav-item">
@@ -36,8 +34,13 @@
                 </a>
             </li>
             <li>
-                <a href="#" class="nav-link text-white hover-active">
+                <a href="{{ route('class') }}" class="nav-link text-white hover-active">
                     <i class="bi bi-door-closed me-2"></i> Class
+                </a>
+            </li>
+            <li>
+                <a href="{{ route('subject') }}" class="nav-link text-white hover-active">
+                    <i class="bi bi-person-badge me-2"></i> Subject
                 </a>
             </li>
             <li>
