@@ -1,0 +1,31 @@
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+
+class Classe extends Model
+{
+    use HasFactory;
+
+    protected $table = 'classes';
+
+    protected $fillable = ['name', 'generation_id'];
+
+    public function generation()
+    {
+        return $this->belongsTo(Generation::class);
+    }
+
+    public function subjectTeachers()
+    {
+        return $this->hasMany(ClassSubjectTeacher::class, 'class_id');
+    }
+
+    // ✅ A class has many students through the pivot table
+    public function students()
+    {
+        return $this->belongsToMany(Student::class, 'classe_students', 'class_id', 'student_id');
+    }
+}

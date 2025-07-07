@@ -9,6 +9,7 @@ use App\Http\Controllers\Dashboard\SubjectController;
 use App\Http\Controllers\dashboard\TeacherController;
 use App\Http\Controllers\Dashboard\TestController;
 use App\Http\Controllers\StudentController;
+use App\Http\Controllers\Dashboard\ClassController;
 
 // Login Routes (Accessible without authentication)
 Route::get('/login', [LoginController::class, 'showLogin'])->name('login')->middleware('guest');
@@ -59,6 +60,15 @@ Route::middleware(['auth'])->group(function () {
         Route::patch('{id}/edit',[TeacherController::class, 'update'])->name('teacher-update');
         Route::delete('{id}',[TeacherController::class, 'destroy'])->name('teacher-delete');
         // your crud .................route
+    });
+    
+     // Class 
+    Route::group(['prefix' => 'class'], function () {
+        Route::get('/', [ClassController::class, 'index'])->name('class');
+        Route::get('/add', [ClassController::class, 'create'])->name('class-add');
+        Route::post('/create', [ClassController::class, 'store'])->name('class-create');
+         Route::get('/{id}/students', [ClassController::class, 'assignStudentForm'])->name('class-student-form');
+    Route::post('/{id}/students', [ClassController::class, 'storeAssignedStudents'])->name('class-student-store');
     });
     
 });
