@@ -8,9 +8,12 @@ use App\Http\Controllers\Dashboard\GenerationController;
 use App\Http\Controllers\Dashboard\SubjectController;
 use App\Http\Controllers\dashboard\TeacherController;
 use App\Http\Controllers\Dashboard\TestController;
+use App\Http\Controllers\Dashboard\UserController;
 use App\Http\Controllers\StudentController;
 use App\Http\Controllers\Dashboard\ClassController;
+use App\Http\Controllers\Dashboard\RoleController;
 use App\Http\Controllers\Dashboard\TermController;
+use GuzzleHttp\Middleware;
 
 // Login Routes (Accessible without authentication)
 Route::get('/login', [LoginController::class, 'showLogin'])->name('login')->middleware('guest');
@@ -21,6 +24,32 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/', [DashboardController::class, 'index'])->name('home');
     Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 
+    // System Users Router [BEGIN]
+    Route::group([
+        'prefix' => 'users',
+    ], function () {
+        Route::get('/', [UserController::class, 'index'])->name('user-list')->middleware('permission:view system_user');
+        Route::get('/create', [UserController::class, 'create'])->name('user-add')->middleware('permission:create system_user');
+        Route::post('/create', [UserController::class, 'store'])->middleware(['permission:create system_user',]);
+        Route::get('{id}/edit', [UserController::class, 'edit'])->middleware('permission:edit system_user');
+        Route::patch('{id}/edit', [UserController::class, 'update'])->name('user-update')->middleware(['permission:edit system_user']);
+        Route::get('{id}/detail', [UserController::class, 'show'])->name('user-detail');
+        Route::delete('{id}', [UserController::class, 'destroy'])->name('user-delete')->middleware('permission:delete system_user');
+    });
+    // System Users Router [END]
+
+    // Roles & Permissions Router [BEGIN]
+    Route::group([
+        'prefix' => 'roles',
+    ], function () {
+        Route::get('/',[RoleController::class, 'index'])->name('role-list')->middleware('permission:view role');
+        Route::get('/create', [RoleController::class, 'create'])->name('role-add')->middleware('permission:create role');
+        Route::post('/create', [RoleController::class, 'store'])->middleware('permission:create role');
+        Route::get('{id}/edit', [RoleController::class, 'edit'])->middleware('permission:edit role');
+        Route::patch('{id}/edit', [RoleController::class, 'update'])->name('role-update')->Middleware('permission:edit role');
+        Route::delete('{id}',[RoleController::class, 'destroy'])->name('role-delete')->middleware('permission:delete role');
+    });
+    // Roles & Permissions Router [END]
 
     // Generation route
     Route::group(['prefix' => 'generation'], function () {

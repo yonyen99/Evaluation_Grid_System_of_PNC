@@ -13,16 +13,20 @@
                 class="rounded-circle bg-secondary mb-3" width="80" height="80">
         </a>
         <ul class="nav nav-pills flex-column text-center justify-center w-100">
-            <li class="nav-item">
-                <a href="{{ route('generation') }}" class="nav-link text-white hover-active">
-                    <i class="bi bi-clock-history me-2"></i> Generation
-                </a>
-            </li>
-            <li>
-                <a href="{{ route('student') }}" class="nav-link text-white hover-active">
-                    <i class="bi bi-person-lines-fill me-2"></i> Student
-                </a>
-            </li>
+             @can('view generation')  
+                <li class="nav-item">
+                    <a href="{{ route('generation') }}" class="nav-link text-white hover-active">
+                        <i class="bi bi-clock-history me-2"></i> Generation
+                    </a>
+                </li>
+            @endcan
+            @can('view student')  
+                <li>
+                    <a href="{{ route('student') }}" class="nav-link text-white hover-active">
+                        <i class="bi bi-person-lines-fill me-2"></i> Student
+                    </a>
+                </li>
+            @endcan
             <li>
                 <a href="{{ route('term.index') }}" class="nav-link text-white hover-active">
                     <i class="bi bi-calendar-week me-2"></i> Term
@@ -48,6 +52,23 @@
                     <i class="bi bi-person-badge me-2"></i> Teacher
                 </a>
             </li>
+           
+            @if (Gate::check('view system_user') || Gate::check('view role'))
+                @can('view role')
+                    <li>
+                        <a href="{{ route('role-list') }}" class="nav-link text-white hover-active">
+                            <i class="bi bi-person-badge me-2"></i> Roles
+                        </a>
+                    </li>
+                @endcan
+                @can('view system_user')
+                    <li>
+                        <a href="{{ route('user-list') }}" class="nav-link text-white hover-active">
+                            <i class="bi bi-person-badge me-2"></i> User
+                        </a>
+                    </li>
+                @endcan
+            @endif
         </ul>
     </div>
 </div>
