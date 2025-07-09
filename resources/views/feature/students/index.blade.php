@@ -9,10 +9,12 @@
 @section('content')
 <div class="row">
     <div class="col-md-12 d-flex justify-content-between align-items-center mb-3">
-        <a href="{{ route('student-add') }}" class="btn btn-outline-primary d-flex align-items-center">
-            <i class="bi bi-plus-circle-fill me-2"></i>
-            New Student
-        </a>
+        @can('create student')                                         
+            <a href="{{ route('student-add') }}" class="btn btn-outline-primary d-flex align-items-center">
+                <i class="bi bi-plus-circle-fill me-2"></i>
+                New Student
+            </a>
+        @endcan
     </div>
 
     <div class="col-md-12">
@@ -49,16 +51,20 @@
                                     <td>{{ $student->generation->name ?? 'N/A' }}</td>
                                     <td>
                                         <div class="d-flex justify-content-center gap-2">
-                                            <a href="{{ url("student/$student->id/edit") }}" class="btn btn-sm btn-primary">
-                                                <i class="bi bi-pencil-square"></i>
-                                            </a>
-                                            <form action="{{ route('student-delete', $student->id) }}" method="POST" class="d-inline delete-form">
-                                                @csrf
-                                                @method('DELETE')
-                                                <button type="submit" class="btn btn-sm btn-danger">
-                                                    <i class="bi bi-trash3"></i>
-                                                </button>
-                                            </form>
+                                            @can('edit student')
+                                                <a href="{{ url("student/$student->id/edit") }}" class="btn btn-sm btn-primary">
+                                                    <i class="bi bi-pencil-square"></i>
+                                                </a>
+                                            @endcan
+                                            @can('delete student')
+                                                <form action="{{ route('student-delete', $student->id) }}" method="POST" class="d-inline delete-form">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <button type="submit" class="btn btn-sm btn-danger">
+                                                        <i class="bi bi-trash3"></i>
+                                                    </button>
+                                                </form>
+                                            @endcan
                                         </div>
                                     </td>
                                 </tr>
