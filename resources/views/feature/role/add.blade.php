@@ -161,6 +161,161 @@
                                     </div>
                                 </td>
                             </tr>
+                            <tr> <!-- teacher -->
+                                <td>teacher</td>
+                                <td class="text-center"> <!-- view -->
+                                    <div class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input" name="permissionsCheckbox[]"
+                                            value="view teacher" id="view-teacher">
+                                        <label class="custom-control-label" for="view-teacher"></label>
+                                    </div>
+                                </td>
+                                <td class="text-center"> <!-- create -->
+                                    <div class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input" name="permissionsCheckbox[]"
+                                            value="create teacher" id="create-teacher">
+                                        <label class="custom-control-label" for="create-teacher"></label>
+                                    </div>
+                                </td>
+                                <td class="text-center"> <!-- edit -->
+                                    <div class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input" name="permissionsCheckbox[]"
+                                            value="edit teacher" id="edit-teacher">
+                                        <label class="custom-control-label" for="edit-teacher"></label>
+                                    </div>
+                                </td>
+                                <td class="text-center"> <!-- delete -->
+                                    <div class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input" name="permissionsCheckbox[]"
+                                            value="delete teacher" id="delete-teacher">
+                                        <label class="custom-control-label" for="delete-teacher"></label>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr> <!-- term -->
+                                <td>term</td>
+                                <td class="text-center"> <!-- view -->
+                                    <div class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input" name="permissionsCheckbox[]"
+                                            value="view term" id="view-term">
+                                        <label class="custom-control-label" for="view-term"></label>
+                                    </div>
+                                </td>
+                                <td class="text-center"> <!-- create -->
+                                    <div class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input" name="permissionsCheckbox[]"
+                                            value="create term" id="create-term">
+                                        <label class="custom-control-label" for="create-term"></label>
+                                    </div>
+                                </td>
+                                <td class="text-center"> <!-- edit -->
+                                    <div class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input" name="permissionsCheckbox[]"
+                                            value="edit term" id="edit-term">
+                                        <label class="custom-control-label" for="edit-term"></label>
+                                    </div>
+                                </td>
+                                <td class="text-center"> <!-- delete -->
+                                    <div class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input" name="permissionsCheckbox[]"
+                                            value="delete term" id="delete-term">
+                                        <label class="custom-control-label" for="delete-term"></label>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr> <!-- subject -->
+                                <td>subject</td>
+                                <td class="text-center"> <!-- view -->
+                                    <div class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input" name="permissionsCheckbox[]"
+                                            value="view subject" id="view-subject">
+                                        <label class="custom-control-label" for="view-subject"></label>
+                                    </div>
+                                </td>
+                                <td class="text-center"> <!-- create -->
+                                    <div class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input" name="permissionsCheckbox[]"
+                                            value="create subject" id="create-subject">
+                                        <label class="custom-control-label" for="create-subject"></label>
+                                    </div>
+                                </td>
+                                <td class="text-center"> <!-- edit -->
+                                    <div class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input" name="permissionsCheckbox[]"
+                                            value="edit subject" id="edit-subject">
+                                        <label class="custom-control-label" for="edit-subject"></label>
+                                    </div>
+                                </td>
+                                <td class="text-center"> <!-- delete -->
+                                    <div class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input" name="permissionsCheckbox[]"
+                                            value="delete subject" id="delete-subject">
+                                        <label class="custom-control-label" for="delete-subject"></label>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr> <!-- class -->
+                                <td>class</td>
+                                <td class="text-center"> <!-- view -->
+                                    <div class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input" name="permissionsCheckbox[]"
+                                            value="view class" id="view-class">
+                                        <label class="custom-control-label" for="view-class"></label>
+                                    </div>
+                                </td>
+                                <td class="text-center"> <!-- create -->
+                                    <div class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input" name="permissionsCheckbox[]"
+                                            value="create class" id="create-class">
+                                        <label class="custom-control-label" for="create-class"></label>
+                                    </div>
+                                </td>
+                                <td class="text-center"> <!-- edit -->
+                                    <div class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input" name="permissionsCheckbox[]"
+                                            value="edit class" id="edit-class">
+                                        <label class="custom-control-label" for="edit-class"></label>
+                                    </div>
+                                </td>
+                                <td class="text-center"> <!-- delete -->
+                                    <div class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input" name="permissionsCheckbox[]"
+                                            value="delete class" id="delete-class">
+                                        <label class="custom-control-label" for="delete-class"></label>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr> <!-- grid -->
+                                <td>grid</td>
+                                <td class="text-center"> <!-- view -->
+                                    <div class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input" name="permissionsCheckbox[]"
+                                            value="view grid" id="view-grid">
+                                        <label class="custom-control-label" for="view-grid"></label>
+                                    </div>
+                                </td>
+                                <td class="text-center"> <!-- create -->
+                                    <div class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input" name="permissionsCheckbox[]"
+                                            value="create grid" id="create-grid">
+                                        <label class="custom-control-label" for="create-grid"></label>
+                                    </div>
+                                </td>
+                                <td class="text-center"> <!-- edit -->
+                                    <div class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input" name="permissionsCheckbox[]"
+                                            value="edit grid" id="edit-grid">
+                                        <label class="custom-control-label" for="edit-grid"></label>
+                                    </div>
+                                </td>
+                                <td class="text-center"> <!-- delete -->
+                                    <div class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input" name="permissionsCheckbox[]"
+                                            value="delete grid" id="delete-grid">
+                                        <label class="custom-control-label" for="delete-grid"></label>
+                                    </div>
+                                </td>
+                            </tr>
                         </tbody>
                     </table>
                 </div>

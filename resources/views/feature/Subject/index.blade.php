@@ -7,9 +7,11 @@
 @section('content')
     <div class="row">
         <div class="col-md-12">
-            <div class="create-link-wrapper">
-                <a href="{{ route('subject-add') }}" class="btn btn-outline-success">New Subject</a>
-            </div>
+            @can('create subject')
+                <div class="create-link-wrapper">
+                    <a href="{{ route('subject-add') }}" class="btn btn-outline-success">New Subject</a>
+                </div>
+            @endcan
             <div class="card ">
                 <div class="card-header">
                     <h4 class="card-title"> Student List</h4>
@@ -34,18 +36,22 @@
                                         <td class="text-center">
                                             <img type="button" src="{{ asset('#') }}" class="btn dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" alt="action icon">
                                             <div class="dropdown-menu">
-                                                <div class="action-status-action-button-wrapper">
-                                                    <a href="{{ url("subject/$subject->id/edit") }}" class="action-edit-button dropdown-item">Edit</a>
-                                                </div>
-                                                <div class="action-delete-wrapper">
-                                                    <form action="{{ route('subject-delete', ['id' => $subject->id]) }}" method="POST">
-                                                        @method('delete')
-                                                        @csrf
-                                                        <button class="subject-delete-btn dropdown-item">
-                                                            Delete
-                                                        </button>
-                                                    </form>
-                                                </div>
+                                                @can('edit subject')
+                                                    <div class="action-status-action-button-wrapper">
+                                                        <a href="{{ url("subject/$subject->id/edit") }}" class="action-edit-button dropdown-item">Edit</a>
+                                                    </div>
+                                                @endcan
+                                                @can('delete subject')
+                                                    <div class="action-delete-wrapper">
+                                                        <form action="{{ route('subject-delete', ['id' => $subject->id]) }}" method="POST">
+                                                            @method('delete')
+                                                            @csrf
+                                                            <button class="subject-delete-btn dropdown-item">
+                                                                Delete
+                                                            </button>
+                                                        </form>
+                                                    </div>
+                                                @endcan
                                             </div>
                                         </td>
                                     </tr>

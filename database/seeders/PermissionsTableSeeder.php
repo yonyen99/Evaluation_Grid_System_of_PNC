@@ -49,6 +49,38 @@ class PermissionsTableSeeder extends Seeder
             Permission::updateOrCreate(['name' => 'delete student']);
         // student Permission seeder [END]
 
+        // teacher Permission seeder [BEGIN]
+            Permission::updateOrCreate(['name' => 'view teacher']);
+            Permission::updateOrCreate(['name' => 'create teacher']);
+            Permission::updateOrCreate(['name' => 'edit teacher']);
+            Permission::updateOrCreate(['name' => 'delete teacher']);
+        // teacher Permission seeder [END]
+        // term Permission seeder [BEGIN]
+            Permission::updateOrCreate(['name' => 'view term']);
+            Permission::updateOrCreate(['name' => 'create term']);
+            Permission::updateOrCreate(['name' => 'edit term']);
+            Permission::updateOrCreate(['name' => 'delete term']);
+        // term Permission seeder [END]
+        // subject Permission seeder [BEGIN]
+            Permission::updateOrCreate(['name' => 'view subject']);
+            Permission::updateOrCreate(['name' => 'create subject']);
+            Permission::updateOrCreate(['name' => 'edit subject']);
+            Permission::updateOrCreate(['name' => 'delete subject']);
+        // subject Permission seeder [END]
+
+        // class Permission seeder [BEGIN]
+            Permission::updateOrCreate(['name' => 'view class']);
+            Permission::updateOrCreate(['name' => 'create class']);
+            Permission::updateOrCreate(['name' => 'edit class']);
+            Permission::updateOrCreate(['name' => 'delete class']);
+        // class Permission seeder [END]
+        // grid Permission seeder [BEGIN]
+            Permission::updateOrCreate(['name' => 'view grid']);
+            Permission::updateOrCreate(['name' => 'create grid']);
+            Permission::updateOrCreate(['name' => 'edit grid']);
+            Permission::updateOrCreate(['name' => 'delete grid']);
+        // grid Permission seeder [END]
+
         // Dashborad Access Permissions Seeder [BEGIN]
             Permission::updateOrCreate(['name' => 'access dashboard']);
         // Dashborad Access Permissions Seeder [END]
