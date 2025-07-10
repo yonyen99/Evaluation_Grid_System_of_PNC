@@ -8,12 +8,14 @@
 
 @section('content')
 <div class="row">
-    <div class="col-md-12 d-flex justify-content-between align-items-center mb-3">
-        <a href="{{ route('class-add') }}" class="btn btn-outline-primary d-flex align-items-center">
-            <i class="bi bi-plus-circle-fill me-2"></i>
-            New Class
-        </a>
-    </div>
+    @can('view class')     
+        <div class="col-md-12 d-flex justify-content-between align-items-center mb-3">
+            <a href="{{ route('class-add') }}" class="btn btn-outline-primary d-flex align-items-center">
+                <i class="bi bi-plus-circle-fill me-2"></i>
+                New Class
+            </a>
+        </div>
+    @endcan
 
     <div class="col-md-12">
         <div class="card border">
@@ -50,13 +52,15 @@
                                             </a>
 
                                             <!-- Delete Form -->
-                                            <form action="#" method="POST" class="d-inline delete-form">
-                                                @csrf
-                                                @method('DELETE')
-                                                <button type="submit" class="btn btn-sm btn-danger">
-                                                    <i class="bi bi-trash3"></i>
-                                                </button>
-                                            </form>
+                                            @can('delete class')
+                                                <form action="#" method="POST" class="d-inline delete-form">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <button type="submit" class="btn btn-sm btn-danger">
+                                                        <i class="bi bi-trash3"></i>
+                                                    </button>
+                                                </form>
+                                            @endcan
                                         </div>
                                     </td>
                                 </tr>

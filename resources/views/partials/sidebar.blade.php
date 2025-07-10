@@ -27,32 +27,41 @@
                     </a>
                 </li>
             @endcan
-            <li>
-                <a href="{{ route('term.index') }}" class="nav-link text-white hover-active">
-                    <i class="bi bi-calendar-week me-2"></i> Term
-                </a>
-            </li>
-            <li>
-                <a href="#" class="nav-link text-white hover-active">
-                    <i class="bi bi-table me-2"></i> Grid
-                </a>
-            </li>
-            <li>
-                <a href="{{ route('class') }}" class="nav-link text-white hover-active">
-                    <i class="bi bi-door-closed me-2"></i> Class
-                </a>
-            </li>
-            <li>
-                <a href="{{ route('subject') }}" class="nav-link text-white hover-active">
-                    <i class="bi bi-person-badge me-2"></i> Subject
-                </a>
-            </li>
-            <li>
-                <a href="{{ route('teacher') }}" class="nav-link text-white hover-active">
-                    <i class="bi bi-person-badge me-2"></i> Teacher
-                </a>
-            </li>
-           
+            @can('view term')
+                <li>
+                    <a href="{{ route('term.index') }}" class="nav-link text-white hover-active">
+                        <i class="bi bi-calendar-week me-2"></i> Term
+                    </a>
+                </li>
+            @endcan
+            @can('view grid')
+                <li>
+                    <a href="#" class="nav-link text-white hover-active">
+                        <i class="bi bi-table me-2"></i> Grid
+                    </a>
+                </li>
+            @endcan
+            @can('view class')
+                <li>
+                    <a href="{{ route('class') }}" class="nav-link text-white hover-active">
+                        <i class="bi bi-door-closed me-2"></i> Class
+                    </a>
+                </li>
+            @endcan
+            @can('view subject')
+                <li>
+                    <a href="{{ route('subject') }}" class="nav-link text-white hover-active">
+                        <i class="bi bi-person-badge me-2"></i> Subject
+                    </a>
+                </li>
+            @endcan
+            @can('view teacher')
+                <li>
+                    <a href="{{ route('teacher') }}" class="nav-link text-white hover-active">
+                        <i class="bi bi-person-badge me-2"></i> Teacher
+                    </a>
+                </li>
+            @endcan
             @if (Gate::check('view system_user') || Gate::check('view role'))
                 @can('view role')
                     <li>
