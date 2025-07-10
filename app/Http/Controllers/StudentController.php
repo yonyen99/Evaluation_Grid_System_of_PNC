@@ -9,11 +9,34 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 class StudentController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
         $query = Student::query();
-        $students = $query->paginate(10);
-        return view('feature.students.index', compact('students'));
+
+        if ($request->filled('search')) {
+            $query->where(function ($q) use ($request) {
+                $q->where('first_name', 'like', '%' . $request->search . '%')
+                ->orWhere('last_name', 'like', '%' . $request->search . '%');
+            });
+        }
+
+        if ($request->filled('generation_id')) {
+            $query->where('generation_id', $request->generation_id);
+        }
+
+        if ($request->filled('province_id')) {
+            $query->where('province_id', $request->province_id);
+        }
+
+        if ($request->filled('gender')) {
+            $query->where('gender', $request->gender);
+        }
+
+        $students = $query->with('generation')->get();
+        $generations = Generation::all();
+        $provinces = Province::all();
+
+        return view('feature.students.index', compact('students', 'generations', 'provinces'));
     }
 
     public function create()
