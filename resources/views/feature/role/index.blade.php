@@ -6,26 +6,27 @@
 {{-- BEGIN:: Table Content --}}
 @section('content')
     <div class="role-content-wrapper mt-3">
-        <!-- create role -->
+        <!-- Create Role -->
         @can('create system_user')
-            <div class="create-role-link-wrapper">
+            <div class="mb-3">
                 <a class="btn btn-outline-success" href="{{ route('role-add') }}">New Role</a>
             </div>
         @endcan
-        <!-- role list table -->
-        <div class="table_scroll">
-            <table class="table role-table-listing-wrapper mt-3">
-                <!-- table head -->
-                <thead>
+
+        <!-- Role List Table -->
+        <div class="table-responsive">
+            <table class="table table-bordered table-hover align-middle">
+                <!-- Table Head -->
+                <thead class="table-light">
                     <tr>
-                        <th>Id</th>
-                        <th>Create AT</th>
+                        <th>ID</th>
+                        <th>Created At</th>
                         <th>Roles</th>
-                        <th>Permission</th>
+                        <th>Permissions</th>
                         <th>Action</th>
                     </tr>
                 </thead>
-                <!-- table body -->
+                <!-- Table Body -->
                 <tbody>
                     @foreach ($roles as $role)
                         <tr>
@@ -33,21 +34,22 @@
                             <td>{{ $role->created_at }}</td>
                             <td>{{ ucwords($role->name) }}</td>
                             <td>
-                                <div class="dropdown show">
-                                    <button class="btn btn-outline-dark dropdown-toggle" id="dropdown-permissions"
-                                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <div class="dropdown">
+                                    <button class="btn btn-outline-dark dropdown-toggle" type="button"
+                                        id="dropdownPermissions{{ $role->id }}" data-bs-toggle="dropdown"
+                                        aria-expanded="false">
                                         Has Permission
                                     </button>
-                                    <div class="dropdown-menu" style="height: 200px; overflow: scroll; overflow-x: hidden;"
-                                        aria-labelledby="dropdown-permissions">
-                                        @if ($role->permissions()->first() != null)
+                                    <ul class="dropdown-menu" aria-labelledby="dropdownPermissions{{ $role->id }}"
+                                        style="max-height: 200px; overflow-y: auto;">
+                                        @if ($role->permissions()->exists())
                                             @foreach ($role->permissions->sortBy('name') as $permission)
-                                                <span class="dropdown-item">{{ $permission->name }}</span>
+                                                <li><span class="dropdown-item">{{ $permission->name }}</span></li>
                                             @endforeach
                                         @else
-                                            <span class="dropdown-item" style="color: red;">User_Permission</span>
+                                            <li><span class="dropdown-item text-danger">User_Permission</span></li>
                                         @endif
-                                    </div>
+                                    </ul>
                                 </div>
                             </td>
                             <td>
@@ -71,12 +73,13 @@
             </table>
         </div>
     </div>
+
 @endsection
 {{-- END:: Table Content --}}
 
 {{-- custom script --}}
 @section('script')
-    <script src="{{asset('dashboard/js/feature/role.js')}}"></script>
+    <script src="{{ asset('dashboard/js/feature/role.js') }}"></script>
 
     <script></script>
 @endsection
