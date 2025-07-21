@@ -11,6 +11,7 @@ use App\Http\Controllers\Dashboard\TestController;
 use App\Http\Controllers\Dashboard\UserController;
 use App\Http\Controllers\StudentController;
 use App\Http\Controllers\Dashboard\ClassController;
+use App\Http\Controllers\Dashboard\LogHistoryController;
 use App\Http\Controllers\Dashboard\RoleController;
 use App\Http\Controllers\Dashboard\TermController;
 use GuzzleHttp\Middleware;
@@ -23,6 +24,14 @@ Route::post('/login', [LoginController::class, 'login'])->middleware('guest');
 Route::middleware(['auth'])->group(function () {
     Route::get('/', [DashboardController::class, 'index'])->name('home');
     Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
+
+     // Log History Router [BEGIN]
+        Route::group([
+            'prefix' => 'loghistories',
+        ], function(){
+            Route::get('/', [LogHistoryController::class, 'index'])->name('logHistory-list');
+        });
+    // Log History Router [END]
 
     // System Users Router [BEGIN]
     Route::group([

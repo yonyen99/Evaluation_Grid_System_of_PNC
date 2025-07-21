@@ -3,7 +3,9 @@
 namespace App\Http\Controllers\Dashboard;
 
 use App\Http\Controllers\Controller;
+use App\Models\LogHistory;
 use App\Models\Role;
+use Carbon\Carbon;
 use Exception;
 use Spatie\Permission\Models\Role as SpatieRole;
 
@@ -71,6 +73,16 @@ class RoleController extends Controller
             foreach ($permissions as $permission) {
                 $role->givePermissionTo($permission->name);
             }
+            // create log history
+            $currentUser = auth()->user();
+            $logHistory  = new LogHistory([
+                'log_header'      => 'create role',
+                'permission_slug' => 'view role_history',
+                'username'        => $currentUser->username,
+                'user_id'         => $currentUser->id,
+                'description'     => 'Role [ '.ucwords($role->name).' ] was created on [ '.Carbon::now().' ] by '.$currentUser->username.' user',
+            ]);
+            $logHistory->save();
 
         } catch (QueryException $queryEx) {
             DB::rollBack();
@@ -157,6 +169,17 @@ class RoleController extends Controller
                 $role->givePermissionTo($newPermission->name);
             }
             $role->save();
+            
+            // create log history
+            $currentUser = auth()->user();
+            $logHistory  = new LogHistory([
+                'log_header'      => 'edit role',
+                'permission_slug' => 'view role_history',
+                'username'        => $currentUser->username,
+                'user_id'         => $currentUser->id,
+                'description'     => 'Role [ '.ucwords($role->name).' ] was edited on [ '.Carbon::now().' ] by '.$currentUser->username.' user',
+            ]);
+            $logHistory->save();
 
         } catch (QueryException $queryEx) {
             DB::rollBack();
@@ -190,6 +213,17 @@ class RoleController extends Controller
         try {
             DB::beginTransaction();
             $role->delete();
+
+            // create log history
+            $currentUser = auth()->user();
+            $logHistory  = new LogHistory([
+                'log_header'      => 'delete role',
+                'permission_slug' => 'view role_history',
+                'username'        => $currentUser->username,
+                'user_id'         => $currentUser->id,
+                'description'     => 'Role [ '.ucwords($role->name).' ] was deleted on [ '.Carbon::now().' ] by '.$currentUser->username.' user',
+            ]);
+            $logHistory->save();
 
         } catch (Exception $ex) {
             DB::rollBack();

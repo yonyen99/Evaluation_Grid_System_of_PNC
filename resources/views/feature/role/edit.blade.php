@@ -48,24 +48,41 @@
                                     'subject',
                                     'class',
                                     'grid',
+                                    'loghistory',
                                 ];
                                 $permissions = ['view', 'create', 'edit', 'delete'];
+                                $permissionsHistory = ['view'];
                             @endphp
-
                             @foreach ($modules as $module)
                                 <tr>
                                     <td class="text-capitalize">{{ str_replace('_', ' ', $module) }}</td>
-                                    @foreach ($permissions as $action)
-                                        <td class="text-center">
-                                            <div class="form-check">
-                                                <input class="form-check-input" type="checkbox" name="permissionsCheckbox[]"
-                                                    value="{{ $action }} {{ $module }}"
-                                                    id="{{ $action }}-{{ $module }}">
-                                                <label class="form-check-label"
-                                                    for="{{ $action }}-{{ $module }}"></label>
-                                            </div>
-                                        </td>
-                                    @endforeach
+                                    @if ($module !=='loghistory')
+                                        @foreach ($permissions as $action)
+                                            <td class="text-center">
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="checkbox"
+                                                        name="permissionsCheckbox[]"
+                                                        value="{{ $action }} {{ $module }}"
+                                                        id="{{ $action }}-{{ $module }}">
+                                                    <label class="form-check-label"
+                                                        for="{{ $action }}-{{ $module }}"></label>
+                                                </div>
+                                            </td>
+                                        @endforeach
+                                    @else
+                                        @foreach ($permissionsHistory as $action)
+                                            <td class="text-center">
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="checkbox"
+                                                        name="permissionsCheckbox[]"
+                                                        value="{{ $action }} {{ $module }}"
+                                                        id="{{ $action }}-{{ $module }}">
+                                                    <label class="form-check-label"
+                                                        for="{{ $action }}-{{ $module }}"></label>
+                                                </div>
+                                            </td>
+                                        @endforeach
+                                    @endif
                                 </tr>
                             @endforeach
                         </tbody>
