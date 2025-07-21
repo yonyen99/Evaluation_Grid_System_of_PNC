@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Dashboard;
 
 use App\Http\Controllers\Controller;
+use App\Models\LogHistory;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -22,7 +23,7 @@ class UserController extends Controller
     {
         // get record
         $users = User::getSystemUsers();
-        if(!$users->data){
+        if (!$users->data) {
             return view('feature.user.index')->with('error', $users->message);
         }
         $users = $users->data;
@@ -37,7 +38,7 @@ class UserController extends Controller
     {
         // get role records
         $roles = User::getRoles();
-        if(!$roles->data){
+        if (!$roles->data) {
             return back()->with('error', $roles->message);
         }
         $roles = $roles->data;
@@ -52,7 +53,7 @@ class UserController extends Controller
     public function store(Request $request)
     {
         $role = User::getRole($request['role']);
-        if(!$role->data){
+        if (!$role->data) {
             return back()->with('error', $role->message);
         }
         $role = $role->data;
@@ -64,12 +65,12 @@ class UserController extends Controller
             $request['lastname'],
             $request['email'],
         );
-        if(!$requestValidResult->data){
+        if (!$requestValidResult->data) {
             return back()->with('error', $requestValidResult->message);
         }
 
         // save record
-        try{
+        try {
             DB::beginTransaction();
 
             $user = new User([
@@ -81,14 +82,23 @@ class UserController extends Controller
                 'email_verified_at' => Carbon::now()->toDateTimeString(),
             ]);
             $user->save();
-            
+
             // attach user with role
             $user->assignRole($role);
-            
-            
-        } catch(QueryException $queryEx) {
+
+            // create log history
+            $currentUser = auth()->user();
+            $logHistory  = new LogHistory([
+                'log_header'      => 'create user',
+                'permission_slug' => 'view system_user_history',
+                'username'        => $currentUser->username,
+                'user_id'         => $currentUser->id,
+                'description'     => 'Username [ ' . ucwords($user->username) . ' ] with email [ ' . strtolower($user->email) . ' ] was created and assigned as [ ' . strtolower($user->roles()->get()->first()->name) . ' ] on [ ' . Carbon::now() . ' ] by ' . $currentUser->username . ' user',
+            ]);
+            $logHistory->save();
+        } catch (QueryException $queryEx) {
             DB::rollBack();
-            if($queryEx->errorInfo[1] == 1062){
+            if ($queryEx->errorInfo[1] == 1062) {
                 $message = 'Username or Email already exist!';
             } else {
                 $message = 'There is a problem while trying to create user!';
@@ -110,14 +120,14 @@ class UserController extends Controller
     {
         // get role records
         $roles = User::getRoles();
-        if(!$roles->data){
+        if (!$roles->data) {
             return back()->with('error', $roles->message);
         }
         $roles = $roles->data;
 
         // get user record
         $user = User::getUser($id);
-        if(!$user->data){
+        if (!$user->data) {
             return back()->with('error', $user->message);
         }
         $user = $user->data;
@@ -135,14 +145,14 @@ class UserController extends Controller
     {
         // get user record
         $user = User::getUser($id);
-        if(!$user->data){
+        if (!$user->data) {
             return back()->with('error', $user->message);
         }
         $user = $user->data;
-        
+
         // get role record
         $role = User::getRole($request['role']);
-        if(!$role->data){
+        if (!$role->data) {
             return back()->with('error', $role->message);
         }
         $role = $role->data;
@@ -154,9 +164,20 @@ class UserController extends Controller
             $request['lastname'],
             $request['email'],
         );
-        if(!$requestValidResult->data){
+        if (!$requestValidResult->data) {
             return back()->with('error', $requestValidResult->message);
         }
+
+        // create log history
+        $currentUser = auth()->user();
+        $logHistory  = new LogHistory([
+            'log_header'      => 'edit user',
+            'permission_slug' => 'view system_user_history',
+            'username'        => $currentUser->username,
+            'user_id'         => $currentUser->id,
+            'description'     => 'Username [ ' . ucwords($user->username) . ' ] was edited on [ ' . Carbon::now() . ' ] by ' . $currentUser->username . ' user',
+        ]);
+        $logHistory->save();
 
         // update record
         try {
@@ -166,23 +187,22 @@ class UserController extends Controller
             $user->firstname    = $requestValidResult->firstname;
             $user->lastname     = $requestValidResult->lastname;
             $user->email        = $requestValidResult->email;
-            
+
             // password reset option
-            if ( $request['password'] != null ){
-                $user->password = Hash::make( $request['password'] );
+            if ($request['password'] != null) {
+                $user->password = Hash::make($request['password']);
             }
 
             $user->update();
-            
+
             // detach user with old role
             $user->removeRole($user->roles->first()->name);
 
             // attach user with new role
             $user->assignRole($role);
-
-        } catch(QueryException $queryEx) {
+        } catch (QueryException $queryEx) {
             DB::rollBack();
-            if($queryEx->errorInfo[1] == 1062){
+            if ($queryEx->errorInfo[1] == 1062) {
                 $message = 'Username or Email already exist!';
             } else {
                 $message = 'There is a problem while trying to create user!';
@@ -204,19 +224,30 @@ class UserController extends Controller
     {
         // get user record
         $user = User::getUser($id);
-        if(!$user->data){
+        if (!$user->data) {
             return back()->with('error', $user->message);
         }
         $user = $user->data;
 
         // delete record
-        try{
+        try {
             DB::beginTransaction();
             $user->roles()->detach();
             $user->permissions()->detach();
             $user->delete();
 
-        } catch(ModelNotFoundException $e) {
+            // create log history
+            $currentUser = auth()->user();
+            $logHistory  = new LogHistory([
+                'log_header'      => 'delete user',
+                'permission_slug' => 'view system_user_history',
+                'username'        => $currentUser->username,
+                'user_id'         => $currentUser->id,
+                'description'     => 'Username [ '.ucwords($user->username).' ] with email [ '.strtolower($user->email).' ] was deleted on [ '.Carbon::now().' ] by '.$currentUser->username.' user',
+            ]);
+            $logHistory->save();
+
+        } catch (ModelNotFoundException $e) {
             DB::rollBack();
             return back()->with('error', 'Problem occured while trying to delete user record!');
         }

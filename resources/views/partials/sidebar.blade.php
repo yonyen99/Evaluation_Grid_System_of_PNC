@@ -62,8 +62,8 @@
                     </a>
                 </li>
             @endcan
+            <hr class="sidebar-divider d-none d-md-block border-white">
             <li class="nav-item">
-
                 <a class="nav-link" data-bs-toggle="collapse" href="#collapseTwo" role="button" aria-expanded="false"
                     aria-controls="collapseTwo">
                     <i class="bi bi-gear-fill"></i> Settings
@@ -72,15 +72,22 @@
                     @if (Gate::check('view system_user') || Gate::check('view role'))
                         @can('view role')
                             <li>
-                                <a href="{{ route('role-list') }}" class="nav-link text-white hover-active">
-                                    <i class="bi-shield-lock me-2"></i> Roles
+                                <a href="{{ route('role-list') }}" class="nav-link text-white hover-active" style="font-size:13px;">
+                                    <i class="bi-shield-lock me-2"></i>Roles
                                 </a>
                             </li>
                         @endcan
                         @can('view system_user')
                             <li>
-                                <a href="{{ route('user-list') }}" class="nav-link text-white hover-active">
+                                <a href="{{ route('user-list') }}" class="nav-link text-white hover-active" style="font-size:13px;">
                                     <i class="bi bi-person"></i> User
+                                </a>
+                            </li>
+                        @endcan
+                        @can('view loghistory')
+                            <li>
+                                <a href="{{ route('logHistory-list') }}" class="nav-link text-white hover-active" style="font-size:13px;">
+                                    <i class="bi bi-clock-history"></i> LogHistory
                                 </a>
                             </li>
                         @endcan
