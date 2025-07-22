@@ -15,15 +15,22 @@ class GenerationController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $generations = Generation::getGenerations();
-        if (!$generations->data) {
-            return back()->with('error', $generations->message);
-        }
-        $generations = $generations->data;
+        $allGenerations = Generation::all(); // for the dropdown
 
-        return view('feature.generation.index', compact('generations'));
+        // Pass filters (from query params)
+        $result = Generation::getGenerations([
+            'generation_id' => $request->input('generation_id'),
+        ]);
+
+        if (!$result->data) {
+            return back()->with('error', $result->message);
+        }
+
+        $generations = $result->data;
+
+        return view('feature.generation.index', compact('generations', 'allGenerations'));
     }
 
     /**

@@ -13,14 +13,17 @@ class TeacherController extends Controller
     /**
      * Display a listing of teachers.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $response = Teacher::getTeachers();
-        if (!$response->data) {
-            return back()->with('error', $response->message);
+        $query = Teacher::query();
+        if ($request->filled('search')) {
+            $query->where(function ($q) use ($request) {
+                $q->where('first_name', 'like', '%' . $request->search . '%')
+                ->orWhere('last_name', 'like', '%' . $request->search . '%');
+            });
         }
 
-        $teachers = $response->data;
+        $teachers = $query->get();
 
         return view('feature.teacher.index', compact('teachers'));
     }

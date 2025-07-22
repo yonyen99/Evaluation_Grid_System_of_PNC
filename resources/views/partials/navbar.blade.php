@@ -12,7 +12,7 @@
                        data-bs-toggle="dropdown" aria-expanded="false">
                         <img src="{{ asset('dashboard/img/anime3.png') }}" alt="Profile Photo"
                              class="rounded-circle me-2" width="40" height="40">
-                        <span class="d-none d-lg-inline">{{ Auth::user()->name ?? 'Guest' }}</span>
+                        <span class="d-none d-lg-inline">{{ Auth::user()->username ?? 'Guest' }}</span>
                     </a>
                     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
                         <li>
