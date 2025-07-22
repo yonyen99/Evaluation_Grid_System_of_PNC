@@ -13,17 +13,19 @@ class SubjectController extends Controller
      * Display a listing of the resource.
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $subjects = Subject::getSubjects();
-        // dd($subjects);
-        if( !$subjects->data ){
-            return back()->with('error', $subjects->message);
-        }
-        $subjects = $subjects->data;
+        $query = Subject::query();
 
-        return view('feature.Subject.index',compact('subjects'));
-        // dd(1);
+        if ($request->filled('search')) {
+            $query->where(function ($q) use ($request) {
+                $q->where('name', 'like', '%' . $request->search . '%');
+            });
+        }
+
+        $subjects = $query->get();
+
+        return view('feature.Subject.index', compact('subjects'));
     }
 
     /**

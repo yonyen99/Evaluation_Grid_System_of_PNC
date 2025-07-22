@@ -13,11 +13,24 @@ use Illuminate\Http\Request;
 
 class ClassController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
         $query = Classe::query();
-        $classes = $query->paginate(10);
-        return view('feature.class.index', compact('classes'));
+
+        if ($request->filled('search')) {
+            $query->where(function ($q) use ($request) {
+                $q->where('name', 'like', '%' . $request->search . '%');
+            });
+        }
+
+        if ($request->filled('generation_id')) {
+            $query->where('generation_id', $request->generation_id);
+        }
+
+        $classes = $query->with('generation')->get();
+        $generations = Generation::all();
+     
+        return view('feature.class.index', compact('classes', 'generations'));
     }
 
     public function create()

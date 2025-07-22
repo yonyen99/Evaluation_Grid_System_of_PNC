@@ -20,6 +20,29 @@
                 </a>
             @endcan
         </div>
+        <!-- Filter Form -->
+        <form action="{{ route('generation') }}" method="GET" class="card p-3 shadow-sm mb-4">
+            <div class="row align-items-end">
+                <!-- Filter by Generation -->
+                <div class="col-md-3 mb-3">
+                    <label for="generation_id" class="form-label">Generation</label>
+                    <select name="generation_id" id="generation_id" class="form-select">
+                        <option value="">-- All Generations --</option>
+                        @foreach ($allGenerations as $generation)
+                            <option value="{{ $generation->id }}" {{ request('generation_id') == $generation->id ? 'selected' : '' }}>
+                                {{ $generation->name }}
+                            </option>
+                        @endforeach
+                    </select>
+                </div>
+                <!-- Submit and Reset -->
+                <div class="col-md-1 mb-3 d-flex gap-2">
+                    <button type="submit" class="btn btn-primary w-100">Filter</button>
+                    <a href="{{ route('generation') }}" class="btn btn-outline-secondary w-100">Reset</a>
+                </div>
+            </div>
+        </form>
+
 
         <!-- Table List -->
         <div class="col-md-12 mt-3">
