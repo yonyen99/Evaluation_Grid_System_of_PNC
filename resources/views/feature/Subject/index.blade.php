@@ -14,7 +14,7 @@
             @endcan
 
             <!-- Filter Form -->
-            <form action="{{ route('subject') }}" method="GET" class="card p-3 shadow-sm mb-4">
+            <form action="{{ route('subject') }}" method="GET" class="card p-3 shadow-sm mb-4 mt-2">
                 <div class="row align-items-end">
                     <!-- Search by subject name -->
                     <div class="col-md-3 mb-3">
@@ -23,7 +23,7 @@
                             value="{{ request('search') }}" placeholder="Enter Subject Name...">
                     </div>
                     <!-- Submit and Reset -->
-                    <div class="col-md-1 mb-3 d-flex gap-2">
+                    <div class="col-md-3 mb-3 d-flex gap-2">
                         <button type="submit" class="btn btn-primary w-100">Filter</button>
                         <a href="{{ route('subject') }}" class="btn btn-outline-secondary w-100">Reset</a>
                     </div>

@@ -38,7 +38,7 @@
                 </select>
             </div>
             <!-- Submit and Reset -->
-            <div class="col-md-1 mb-3 d-flex gap-2">
+            <div class="col-md-3 mb-3 d-flex gap-2">
                 <button type="submit" class="btn btn-primary w-100">Filter</button>
                 <a href="{{ route('student') }}" class="btn btn-outline-secondary w-100">Reset</a>
             </div>
