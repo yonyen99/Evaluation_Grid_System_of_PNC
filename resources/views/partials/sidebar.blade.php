@@ -13,14 +13,14 @@
                 class="rounded-circle bg-secondary mb-3" width="80" height="80">
         </a>
         <ul class="nav nav-pills flex-column text-center justify-center w-100">
-             @can('view generation')  
+            @can('view generation')
                 <li class="nav-item">
                     <a href="{{ route('generation') }}" class="nav-link text-white hover-active">
                         <i class="bi bi-clock-history me-2"></i> Generation
                     </a>
                 </li>
             @endcan
-            @can('view student')  
+            @can('view student')
                 <li>
                     <a href="{{ route('student') }}" class="nav-link text-white hover-active">
                         <i class="bi bi-person-lines-fill me-2"></i> Student
@@ -36,11 +36,18 @@
             @endcan
             @can('view grid')
                 <li>
-                    <a href="#" class="nav-link text-white hover-active">
-                        <i class="bi bi-table me-2"></i> Grid
+                    <a href="{{ route('grid-types.latest') }}" class="nav-link text-white hover-active">
+                        <i class="bi bi-table me-2"></i> Grid Type
                     </a>
                 </li>
             @endcan
+            {{-- @can('view evaluation') --}}
+                <li>
+                    <a href="{{ route('evaluations.index') }}" class="nav-link text-white hover-active">
+                        <i class="bi bi-clipboard-data me-2"></i> Evaluation
+                    </a>
+                </li>
+            {{-- @endcan --}}
             @can('view class')
                 <li>
                     <a href="{{ route('class') }}" class="nav-link text-white hover-active">

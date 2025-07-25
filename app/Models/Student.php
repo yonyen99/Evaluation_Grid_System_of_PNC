@@ -29,4 +29,8 @@ class Student extends Model
     {
         return $this->belongsTo(Generation::class);
     }
+    public function classeStudents()
+    {
+        return $this->hasMany(ClasseStudent::class);
+    }
 }

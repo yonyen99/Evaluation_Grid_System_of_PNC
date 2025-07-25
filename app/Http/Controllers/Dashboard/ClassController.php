@@ -10,6 +10,7 @@ use App\Models\Student;
 use App\Models\Subject;
 use App\Models\Teacher;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class ClassController extends Controller
 {
@@ -76,6 +77,52 @@ class ClassController extends Controller
 
         // Sync the selected students
         $class->students()->sync($request->students ?? []);
+
+        // Get class subjects (via class_subject_teachers)
+        $subjectIds = DB::table('class_subject_teachers')
+            ->where('class_id', $class->id)
+            ->pluck('subject_id');
+
+        foreach ($request->students ?? [] as $studentId) {
+            // Get classe_student ID (pivot)
+            $classeStudent = DB::table('classe_students')
+                ->where('class_id', $class->id)
+                ->where('student_id', $studentId)
+                ->first();
+
+            if ($classeStudent) {
+                $classeStudentId = $classeStudent->id;
+
+                foreach ($subjectIds as $subjectId) {
+                    // Get subject grids for this subject
+                    $subjectGrids = DB::table('subject_grids')
+                        ->where('subject_id', $subjectId)
+                        ->get();
+
+                    foreach ($subjectGrids as $grid) {
+                        // Avoid duplicates
+                        $exists = DB::table('grid_types')
+                            ->where('student_id', $studentId)
+                            ->where('subject_grid_id', $grid->id)
+                            ->where('classe_student_id', $classeStudentId)
+                            ->exists();
+
+                        if (!$exists) {
+                            DB::table('grid_types')->insert([
+                                'student_id' => $studentId,
+                                'subject_grid_id' => $grid->id,
+                                'classe_student_id' => $classeStudentId,
+                                'value' => 0,
+                                'class_id' => $class->id,
+                                'subject_id' => $subjectId,
+                                'created_at' => now(),
+                                'updated_at' => now(),
+                            ]);
+                        }
+                    }
+                }
+            }
+        }
 
         return redirect()->route('class')->with('success', 'Students assigned successfully.');
     }
