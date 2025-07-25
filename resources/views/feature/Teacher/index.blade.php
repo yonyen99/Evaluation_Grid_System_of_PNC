@@ -8,82 +8,71 @@
     <div class="row">
         <div class="col-md-12">
             @can('create teacher')
-                <div class="create-link-wrapper">
+                <div class="mb-3">
                     <a href="{{ route('teacher-add') }}" class="btn btn-outline-success">New Teacher</a>
                 </div>
             @endcan
+
             <!-- Filter Form -->
-            <form action="{{ route('teacher') }}" method="GET" class="card p-3 shadow-sm mb-4">
+            <form action="{{ route('teacher') }}" method="GET" class="card p-3 shadow-sm mb-4 mt-2">
                 <div class="row align-items-end">
-                    <!-- Search Teacher name -->
                     <div class="col-md-3 mb-3">
                         <label for="search" class="form-label">Search Teacher Name</label>
-                        <input type="text" name="search" id="search" class="form-control" 
+                        <input type="text" name="search" id="search" class="form-control"
                             value="{{ request('search') }}" placeholder="Enter Name...">
                     </div>
-                    <!-- Submit and Reset -->
-                    <div class="col-md-1 mb-3 d-flex gap-2">
+                    <div class="col-md-3 mb-3 d-flex gap-2">
                         <button type="submit" class="btn btn-primary w-100">Filter</button>
                         <a href="{{ route('teacher') }}" class="btn btn-outline-secondary w-100">Reset</a>
                     </div>
                 </div>
             </form>
-            <div class="card ">
+
+            <!-- Teacher List -->
+            <div class="card">
                 <div class="card-header">
-                    <h4 class="card-title"> Teacher List</h4>
+                    <h4 class="card-title mb-0">Teacher List</h4>
                 </div>
                 <div class="card-body">
                     <div class="table-responsive">
-                        <table class="table tablesorter">
-                            <thead class="text-primary">
+                        <table class="table table-hover align-middle">
+                            <thead class="table-light">
                                 <tr>
                                     <th>No</th>
                                     <th>Profile</th>
-                                    <th>Name</th>
-                                    <th>Email</th>
+                                    <th>First Name</th>
+                                    <th>Last Name</th>
                                     <th>Phone</th>
-                                    <th class="text-right">Action</th>
+                                    <th class="text-end">Action</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 @foreach ($teachers as $key => $teacher)
                                     <tr>
-                                        <td class="text-left">{{ $key + 1 }}</td>
-                                        <td class="text-center"> <img src="{{ asset('storage/' . $teacher->profile) }}"
-                                                class="img-fluid " width="30px" height="30px" /> <br>
+                                        <td>{{ $key + 1 }}</td>
+                                        <td class="text-center">
+                                            <img src="{{ asset('storage/' . $teacher->profile) }}" class="rounded-circle"
+                                                width="40" height="40" alt="Profile">
                                         </td>
                                         <td class="text-center">{{ $teacher->first_name }}</td>
                                         <td class="text-center">{{ $teacher->last_name }}</td>
                                         <td class="text-center">{{ $teacher->phone }}</td>
-                                        <td class="text-right">
-                                            {{-- Delete Button --}}
+                                        <td class="text-end">
                                             @can('delete teacher')
                                                 <form class="d-inline delete-form" method="POST"
                                                     action="{{ route('teacher-delete', ['id' => $teacher->id]) }}">
                                                     @csrf
                                                     @method('delete')
-                                                    <button type="submit" class="btn btn-sm btn-danger">
-                                                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
-                                                            fill="currentColor" class="bi bi-trash-fill" viewBox="0 0 16 16">
-                                                            <path
-                                                                d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5M8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5m3 .5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 1 0" />
-                                                        </svg>
+                                                    <button type="submit" class="btn btn-sm btn-danger" title="Delete">
+                                                        <i class="bi bi-trash-fill"></i>
                                                     </button>
                                                 </form>
                                             @endcan
 
-                                            {{-- Edit Button --}}
                                             @can('edit teacher')
-                                                <a class="btn btn-sm btn-warning" href="{{ url("teacher/$teacher->id/edit") }}">
-                                                    <button type="button" class="btn-warning">
-                                                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
-                                                            fill="currentColor" class="bi bi-pencil-square" viewBox="0 0 16 16">
-                                                            <path
-                                                                d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z" />
-                                                            <path fill-rule="evenodd"
-                                                                d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5z" />
-                                                        </svg>
-                                                    </button>
+                                                <a class="btn btn-sm btn-warning ms-1"
+                                                    href="{{ url("teacher/$teacher->id/edit") }}" title="Edit">
+                                                    <i class="bi bi-pencil-square"></i>
                                                 </a>
                                             @endcan
                                         </td>
@@ -95,8 +84,8 @@
                 </div>
             </div>
         </div>
-        <!-- your ui-->
     </div>
+
 @endsection
 {{-- END:: Table Content --}}
 

@@ -23,7 +23,7 @@ function addTerms() {
 
     function _generateTermCard(termNum) {
         const cardWrapper = $("#card_wrapper");
-        const col = $('<div>', { class: 'col-sm-6 col-md-4 col-xl-3 term-card' });
+        const col = $('<div>', { class: 'col-sm-6 col-md-4 col-xl-3 term-card mt-2' });
         const card = $('<div>', {
             class: 'card',
             css: { height: '10rem' }
