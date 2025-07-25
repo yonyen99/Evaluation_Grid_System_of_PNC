@@ -265,6 +265,17 @@ class User extends Authenticatable
      *      Relationship
      * ########################
      */
+    
+        /**
+         * One user to many log histories relationship.
+         * @return \App\Models\LogHistory
+         */
+        public function logHistories(){
+            return $this->hasMany(
+                LogHistory::class,
+                'user_id',
+            );
+        }
 
     /**
      * ##################################

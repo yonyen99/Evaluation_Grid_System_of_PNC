@@ -64,18 +64,23 @@ class Generation extends Model
      * @return response
      */
 
-    public static function getGenerations()
+    public static function getGenerations($filter = [])
     {
         $response = (object)[];
-
         try {
-            $generations = self::all();
+            $query = self::query();
+
+            if (!empty($filter['generation_id'])) {
+                $query->where('id', $filter['generation_id']);
+            }
+
+            $generations = $query->get();
 
             $response->data = $generations;
-            $response->message = 'Generation get successfully!';
+            $response->message = 'Generation(s) retrieved successfully!';
         } catch (Exception $e) {
             $response->data = false;
-            $response->message = 'Generation have any problem';
+            $response->message = 'There was a problem retrieving generations.';
         }
 
         return $response;

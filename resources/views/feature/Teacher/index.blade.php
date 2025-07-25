@@ -12,6 +12,22 @@
                     <a href="{{ route('teacher-add') }}" class="btn btn-outline-success">New Teacher</a>
                 </div>
             @endcan
+            <!-- Filter Form -->
+            <form action="{{ route('teacher') }}" method="GET" class="card p-3 shadow-sm mb-4">
+                <div class="row align-items-end">
+                    <!-- Search Teacher name -->
+                    <div class="col-md-3 mb-3">
+                        <label for="search" class="form-label">Search Teacher Name</label>
+                        <input type="text" name="search" id="search" class="form-control" 
+                            value="{{ request('search') }}" placeholder="Enter Name...">
+                    </div>
+                    <!-- Submit and Reset -->
+                    <div class="col-md-1 mb-3 d-flex gap-2">
+                        <button type="submit" class="btn btn-primary w-100">Filter</button>
+                        <a href="{{ route('teacher') }}" class="btn btn-outline-secondary w-100">Reset</a>
+                    </div>
+                </div>
+            </form>
             <div class="card ">
                 <div class="card-header">
                     <h4 class="card-title"> Teacher List</h4>

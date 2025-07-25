@@ -16,14 +16,14 @@
             @can('view generation')
                 <li class="nav-item">
                     <a href="{{ route('generation') }}" class="nav-link text-white hover-active">
-                        <i class="bi bi-clock-history me-2"></i> Generation
+                        <i class="bi bi-arrow-clockwise me-2"></i> Generation
                     </a>
                 </li>
             @endcan
             @can('view student')
                 <li>
                     <a href="{{ route('student') }}" class="nav-link text-white hover-active">
-                        <i class="bi bi-person-lines-fill me-2"></i> Student
+                        <i class="bi bi-mortarboard me-2"></i> Student
                     </a>
                 </li>
             @endcan
@@ -58,7 +58,7 @@
             @can('view subject')
                 <li>
                     <a href="{{ route('subject') }}" class="nav-link text-white hover-active">
-                        <i class="bi bi-person-badge me-2"></i> Subject
+                        <i class="bi-journal-bookmark me-2"></i> Subject
                     </a>
                 </li>
             @endcan
@@ -69,22 +69,38 @@
                     </a>
                 </li>
             @endcan
-            @if (Gate::check('view system_user') || Gate::check('view role'))
-                @can('view role')
-                    <li>
-                        <a href="{{ route('role-list') }}" class="nav-link text-white hover-active">
-                            <i class="bi bi-person-badge me-2"></i> Roles
-                        </a>
-                    </li>
-                @endcan
-                @can('view system_user')
-                    <li>
-                        <a href="{{ route('user-list') }}" class="nav-link text-white hover-active">
-                            <i class="bi bi-person-badge me-2"></i> User
-                        </a>
-                    </li>
-                @endcan
-            @endif
+            <hr class="sidebar-divider d-none d-md-block border-white">
+            <li class="nav-item">
+                <a class="nav-link" data-bs-toggle="collapse" href="#collapseTwo" role="button" aria-expanded="false"
+                    aria-controls="collapseTwo">
+                    <i class="bi bi-gear-fill"></i> Settings
+                </a>
+                <ul class="list-unstyled collapse" id="collapseTwo" data-bs-parent="#accordionSidebar">
+                    @if (Gate::check('view system_user') || Gate::check('view role'))
+                        @can('view role')
+                            <li>
+                                <a href="{{ route('role-list') }}" class="nav-link text-white hover-active" style="font-size:13px;">
+                                    <i class="bi-shield-lock me-2"></i>Roles
+                                </a>
+                            </li>
+                        @endcan
+                        @can('view system_user')
+                            <li>
+                                <a href="{{ route('user-list') }}" class="nav-link text-white hover-active" style="font-size:13px;">
+                                    <i class="bi bi-person"></i> User
+                                </a>
+                            </li>
+                        @endcan
+                        @can('view loghistory')
+                            <li>
+                                <a href="{{ route('logHistory-list') }}" class="nav-link text-white hover-active" style="font-size:13px;">
+                                    <i class="bi bi-clock-history"></i> LogHistory
+                                </a>
+                            </li>
+                        @endcan
+                    @endif
+                </ul>
+            </li>
         </ul>
     </div>
 </div>

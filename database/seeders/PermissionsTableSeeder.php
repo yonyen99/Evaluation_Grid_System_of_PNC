@@ -1,6 +1,7 @@
 <?php
 
 namespace Database\Seeders;
+
 use Illuminate\Database\Seeder;
 
 use App\Models\User;
@@ -27,7 +28,7 @@ class PermissionsTableSeeder extends Seeder
             Permission::updateOrCreate(['name' => 'delete system_user']);
             Permission::updateOrCreate(['name' => 'detail system_user']);
         // System User Permissions Seeder [END]
-        
+
         // Role Permissions Seeder [BEGIN]
             Permission::updateOrCreate(['name' => 'view role']);
             Permission::updateOrCreate(['name' => 'create role']);
@@ -81,15 +82,15 @@ class PermissionsTableSeeder extends Seeder
             Permission::updateOrCreate(['name' => 'delete grid']);
         // grid Permission seeder [END]
 
-        // Dashborad Access Permissions Seeder [BEGIN]
-            Permission::updateOrCreate(['name' => 'access dashboard']);
-        // Dashborad Access Permissions Seeder [END]
+        // Log History Permissions Seeder [BEGIN]
+            Permission::updateOrCreate(['name' => 'view loghistory']);
+        // Log History Permissions Seeder [END]
 
         // give permissions to role
-            $adminRole = Role::where('name', 'admin')->get()->first();
-            $adminRole->givePermissionTo(Permission::all());
+        $adminRole = Role::where('name', 'admin')->get()->first();
+        $adminRole->givePermissionTo(Permission::all());
 
-            $adminUser = User::where('email', env('ADMIN_EMAIL'))->get()->first();
-            $adminUser->assignRole('admin');
+        $adminUser = User::where('email', env('ADMIN_EMAIL'))->get()->first();
+        $adminUser->assignRole('admin');
     }
 }
