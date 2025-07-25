@@ -33,4 +33,11 @@ class Classe extends Model
     {
         return $this->belongsToMany(Term::class, 'add_class_to_terms', 'class_id', 'term_id');
     }
+
+    public function subjects()
+{
+    return $this->belongsToMany(Subject::class, 'class_subject_teachers', 'class_id', 'subject_id')->distinct();
+}
+
+    
 }
