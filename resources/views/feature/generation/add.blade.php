@@ -2,8 +2,7 @@
 @section('page_title', 'Test')
 
 @section('stylesheet')
-<link href="{{ asset('css/generation.css') }}" rel="stylesheet" />
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <link href="{{ asset('css/generation.css') }}" rel="stylesheet" />
 @endsection
 
 {{-- BEGIN:: Table Content --}}
@@ -39,8 +38,8 @@
                 </div>
 
                 <!-- Buttons -->
-                <div class="d-flex justify-content-end">
-                    <button type="submit" class="btn btn-submit">Submit</button>
+                <div class="d-flex justify-content-end ">
+                    <button type="submit" class="btn btn-submit text-red">Submit</button>
                 </div>
             </form>
         </div>
@@ -49,6 +48,5 @@
 {{-- END:: Table Content --}}
 
 @section('script')
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="..." crossorigin="anonymous"></script>
     <script src="{{asset('dashboard/js/feature/generation.js')}}"></script>
 @endsection
