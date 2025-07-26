@@ -9,6 +9,7 @@ use App\Models\Generation;
 use App\Models\Student;
 use App\Models\Subject;
 use App\Models\Teacher;
+use App\Models\Term;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -30,10 +31,14 @@ class ClassController extends Controller
 
         $classes = $query->with('generation')->get();
         $generations = Generation::all();
-     
+
         return view('feature.class.index', compact('classes', 'generations'));
     }
-
+    public function getTermsByGeneration($generationId)
+    {
+        $terms = Term::where('generation_id', $generationId)->get();
+        return response()->json($terms);
+    }
     public function create()
     {
         $subjects = Subject::all();
@@ -44,9 +49,11 @@ class ClassController extends Controller
 
     public function store(Request $request)
     {
+        // dd(request()->all());
         $request->validate([
             'name' => 'required|string|max:255',
             'generation_id' => 'required|exists:generations,id',
+            'term_id' => 'required|exists:terms,id',
             'subjects' => 'required|array',
             'teachers' => 'required|array',
             'subjects.*' => 'exists:subjects,id',
@@ -56,6 +63,7 @@ class ClassController extends Controller
         $class = Classe::create([
             'name' => $request->name,
             'generation_id' => $request->generation_id,
+            'term_id' => $request->term_id, // add this line
         ]);
 
         foreach ($request->subjects as $index => $subject_id) {
@@ -68,6 +76,65 @@ class ClassController extends Controller
 
         return redirect()->route('class')->with('success', 'Class created successfully.');
     }
+
+    public function edit($id)
+    {
+        $class = Classe::with('subjectTeachers')->findOrFail($id); // eager load subjects-teachers relationship
+        $subjects = Subject::all();
+        $teachers = Teacher::all();
+        $generations = Generation::all();
+
+        // Get terms for the class's generation to populate term select
+        $terms = Term::where('generation_id', $class->generation_id)->get();
+
+        return view('feature.class.edit', compact('class', 'subjects', 'teachers', 'generations', 'terms'));
+    }
+
+    public function update(Request $request, $id)
+    {
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'generation_id' => 'required|exists:generations,id',
+            'term_id' => 'required|exists:terms,id',
+            'subjects' => 'required|array',
+            'teachers' => 'required|array',
+            'subjects.*' => 'exists:subjects,id',
+            'teachers.*' => 'exists:teachers,id',
+        ]);
+
+        $class = Classe::findOrFail($id);
+
+        $class->update([
+            'name' => $request->name,
+            'generation_id' => $request->generation_id,
+            'term_id' => $request->term_id,
+        ]);
+
+        // Remove old ClassSubjectTeacher entries
+        ClassSubjectTeacher::where('class_id', $class->id)->delete();
+
+        // Insert new ones
+        foreach ($request->subjects as $index => $subject_id) {
+            ClassSubjectTeacher::create([
+                'class_id' => $class->id,
+                'subject_id' => $subject_id,
+                'teacher_id' => $request->teachers[$index],
+            ]);
+        }
+
+        return redirect()->route('class')->with('success', 'Class updated successfully.');
+    }
+
+    public function destroy($id)
+    {
+        $class = Classe::findOrFail($id);
+        $class->subjectTeachers()->delete();
+
+        $class->delete();
+
+        return redirect()->back()->with('success', 'Class deleted successfully!');
+    }
+
 
     public function assignStudentForm($id)
     {

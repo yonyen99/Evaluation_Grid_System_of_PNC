@@ -11,7 +11,7 @@ class Classe extends Model
 
     protected $table = 'classes';
 
-    protected $fillable = ['name', 'generation_id'];
+    protected $fillable = ['name', 'generation_id','term_id'];
 
     public function generation()
     {
