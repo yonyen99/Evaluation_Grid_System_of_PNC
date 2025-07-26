@@ -3,7 +3,9 @@
 namespace App\Http\Controllers\Dashboard;
 
 use App\Http\Controllers\Controller;
+use App\Models\LogHistory;
 use App\Models\Teacher;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
@@ -19,7 +21,7 @@ class TeacherController extends Controller
         if ($request->filled('search')) {
             $query->where(function ($q) use ($request) {
                 $q->where('first_name', 'like', '%' . $request->search . '%')
-                ->orWhere('last_name', 'like', '%' . $request->search . '%');
+                    ->orWhere('last_name', 'like', '%' . $request->search . '%');
             });
         }
 
@@ -52,7 +54,7 @@ class TeacherController extends Controller
 
         try {
             DB::beginTransaction();
-            
+
             $filePath = null;
             if ($request->hasFile('profile')) {
                 $filePath = $request->file('profile')->store('profiles', 'public');
@@ -68,6 +70,15 @@ class TeacherController extends Controller
             $teacher->save();
 
             DB::commit();
+            $currentUser = auth()->user();
+            $logHistory  = new LogHistory([
+                'log_header'      => 'create role',
+                'permission_slug' => 'view role_history',
+                'username'        => $currentUser->username,
+                'user_id'         => $currentUser->id,
+                'description'     => 'Teacher [ ' . ucwords($teacher->first_name) . ' ] was created on [ ' . Carbon::now() . ' ] by ' . $currentUser->username . ' user',
+            ]);
+            $logHistory->save();
             return redirect()->route('teacher')->with('success', 'Teacher created successfully.');
         } catch (\Throwable $e) {
             DB::rollBack();
@@ -88,7 +99,15 @@ class TeacherController extends Controller
         }
 
         $teacher = $response->data;
-
+        $currentUser = auth()->user();
+        $logHistory  = new LogHistory([
+            'log_header'      => 'create role',
+            'permission_slug' => 'view role_history',
+            'username'        => $currentUser->username,
+            'user_id'         => $currentUser->id,
+            'description'     => 'Teacher [ ' . ucwords($teacher->first_name) . ' ] was updated on [ ' . Carbon::now() . ' ] by ' . $currentUser->username . ' user',
+        ]);
+        $logHistory->save();
         return view('feature.teacher.edit', compact('teacher'));
     }
 
@@ -161,6 +180,16 @@ class TeacherController extends Controller
             $teacher->delete();
 
             DB::commit();
+
+            $currentUser = auth()->user();
+            $logHistory  = new LogHistory([
+                'log_header'      => 'create role',
+                'permission_slug' => 'view role_history',
+                'username'        => $currentUser->username,
+                'user_id'         => $currentUser->id,
+                'description'     => 'Teacher [ ' . ucwords($teacher->first_name) . ' ] was deleted on [ ' . Carbon::now() . ' ] by ' . $currentUser->username . ' user',
+            ]);
+            $logHistory->save();
 
             return redirect()->route('teacher.index')->with('success', 'Teacher deleted successfully.');
         } catch (\Throwable $e) {

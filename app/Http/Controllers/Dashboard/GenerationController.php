@@ -4,7 +4,9 @@ namespace App\Http\Controllers\Dashboard;
 
 use App\Http\Controllers\Controller;
 use App\Models\Generation;
+use App\Models\LogHistory;
 use App\Models\Term;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -70,6 +72,15 @@ class GenerationController extends Controller
             return back()->with('error', 'Generation cant add , pls try again!');
         }
         DB::commit();
+        $currentUser = auth()->user();
+        $logHistory  = new LogHistory([
+            'log_header'      => 'create role',
+            'permission_slug' => 'view role_history',
+            'username'        => $currentUser->username,
+            'user_id'         => $currentUser->id,
+            'description'     => 'Generation [ ' . ucwords($generation->name) . ' ] was created on [ ' . Carbon::now() . ' ] by ' . $currentUser->username . ' user',
+        ]);
+        $logHistory->save();
         return redirect()->route('generation');
     }
 
@@ -83,6 +94,16 @@ class GenerationController extends Controller
             return back()->with('error', $generation->message);
         }
         $generation = $generation->data;
+
+        $currentUser = auth()->user();
+        $logHistory  = new LogHistory([
+            'log_header'      => 'create role',
+            'permission_slug' => 'view role_history',
+            'username'        => $currentUser->username,
+            'user_id'         => $currentUser->id,
+            'description'     => 'Generation [ ' . ucwords($generation->name) . ' ] was update on [ ' . Carbon::now() . ' ] by ' . $currentUser->username . ' user',
+        ]);
+        $logHistory->save();
 
         return view('feature.generation.edit', compact('generation'));
     }
@@ -161,6 +182,15 @@ class GenerationController extends Controller
             return back()->with('error', 'Something went wrong!');
         }
         DB::commit();
+        $currentUser = auth()->user();
+        $logHistory  = new LogHistory([
+            'log_header'      => 'create role',
+            'permission_slug' => 'view role_history',
+            'username'        => $currentUser->username,
+            'user_id'         => $currentUser->id,
+            'description'     => 'Generation [ ' . ucwords($generation->name) . ' ] was deleted on [ ' . Carbon::now() . ' ] by ' . $currentUser->username . ' user',
+        ]);
+        $logHistory->save();
         return redirect()
             ->route('generation')
             ->with('200', 'Delete successfully!');

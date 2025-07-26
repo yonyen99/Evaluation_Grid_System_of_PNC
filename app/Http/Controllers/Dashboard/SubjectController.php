@@ -3,8 +3,10 @@
 namespace App\Http\Controllers\Dashboard;
 
 use App\Http\Controllers\Controller;
+use App\Models\LogHistory;
 use Illuminate\Http\Request;
 use App\Models\Subject;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 
 class SubjectController extends Controller
@@ -55,6 +57,15 @@ class SubjectController extends Controller
             return back()->with('error', 'Problem occured while trying to create Subject record into database!');
         }
         DB::commit();
+        $currentUser = auth()->user();
+        $logHistory  = new LogHistory([
+            'log_header'      => 'create role',
+            'permission_slug' => 'view role_history',
+            'username'        => $currentUser->username,
+            'user_id'         => $currentUser->id,
+            'description'     => 'Subject [ ' . ucwords($subject->name) . ' ] was created on [ ' . Carbon::now() . ' ] by ' . $currentUser->username . ' user',
+        ]);
+        $logHistory->save();
         return redirect('subject');
     }
 

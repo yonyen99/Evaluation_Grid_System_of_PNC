@@ -6,9 +6,11 @@ use App\Http\Controllers\Controller;
 use App\Models\Classe;
 use App\Models\ClassSubjectTeacher;
 use App\Models\Generation;
+use App\Models\LogHistory;
 use App\Models\Student;
 use App\Models\Subject;
 use App\Models\Teacher;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class ClassController extends Controller
@@ -64,6 +66,15 @@ class ClassController extends Controller
                 'teacher_id' => $request->teachers[$index],
             ]);
         }
+         $currentUser = auth()->user();
+            $logHistory  = new LogHistory([
+                'log_header'      => 'create role',
+                'permission_slug' => 'view role_history',
+                'username'        => $currentUser->username,
+                'user_id'         => $currentUser->id,
+                'description'     => 'Class [ '.ucwords($class->name).' ] was created on [ '.Carbon::now().' ] by '.$currentUser->username.' user',
+            ]);
+            $logHistory->save();
 
         return redirect()->route('class')->with('success', 'Class created successfully.');
     }
