@@ -28,12 +28,12 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/', [DashboardController::class, 'index'])->name('home');
     Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 
-     // Log History Router [BEGIN]
-        Route::group([
-            'prefix' => 'loghistories',
-        ], function(){
-            Route::get('/', [LogHistoryController::class, 'index'])->name('logHistory-list');
-        });
+    // Log History Router [BEGIN]
+    Route::group([
+        'prefix' => 'loghistories',
+    ], function () {
+        Route::get('/', [LogHistoryController::class, 'index'])->name('logHistory-list');
+    });
     // Log History Router [END]
 
     // System Users Router [BEGIN]
@@ -147,4 +147,10 @@ Route::middleware(['auth'])->group(function () {
 
     Route::get('/evaluations/{evaluation}/scores', [EvaluationController::class, 'enterScores'])->name('evaluations.scores');
     Route::post('/evaluations/{evaluation}/scores', [EvaluationController::class, 'saveScores'])->name('evaluations.scores.save');
+
+    // web.php
+    Route::get('/get-terms/{generationId}', [ClassController::class, 'getTermsByGeneration']);
+    Route::get('/class/{id}/edit', [ClassController::class, 'edit'])->name('class-edit');
+    Route::put('/class/{id}', [ClassController::class, 'update'])->name('class-update');
+    Route::delete('/classes/{id}', [ClassController::class, 'destroy'])->name('classes.destroy');
 });
