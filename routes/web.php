@@ -14,6 +14,9 @@ use App\Http\Controllers\Dashboard\ClassController;
 use App\Http\Controllers\Dashboard\LogHistoryController;
 use App\Http\Controllers\Dashboard\RoleController;
 use App\Http\Controllers\Dashboard\TermController;
+use App\Http\Controllers\EvaluationController;
+use App\Http\Controllers\EvaluationScoreStudentController;
+use App\Http\Controllers\GridTypeController;
 use GuzzleHttp\Middleware;
 
 // Login Routes (Accessible without authentication)
@@ -25,12 +28,12 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/', [DashboardController::class, 'index'])->name('home');
     Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 
-     // Log History Router [BEGIN]
-        Route::group([
-            'prefix' => 'loghistories',
-        ], function(){
-            Route::get('/', [LogHistoryController::class, 'index'])->name('logHistory-list');
-        });
+    // Log History Router [BEGIN]
+    Route::group([
+        'prefix' => 'loghistories',
+    ], function () {
+        Route::get('/', [LogHistoryController::class, 'index'])->name('logHistory-list');
+    });
     // Log History Router [END]
 
     // System Users Router [BEGIN]
@@ -51,12 +54,12 @@ Route::middleware(['auth'])->group(function () {
     Route::group([
         'prefix' => 'roles',
     ], function () {
-        Route::get('/',[RoleController::class, 'index'])->name('role-list')->middleware('permission:view role');
+        Route::get('/', [RoleController::class, 'index'])->name('role-list')->middleware('permission:view role');
         Route::get('/create', [RoleController::class, 'create'])->name('role-add')->middleware('permission:create role');
         Route::post('/create', [RoleController::class, 'store'])->middleware('permission:create role');
         Route::get('{id}/edit', [RoleController::class, 'edit'])->middleware('permission:edit role');
         Route::patch('{id}/edit', [RoleController::class, 'update'])->name('role-update')->Middleware('permission:edit role');
-        Route::delete('{id}',[RoleController::class, 'destroy'])->name('role-delete')->middleware('permission:delete role');
+        Route::delete('{id}', [RoleController::class, 'destroy'])->name('role-delete')->middleware('permission:delete role');
     });
     // Roles & Permissions Router [END]
 
@@ -114,4 +117,40 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/', [TermController::class, 'index'])->name('term.index');         // List all terms grouped by generation
         Route::post('/{term}/add-class', [TermController::class, 'storeClass'])->name('term.class.store');
     });
+
+    Route::get('/grid-types', [GridTypeController::class, 'latest'])->name('grid-types.latest');
+    Route::get('/grid-types/class/{class}', [GridTypeController::class, 'index'])->name('grid-types.index');
+    Route::post('/grid-types/update-score', [GridTypeController::class, 'updateScore'])->name('grid-types.update-score');
+
+    Route::prefix('evaluations')->group(function () {
+        // Show list of evaluations
+        Route::get('/', [EvaluationController::class, 'index'])->name('evaluations.index');
+
+        // Show form to create new evaluation
+        Route::get('/create', [EvaluationController::class, 'create'])->name('evaluations.create');
+
+        // Store new evaluation
+        Route::post('/', [EvaluationController::class, 'store'])->name('evaluations.store');
+
+        // Show single evaluation details (with scores)
+        Route::get('/{evaluation}', [EvaluationController::class, 'show'])->name('evaluations.show');
+
+        // Show form to edit evaluation
+        Route::get('/{evaluation}/edit', [EvaluationController::class, 'edit'])->name('evaluations.edit');
+
+        // Update evaluation
+        Route::put('/{evaluation}', [EvaluationController::class, 'update'])->name('evaluations.update');
+
+        // Delete evaluation
+        Route::delete('/{evaluation}', [EvaluationController::class, 'destroy'])->name('evaluations.destroy');
+    });
+
+    Route::get('/evaluations/{evaluation}/scores', [EvaluationController::class, 'enterScores'])->name('evaluations.scores');
+    Route::post('/evaluations/{evaluation}/scores', [EvaluationController::class, 'saveScores'])->name('evaluations.scores.save');
+
+    // web.php
+    Route::get('/get-terms/{generationId}', [ClassController::class, 'getTermsByGeneration']);
+    Route::get('/class/{id}/edit', [ClassController::class, 'edit'])->name('class-edit');
+    Route::put('/class/{id}', [ClassController::class, 'update'])->name('class-update');
+    Route::delete('/classes/{id}', [ClassController::class, 'destroy'])->name('classes.destroy');
 });

@@ -32,6 +32,16 @@ class Subject extends Model
         'description'
     ];
 
+    public function grids()
+    {
+        return $this->hasMany(SubjectGrid::class);
+    }
+      // ✅ Add this relationship
+    public function subjectGrids()
+    {
+        return $this->hasMany(SubjectGrid::class);
+    }
+
     /**
      * Get all test records from database.
      * @return ObjectRespond [ data: data_result, message: result_message ]

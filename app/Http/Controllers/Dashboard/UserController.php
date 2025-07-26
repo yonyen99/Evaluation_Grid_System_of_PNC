@@ -7,7 +7,6 @@ use App\Models\LogHistory;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
-
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -42,6 +41,7 @@ class UserController extends Controller
             return back()->with('error', $roles->message);
         }
         $roles = $roles->data;
+        
         return view('feature.user.add', compact('roles'));
     }
 
@@ -168,17 +168,6 @@ class UserController extends Controller
             return back()->with('error', $requestValidResult->message);
         }
 
-        // create log history
-        $currentUser = auth()->user();
-        $logHistory  = new LogHistory([
-            'log_header'      => 'edit user',
-            'permission_slug' => 'view system_user_history',
-            'username'        => $currentUser->username,
-            'user_id'         => $currentUser->id,
-            'description'     => 'Username [ ' . ucwords($user->username) . ' ] was edited on [ ' . Carbon::now() . ' ] by ' . $currentUser->username . ' user',
-        ]);
-        $logHistory->save();
-
         // update record
         try {
             DB::beginTransaction();
@@ -200,6 +189,17 @@ class UserController extends Controller
 
             // attach user with new role
             $user->assignRole($role);
+
+            // create log history
+            $currentUser = auth()->user();
+            $logHistory  = new LogHistory([
+                'log_header'      => 'edit user',
+                'permission_slug' => 'view system_user_history',
+                'username'        => $currentUser->username,
+                'user_id'         => $currentUser->id,
+                'description'     => 'Username [ ' . ucwords($user->username) . ' ] was edited on [ ' . Carbon::now() . ' ] by ' . $currentUser->username . ' user',
+            ]);
+            $logHistory->save();
         } catch (QueryException $queryEx) {
             DB::rollBack();
             if ($queryEx->errorInfo[1] == 1062) {
@@ -243,10 +243,9 @@ class UserController extends Controller
                 'permission_slug' => 'view system_user_history',
                 'username'        => $currentUser->username,
                 'user_id'         => $currentUser->id,
-                'description'     => 'Username [ '.ucwords($user->username).' ] with email [ '.strtolower($user->email).' ] was deleted on [ '.Carbon::now().' ] by '.$currentUser->username.' user',
+                'description'     => 'Username [ ' . ucwords($user->username) . ' ] with email [ ' . strtolower($user->email) . ' ] was deleted on [ ' . Carbon::now() . ' ] by ' . $currentUser->username . ' user',
             ]);
             $logHistory->save();
-
         } catch (ModelNotFoundException $e) {
             DB::rollBack();
             return back()->with('error', 'Problem occured while trying to delete user record!');
