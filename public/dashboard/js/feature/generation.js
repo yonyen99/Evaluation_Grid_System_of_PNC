@@ -30,9 +30,7 @@ function addTerms() {
         });
 
         const cardHeader = $('<div>', { class: 'card-header dropstart' });
-        const button = $('<button>', {
-            class: 'btn-term',
-            'data-bs-toggle': 'dropdown',
+        const button = $('<button>', { class: 'btn-term','data-bs-toggle': 'dropdown',
             html: `
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                     class="bi bi-three-dots-vertical" viewBox="0 0 16 16">
@@ -79,9 +77,9 @@ function setupDeleteTermButtons() {
 
     // Use event delegation to handle dynamically added elements
     $(document).on('click', '.btn-delete-term', function () {
-        const termCard = $(this).closest('.term-card');
-        const termIdInput = termCard.find('input[name="term_id[]"]');
-        const termId = termIdInput.val();
+        const termCard = $(this).closest('.term-card'),
+              termIdInput = termCard.find('input[name="term_id[]"]'),
+              termId = termIdInput.val();
 
         if (termId) {
             deletedTermIds.push(termId);
