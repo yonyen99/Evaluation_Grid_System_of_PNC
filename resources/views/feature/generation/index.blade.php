@@ -1,7 +1,7 @@
 @extends('layout.app')
 @section('page_title', 'Generation')
 @section('stylesheet')
-    <link href="{{ asset('dashboard/css/generation.css') }}" rel="stylesheet" />
+    <link href="{{ asset('css/generation.css') }}" rel="stylesheet" />
 @endsection
 
 {{-- BEGIN:: Table Content --}}
