@@ -62,6 +62,16 @@ class SubjectController extends Controller
             }
 
             DB::commit();
+
+            $currentUser = auth()->user();
+            $logHistory  = new LogHistory([
+                'log_header'      => 'create role',
+                'permission_slug' => 'view role_history',
+                'username'        => $currentUser->username,
+                'user_id'         => $currentUser->id,
+                'description'     => 'Subject [ ' . ucwords($subject->name) . ' ] was created on [ ' . Carbon::now() . ' ] by ' . $currentUser->username . ' user',
+            ]);
+            $logHistory->save();
             return redirect('subject')->with('success', 'Subject created successfully.');
         } catch (\Throwable $th) {
             DB::rollBack();
@@ -91,6 +101,16 @@ class SubjectController extends Controller
             return back()->with('error', $subject->message);
         }
         $subject = $subject->data;
+
+        $currentUser = auth()->user();
+        $logHistory  = new LogHistory([
+            'log_header'      => 'create role',
+            'permission_slug' => 'view role_history',
+            'username'        => $currentUser->username,
+            'user_id'         => $currentUser->id,
+            'description'     => 'Subject [ ' . ucwords($subject->name) . ' ] was updated on [ ' . Carbon::now() . ' ] by ' . $currentUser->username . ' user',
+        ]);
+        $logHistory->save();
         return view('feature.Subject.edit', compact('subject'));
     }
 
@@ -156,6 +176,17 @@ class SubjectController extends Controller
             $subject->data->delete();
 
             DB::commit();
+
+            $currentUser = auth()->user();
+            $logHistory  = new LogHistory([
+                'log_header'      => 'create role',
+                'permission_slug' => 'view role_history',
+                'username'        => $currentUser->username,
+                'user_id'         => $currentUser->id,
+                'description' => 'Subject [ ' . ucwords($subject->data->name) . ' ] was deleted on [ ' . Carbon::now() . ' ] by ' . $currentUser->username . ' user',
+            ]);
+            $logHistory->save();
+
             return redirect()->route('subject')->with('success', 'Subject and its grids deleted successfully');
         } catch (\Throwable $th) {
             DB::rollBack();
