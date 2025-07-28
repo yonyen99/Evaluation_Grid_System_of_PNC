@@ -16,56 +16,56 @@
             @can('view generation')
                 <li class="nav-item">
                     <a href="{{ route('generation') }}" class="nav-link text-white hover-active">
-                        <i class="bi bi-arrow-clockwise me-2"></i> Generation
+                        <i class="bi bi-mortarboard-fill me-2"></i> Generation
                     </a>
                 </li>
             @endcan
             @can('view student')
                 <li>
                     <a href="{{ route('student') }}" class="nav-link text-white hover-active">
-                        <i class="bi bi-mortarboard me-2"></i> Student
+                        <i class="bi bi-person-circle   me-2"></i> Student
                     </a>
                 </li>
             @endcan
             @can('view term')
                 <li>
                     <a href="{{ route('term.index') }}" class="nav-link text-white hover-active">
-                        <i class="bi bi-calendar-week me-2"></i> Term
+                        <i class="bi bi-calendar-event me-2"></i> Term
                     </a>
                 </li>
             @endcan
             @can('view grid')
                 <li>
                     <a href="{{ route('grid-types.latest') }}" class="nav-link text-white hover-active">
-                        <i class="bi bi-table me-2"></i> Grid Type
+                        <i class="bi bi-grid me-2"></i> Grid Type
                     </a>
                 </li>
             @endcan
             {{-- @can('view evaluation') --}}
                 <li>
                     <a href="{{ route('evaluations.index') }}" class="nav-link text-white hover-active">
-                        <i class="bi bi-clipboard-data me-2"></i> Evaluation
+                        <i class="bi bi-graph-up me-2"></i> Evaluation
                     </a>
                 </li>
             {{-- @endcan --}}
             @can('view class')
                 <li>
                     <a href="{{ route('class') }}" class="nav-link text-white hover-active">
-                        <i class="bi bi-door-closed me-2"></i> Class
+                        <i class="bi bi-people-fill me-2"></i> Class
                     </a>
                 </li>
             @endcan
             @can('view subject')
                 <li>
                     <a href="{{ route('subject') }}" class="nav-link text-white hover-active">
-                        <i class="bi-journal-bookmark me-2"></i> Subject
+                        <i class="bi bi-book me-2"></i> Subject
                     </a>
                 </li>
             @endcan
             @can('view teacher')
                 <li>
                     <a href="{{ route('teacher') }}" class="nav-link text-white hover-active">
-                        <i class="bi bi-person-badge me-2"></i> Teacher
+                        <i class="bi bi-person-workspace me-2"></i> Teacher
                     </a>
                 </li>
             @endcan
@@ -80,7 +80,7 @@
                         @can('view role')
                             <li>
                                 <a href="{{ route('role-list') }}" class="nav-link text-white hover-active" style="font-size:13px;">
-                                    <i class="bi-shield-lock me-2"></i>Roles
+                                    <i class="bi bi-shield-lock me-2"></i>Roles
                                 </a>
                             </li>
                         @endcan
@@ -94,7 +94,7 @@
                         @can('view loghistory')
                             <li>
                                 <a href="{{ route('logHistory-list') }}" class="nav-link text-white hover-active" style="font-size:13px;">
-                                    <i class="bi bi-clock-history"></i> LogHistory
+                                    <i class="bi bi-journal-text me-2"></i> History
                                 </a>
                             </li>
                         @endcan

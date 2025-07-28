@@ -1,0 +1,112 @@
+/* Title styling */
+.title {
+    color: #0d3b66;
+    font-weight: 600;
+    margin-bottom: 1rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 3px solid #0d3b66;
+    position: relative;
+}
+.title::after {
+    content: "";
+    position: absolute;
+    bottom: -3px;
+    left: 0;
+    width: 60px;
+    height: 3px;
+    background-color: #376aa0;
+    border-radius: 2px;
+}
+
+body {
+    background-color: #f8f9fa;
+}
+
+
+.form-select {
+    min-width: 220px;
+}
+
+.table-responsive {
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.05);
+    border-radius: 8px;
+    overflow: hidden;
+    margin-bottom: 2rem;
+}
+
+table.table {
+    margin-bottom: 0;
+    border-collapse: collapse;
+    background-color: #fff;
+}
+
+thead th {
+    position: sticky;
+    top: 0;
+    background-color: #0d6efd;
+    color: white;
+    z-index: 2;
+    text-align: center;
+    font-weight: 600;
+    font-size: 14px;
+}
+
+tbody td {
+    background-color: #fff;
+    text-align: center;
+    font-size: 15px;
+    vertical-align: middle;
+}
+
+tbody tr:hover {
+    background-color: #f1f1f1;
+}
+
+input.score-input {
+    width: 80px;
+    padding: 0.35rem 0.5rem;
+    text-align: center;
+    font-size: 14px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    transition: all 0.2s ease-in-out;
+}
+
+input.score-input:focus {
+    border-color: #0d6efd;
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(13, 110, 253, 0.2);
+}
+
+.input-disabled-clickable {
+    background-color: #e9ecef;
+    color: #6c757d;
+    cursor: pointer;
+    pointer-events: auto;
+}
+
+.total-score {
+    font-weight: bold;
+    color: #0d6efd;
+}
+
+.nav-tabs .nav-link {
+    padding: 8px 16px;
+    border-radius: 6px 6px 0 0;
+}
+
+.nav-tabs .nav-link.active {
+    background-color: #0d6efd;
+    color: #fff;
+    font-weight: 600;
+}
+
+.nav-tabs {
+    margin-bottom: 20px;
+    border-bottom: 2px solid #dee2e6;
+}
+
+.col-auto label {
+    font-weight: 600;
+    color: #333;
+}
