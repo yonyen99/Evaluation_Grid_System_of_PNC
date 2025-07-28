@@ -40,8 +40,14 @@ class Term extends Model
      * *********************************
      */
 
+    // public function classes()
+    // {
+    //     return $this->belongsToMany(Classe::class, 'add_class_to_terms', 'term_id', 'class_id');
+    // }
     public function classes()
     {
-        return $this->belongsToMany(Classe::class, 'add_class_to_terms', 'term_id', 'class_id');
+        // Important: no need to filter by generation_id here
+        // Because the term_id in classes already points to this term
+        return $this->hasMany(Classe::class);
     }
 }

@@ -11,7 +11,7 @@ class Classe extends Model
 
     protected $table = 'classes';
 
-    protected $fillable = ['name', 'generation_id','term_id'];
+    protected $fillable = ['name', 'generation_id', 'term_id'];
 
     public function generation()
     {
@@ -33,11 +33,12 @@ class Classe extends Model
     {
         return $this->belongsToMany(Term::class, 'add_class_to_terms', 'class_id', 'term_id');
     }
-
+    public function term()
+    {
+        return $this->belongsTo(Term::class);
+    }
     public function subjects()
-{
-    return $this->belongsToMany(Subject::class, 'class_subject_teachers', 'class_id', 'subject_id')->distinct();
-}
-
-    
+    {
+        return $this->belongsToMany(Subject::class, 'class_subject_teachers', 'class_id', 'subject_id')->distinct();
+    }
 }
