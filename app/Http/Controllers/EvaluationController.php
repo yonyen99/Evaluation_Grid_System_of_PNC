@@ -43,6 +43,20 @@ class EvaluationController extends Controller
 
     public function store(Request $request)
     {
+        // Step 0: Check if this evaluation already exists
+        $exists = DB::table('evaluation_grid_types')
+            ->join('evaluations', 'evaluation_grid_types.evaluation_id', '=', 'evaluations.id')
+            ->where('evaluation_grid_types.class_id', $request->class_id)
+            ->where('evaluation_grid_types.subject_grid_id', $request->subject_grid_id)
+            ->where('evaluations.subject_id', $request->subject_id)
+            ->exists();
+
+        if ($exists) {
+            return redirect()->back()->withInput()->withErrors([
+                'duplicate' => 'This evaluation already exists for the selected class and subject'
+            ]);
+        }
+
         // Step 1: Create the Evaluation
         $evaluation = Evaluation::create([
             'class_id' => $request->class_id,
@@ -252,11 +266,41 @@ class EvaluationController extends Controller
     {
         $data = $request->input('scores'); // 2D array: [evaluation_grid_type_id][evaluation_score_id] => score
 
+        // Step 1: Load score definitions
+        $scoreTypes = EvaluationScore::where('evaluation_id', $evaluationId)->get()->keyBy('id');
+
+        $errors = [];
+
+        // Step 2: Loop through submitted scores and validate
+        foreach ($data as $gridTypeId => $scoreItems) {
+            foreach ($scoreItems as $scoreId => $value) {
+                $scoreType = $scoreTypes[$scoreId] ?? null;
+
+                if (!$scoreType) {
+                    $errors[] = "Invalid score type.";
+                    continue;
+                }
+
+                if ($value > $scoreType->point) {
+                    $errors[] = "Score for \"{$scoreType->evaluation_name}\" cannot exceed {$scoreType->point} points.";
+                }
+
+                if ($value < 0) {
+                    $errors[] = "Score for \"{$scoreType->evaluation_name}\" cannot be negative.";
+                }
+            }
+        }
+
+        // Step 3: Redirect back with errors
+        if (count($errors)) {
+            return back()->withErrors($errors)->withInput();
+        }
+
+        // Step 4: Save if no validation errors
         foreach ($data as $gridTypeId => $scoreItems) {
             $total = 0;
 
             foreach ($scoreItems as $scoreId => $value) {
-                // Save individual score
                 EvaluationScoreStudent::updateOrCreate(
                     [
                         'evaluation_grid_type_id' => $gridTypeId,
@@ -267,14 +311,11 @@ class EvaluationController extends Controller
                     ]
                 );
 
-                // Get percentage for this score type
-                $total += $value ; // weighted score
+                $total += $value;
             }
 
-            // Update total in evaluation_grid_types
             EvaluationGridType::where('id', $gridTypeId)->update(['total' => $total]);
 
-            // Get matching record to update total_evaluation in grid_types
             $evaluationGridType = EvaluationGridType::find($gridTypeId);
 
             if ($evaluationGridType) {
@@ -289,6 +330,7 @@ class EvaluationController extends Controller
             }
         }
 
-        return redirect()->route('evaluations.scores', $evaluationId)->with('success', 'Scores updated successfully.');
+        return redirect()->route('evaluations.scores', $evaluationId)
+            ->with('success', 'Scores updated successfully.');
     }
 }
