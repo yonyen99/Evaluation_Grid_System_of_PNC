@@ -3,32 +3,12 @@
 @section('page_title', 'Grid Type Report')
 
 @section('stylesheet')
-    <style>
-        table th,
-        table td {
-            text-align: center;
-            vertical-align: middle;
-            padding: 0.75rem 1rem;
-        }
-
-        input.score-input {
-            width: 80px;
-            padding: 0.25rem 0.5rem;
-            text-align: center;
-            font-size: 1rem;
-            max-width: 100%;
-            box-sizing: border-box;
-        }
-
-        .input-disabled-clickable {
-            cursor: pointer;
-            background-color: #e9ecef;
-        }
-    </style>
+   <link href="{{ asset('css/grid-type.css') }}" rel="stylesheet" />
 @endsection
 
 @section('content')
-    <div class="row">
+<div class="row">
+        <h4 class="title mt-5">Grid Type</h4>
         <div class="col-md-12">
             <h4 class="mb-4 fw-bold">
                 {{ strtoupper(optional($class->term)->name ?? 'NO TERM') }} -

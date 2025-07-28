@@ -8,8 +8,10 @@ use App\Models\EvaluationGridType;
 use App\Models\EvaluationScore;
 use App\Models\EvaluationScoreStudent;
 use App\Models\GridType;
+use App\Models\LogHistory;
 use App\Models\Subject;
 use App\Models\SubjectGrid;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -118,6 +120,16 @@ class EvaluationController extends Controller
             ->where('subject_grid_id', $request->subject_grid_id)
             ->update(['has_evaluation' => true]);
 
+        $currentUser = auth()->user();
+        $logHistory  = new LogHistory([
+            'log_header'      => 'create role',
+            'permission_slug' => 'view role_history',
+            'username'        => $currentUser->username,
+            'user_id'         => $currentUser->id,
+            'description' => 'Evaluation [ ' . ucwords(implode(', ', $names)) . ' ] was created on [ ' . Carbon::now() . ' ] by ' . $currentUser->username . ' user',
+
+        ]);
+        $logHistory->save();
         return redirect()->route('evaluations.index')->with('success', 'Evaluation created successfully.');
     }
 
@@ -233,6 +245,9 @@ class EvaluationController extends Controller
                 'total_evaluation' => 0,
             ]);
         }
+        // Get score names before deleting the evaluation
+        $scoreNames = $evaluation->scores()->pluck('evaluation_name')->toArray();
+
 
         // Delete related evaluation_grid_types first (if needed)
         \App\Models\EvaluationGridType::where('evaluation_id', $evaluation->id)->delete();
@@ -240,6 +255,15 @@ class EvaluationController extends Controller
         // Delete the evaluation
         $evaluation->delete();
 
+        $currentUser = auth()->user();
+        $logHistory  = new LogHistory([
+            'log_header'      => 'create role',
+            'permission_slug' => 'view role_history',
+            'username'        => $currentUser->username,
+            'user_id'         => $currentUser->id,
+            'description'     => 'Evaluation [ ' . ucwords(implode(', ', $scoreNames)) . ' ] was deleted on [ ' . Carbon::now() . ' ] by ' . $currentUser->username . ' user',
+        ]);
+        $logHistory->save();
         return redirect()->route('evaluations.index')->with('success', 'Evaluation and related grid_types updated and deleted.');
     }
 

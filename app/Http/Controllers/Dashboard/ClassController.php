@@ -6,9 +6,11 @@ use App\Http\Controllers\Controller;
 use App\Models\Classe;
 use App\Models\ClassSubjectTeacher;
 use App\Models\Generation;
+use App\Models\LogHistory;
 use App\Models\Student;
 use App\Models\Subject;
 use App\Models\Teacher;
+use Carbon\Carbon;
 use App\Models\Term;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -73,6 +75,15 @@ class ClassController extends Controller
                 'teacher_id' => $request->teachers[$index],
             ]);
         }
+        $currentUser = auth()->user();
+        $logHistory  = new LogHistory([
+            'log_header'      => 'create role',
+            'permission_slug' => 'view role_history',
+            'username'        => $currentUser->username,
+            'user_id'         => $currentUser->id,
+            'description'     => 'Class [ ' . ucwords($class->name) . ' ] was created on [ ' . Carbon::now() . ' ] by ' . $currentUser->username . ' user',
+        ]);
+        $logHistory->save();
 
         return redirect()->route('class')->with('success', 'Class created successfully.');
     }
@@ -86,6 +97,15 @@ class ClassController extends Controller
 
         // Get terms for the class's generation to populate term select
         $terms = Term::where('generation_id', $class->generation_id)->get();
+        $currentUser = auth()->user();
+        $logHistory  = new LogHistory([
+            'log_header'      => 'create role',
+            'permission_slug' => 'view role_history',
+            'username'        => $currentUser->username,
+            'user_id'         => $currentUser->id,
+            'description'     => 'Class [ ' . ucwords($class->name) . ' ] was updated on [ ' . Carbon::now() . ' ] by ' . $currentUser->username . ' user',
+        ]);
+        $logHistory->save();
 
         return view('feature.class.edit', compact('class', 'subjects', 'teachers', 'generations', 'terms'));
     }
@@ -131,6 +151,16 @@ class ClassController extends Controller
         $class->subjectTeachers()->delete();
 
         $class->delete();
+        $currentUser = auth()->user();
+        $logHistory  = new LogHistory([
+            'log_header'      => 'create role',
+            'permission_slug' => 'view role_history',
+            'username'        => $currentUser->username,
+            'user_id'         => $currentUser->id,
+            'description'     => 'Class [ ' . ucwords($class->name) . ' ] was deleted on [ ' . Carbon::now() . ' ] by ' . $currentUser->username . ' user',
+        ]);
+        $logHistory->save();
+
 
         return redirect()->back()->with('success', 'Class deleted successfully!');
     }

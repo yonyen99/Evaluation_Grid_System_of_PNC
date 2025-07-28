@@ -4,9 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Models\Student;
 use App\Models\Generation;
+use App\Models\LogHistory;
 use App\Models\Province;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+
 class StudentController extends Controller
 {
     public function index(Request $request)
@@ -16,7 +19,7 @@ class StudentController extends Controller
         if ($request->filled('search')) {
             $query->where(function ($q) use ($request) {
                 $q->where('first_name', 'like', '%' . $request->search . '%')
-                ->orWhere('last_name', 'like', '%' . $request->search . '%');
+                    ->orWhere('last_name', 'like', '%' . $request->search . '%');
             });
         }
 
@@ -78,6 +81,16 @@ class StudentController extends Controller
             'profile' => $profilePath,
         ]);
 
+        $currentUser = auth()->user();
+        $logHistory  = new LogHistory([
+            'log_header'      => 'create role',
+            'permission_slug' => 'view role_history',
+            'username'        => $currentUser->username,
+            'user_id'         => $currentUser->id,
+            'description'     => 'Student [ ' . ucwords($student->first_name) . ' ] was created on [ ' . Carbon::now() . ' ] by ' . $currentUser->username . ' user',
+        ]);
+        $logHistory->save();
+
         return redirect()->route('student')->with('success', 'Student created successfully.');
     }
 
@@ -95,7 +108,17 @@ class StudentController extends Controller
             return back()->with('error', 'Student not found.');
         }
 
-        return view('feature.students.edit', compact('student','generations'));
+        $currentUser = auth()->user();
+        $logHistory  = new LogHistory([
+            'log_header'      => 'create role',
+            'permission_slug' => 'view role_history',
+            'username'        => $currentUser->username,
+            'user_id'         => $currentUser->id,
+            'description'     => 'Student [ ' . ucwords($student->first_name) . ' ] was updated on [ ' . Carbon::now() . ' ] by ' . $currentUser->username . ' user',
+        ]);
+        $logHistory->save();
+
+        return view('feature.students.edit', compact('student', 'generations'));
     }
 
     /**
@@ -113,7 +136,7 @@ class StudentController extends Controller
             'first_name'   => 'required|string',
             'last_name'    => 'required|string',
             'profile'      => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-            'generation_id'=> 'nullable|integer',
+            'generation_id' => 'nullable|integer',
         ]);
 
         try {
@@ -155,6 +178,15 @@ class StudentController extends Controller
 
             DB::commit();
 
+            $currentUser = auth()->user();
+            $logHistory  = new LogHistory([
+                'log_header'      => 'create role',
+                'permission_slug' => 'view role_history',
+                'username'        => $currentUser->username,
+                'user_id'         => $currentUser->id,
+                'description'     => 'Student [ ' . ucwords($student->first_name) . ' ] was deleted on [ ' . Carbon::now() . ' ] by ' . $currentUser->username . ' user',
+            ]);
+            $logHistory->save();
             return redirect()->route('student')->with('success', 'Student deleted successfully.');
         } catch (\Throwable $e) {
             DB::rollBack();
