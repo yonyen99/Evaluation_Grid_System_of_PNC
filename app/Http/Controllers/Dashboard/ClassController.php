@@ -140,8 +140,20 @@ class ClassController extends Controller
     {
         $class = Classe::with('generation', 'students')->findOrFail($id);
 
-        // Get students who belong to the same generation
-        $students = Student::where('generation_id', $class->generation_id)->get();
+        $termId = $class->term_id;
+
+        // Get IDs of students assigned to any other class in the same term (exclude current class)
+        $assignedStudentIds = DB::table('classe_students')
+            ->join('classes', 'classe_students.class_id', '=', 'classes.id')
+            ->where('classes.term_id', $termId)
+            ->where('classe_students.class_id', '!=', $class->id)
+            ->pluck('student_id')
+            ->toArray();
+
+        // Get students who belong to the same generation AND are NOT assigned to other classes in same term
+        $students = Student::where('generation_id', $class->generation_id)
+            ->whereNotIn('id', $assignedStudentIds)
+            ->get();
 
         return view('feature.class.assign-students', compact('class', 'students'));
     }
@@ -155,16 +167,39 @@ class ClassController extends Controller
             'students.*' => 'exists:students,id',
         ]);
 
-        // Sync the selected students
-        $class->students()->sync($request->students ?? []);
+        $selectedStudentIds = $request->students ?? [];
 
-        // Get class subjects (via class_subject_teachers)
+        // Get the current term ID of this class
+        $termId = $class->term_id;
+
+        // Check if any selected student is already assigned to another class in the same term
+        $conflictedStudents = DB::table('classe_students')
+            ->join('classes', 'classe_students.class_id', '=', 'classes.id')
+            ->whereIn('classe_students.student_id', $selectedStudentIds)
+            ->where('classes.term_id', $termId)
+            ->where('classe_students.class_id', '!=', $class->id) // exclude current class
+            ->select('classe_students.student_id')
+            ->distinct()
+            ->pluck('student_id');
+
+        if ($conflictedStudents->isNotEmpty()) {
+            // Get the names of conflicted students
+            $names = Student::whereIn('id', $conflictedStudents)->pluck('first_name', 'id')->map(function ($name, $id) {
+                return $name;
+            })->implode(', ');
+
+            return back()->withErrors(['students' => "Some students are already assigned to another class in the same term: $names."]);
+        }
+
+        // Sync the selected students
+        $class->students()->sync($selectedStudentIds);
+
+        // Add grid_types as before
         $subjectIds = DB::table('class_subject_teachers')
             ->where('class_id', $class->id)
             ->pluck('subject_id');
 
-        foreach ($request->students ?? [] as $studentId) {
-            // Get classe_student ID (pivot)
+        foreach ($selectedStudentIds as $studentId) {
             $classeStudent = DB::table('classe_students')
                 ->where('class_id', $class->id)
                 ->where('student_id', $studentId)
@@ -174,13 +209,11 @@ class ClassController extends Controller
                 $classeStudentId = $classeStudent->id;
 
                 foreach ($subjectIds as $subjectId) {
-                    // Get subject grids for this subject
                     $subjectGrids = DB::table('subject_grids')
                         ->where('subject_id', $subjectId)
                         ->get();
 
                     foreach ($subjectGrids as $grid) {
-                        // Avoid duplicates
                         $exists = DB::table('grid_types')
                             ->where('student_id', $studentId)
                             ->where('subject_grid_id', $grid->id)

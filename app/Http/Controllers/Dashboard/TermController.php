@@ -10,11 +10,26 @@ use Illuminate\Http\Request;
 
 class TermController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $generations = Generation::with(['terms.classes', 'classes'])->get();
-        return view('feature.term.index', compact('generations'));
+        $selectedGenerationId = $request->input('generation_id');
+
+        // All generations for dropdown options (always all)
+        $allGenerations = Generation::all();
+
+        if ($selectedGenerationId) {
+            // Load only the selected generation with terms and classes
+            $generations = Generation::where('id', $selectedGenerationId)
+                ->with(['terms.classes'])
+                ->get();
+        } else {
+            // Load all generations with terms and classes
+            $generations = Generation::with(['terms.classes'])->get();
+        }
+
+        return view('feature.term.index', compact('generations', 'allGenerations', 'selectedGenerationId'));
     }
+
 
     public function storeClass(Request $request, $termId)
     {
