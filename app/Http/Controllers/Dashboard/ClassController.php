@@ -4,11 +4,14 @@ namespace App\Http\Controllers\Dashboard;
 
 use App\Http\Controllers\Controller;
 use App\Models\Classe;
+use App\Models\ClasseStudent;
 use App\Models\ClassSubjectTeacher;
 use App\Models\Generation;
+use App\Models\GridType;
 use App\Models\LogHistory;
 use App\Models\Student;
 use App\Models\Subject;
+use App\Models\SubjectGrid;
 use App\Models\Teacher;
 use Carbon\Carbon;
 use App\Models\Term;
@@ -124,6 +127,7 @@ class ClassController extends Controller
 
         $class = Classe::findOrFail($id);
 
+        // Update basic class info
         $class->update([
             'name' => $request->name,
             'generation_id' => $request->generation_id,
@@ -133,7 +137,7 @@ class ClassController extends Controller
         // Remove old ClassSubjectTeacher entries
         ClassSubjectTeacher::where('class_id', $class->id)->delete();
 
-        // Insert new ones
+        // Insert new ClassSubjectTeacher entries
         foreach ($request->subjects as $index => $subject_id) {
             ClassSubjectTeacher::create([
                 'class_id' => $class->id,
@@ -142,8 +146,65 @@ class ClassController extends Controller
             ]);
         }
 
+        // --- New code start: sync grid_types for all assigned students and all subjects ---
+
+        // Get all subjects assigned to this class (after update)
+        $subjectIds = $request->subjects;
+
+        // Get all students assigned to this class
+        $assignedStudents = $class->students()->pluck('students.id');
+
+        foreach ($assignedStudents as $studentId) {
+            // Get the classe_student pivot record id
+            $classeStudent = DB::table('classe_students')
+                ->where('class_id', $class->id)
+                ->where('student_id', $studentId)
+                ->first();
+
+            if (!$classeStudent) {
+                continue; // Just safety check
+            }
+
+            $classeStudentId = $classeStudent->id;
+
+            foreach ($subjectIds as $subjectId) {
+                // Get all grids of this subject
+                $subjectGrids = DB::table('subject_grids')
+                    ->where('subject_id', $subjectId)
+                    ->get();
+
+                foreach ($subjectGrids as $grid) {
+                    // Check if grid_type exists
+                    $exists = DB::table('grid_types')
+                        ->where('student_id', $studentId)
+                        ->where('subject_grid_id', $grid->id)
+                        ->where('classe_student_id', $classeStudentId)
+                        ->exists();
+
+                    if (!$exists) {
+                        // Insert missing grid_type
+                        DB::table('grid_types')->insert([
+                            'student_id' => $studentId,
+                            'subject_grid_id' => $grid->id,
+                            'classe_student_id' => $classeStudentId,
+                            'value' => 0,
+                            'class_id' => $class->id,
+                            'subject_id' => $subjectId,
+                            'has_evaluation' => false,
+                            'total_evaluation' => 0,
+                            'created_at' => now(),
+                            'updated_at' => now(),
+                        ]);
+                    }
+                }
+            }
+        }
+
+        // --- New code end ---
+
         return redirect()->route('class')->with('success', 'Class updated successfully.');
     }
+
 
     public function destroy($id)
     {
