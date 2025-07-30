@@ -66,7 +66,12 @@
     background-color: #376aa0;
     border-radius: 2px;
 }
-
+.filter-card {
+    border: none;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    border-radius: 21px;
+    background: linear-gradient(135deg, #fafbfc 0%, #ffffff 100%);
+}
 .btn-filter {
     background-color: #0d3b66;
     border-color: #0d3b66;
@@ -164,4 +169,88 @@
     background-color: #c82333;
     border-color: #bd2130;
     color: #ffffff;
+}
+
+/* Form Create */
+.card-form {
+    background: linear-gradient(145deg, #ffffff 0%, #f1f3f4 100%);
+    padding: 2.5rem;
+    border-radius: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.05),
+        inset 0 1px 0 rgba(255, 255, 255, 0.8);
+    position: relative;
+    overflow: hidden;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    backdrop-filter: blur(10px);
+}
+
+.card-form::after {
+    content: "";
+    position: absolute;
+    top: -50%;
+    right: -50%;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(
+        circle,
+        rgba(13, 59, 102, 0.03) 0%,
+        transparent 70%
+    );
+    pointer-events: none;
+}
+
+
+.card-form .form-control:focus {
+    border-color: #0d3b66;
+    box-shadow: 0 0 0 0.25rem rgba(13, 59, 102, 0.15),
+        0 8px 25px rgba(13, 59, 102, 0.1);
+    background: #ffffff;
+}
+
+.card-form .form-control::placeholder {
+    color: #6c757d;
+    font-style: italic;
+    opacity: 0.7;
+}
+
+/* Premium button styling */
+.card-form .btn {
+    border-radius: 15px;
+    padding: 10px 11px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    font-size: 0.9rem;
+}
+
+.card-form .btn-primary {
+    background: linear-gradient(135deg, #0d3b66 0%, #376aa0 100%);
+    border: none;
+    box-shadow: 0 8px 20px rgba(13, 59, 102, 0.3);
+}
+
+.card-form .btn::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+        90deg,
+        transparent,
+        rgba(255, 255, 255, 0.3),
+        transparent
+    );
+    transition: left 0.6s ease;
+}
+.card-form .term-bg {
+    background-color: #0d3b66;
+}
+.card-form .term-bg span,.term-icon {
+      color: #d0d1d3;
 }

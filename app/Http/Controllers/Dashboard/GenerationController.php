@@ -87,6 +87,20 @@ class GenerationController extends Controller
     /**
      * Display the specified resource.
      */
+    public function show($id)
+    {
+        $generation = Generation::getGenerationById($id);
+        if (!$generation->data) {
+            return back()->with('error', $generation->message);
+        }
+        $generation = $generation->data;
+
+        return view('feature.generation.show', compact('generation'));
+    }
+
+    /**
+     * Display the specified resource.
+     */
     public function edit($id)
     {
         $generation = Generation::getGenerationById($id);

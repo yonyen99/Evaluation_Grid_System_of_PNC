@@ -7,9 +7,26 @@
 {{-- BEGIN:: Table Content --}}
 @section('content')
     <div class="row">
-        <h4 class="title mt-5">Generation List</h4>
+  <!-- Title with full-width border and button aligned right -->
+    <div class="col-md-12 position-relative mt-5 mb-3">
+        <h4 class="title">Generation List</h4>
+        @can('create generation')
+            <a href="{{ route('generation-add') }}"
+            class="btn btn-primary d-flex align-items-center position-absolute"
+            style="top: -2px; right: 20px;">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                    fill="currentColor" class="bi bi-plus-circle-fill me-2"
+                    viewBox="0 0 16 16">
+                    <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M8.5 4.5a.5.5 0 0 0-1 0v3h-3a.5.5 0 0 0 0 1h3v3a.5.5 0 0 0 1 0v-3h3a.5.5 0 0 0 0-1h-3z"/>
+                </svg>
+                New Generattion
+            </a>
+        @endcan
+    </div>
+
+        </div>
         <!-- Filter Form -->
-        <form action="{{ route('generation') }}" method="GET" class="p-3 mt-2">
+        <form action="{{ route('generation') }}" method="GET" class=" filter-card shadow-sm mb-4 p-3 mt-2">
             <div class="row align-items-end">
                 <!-- Filter by Generation -->
                 <div class="col-md-3 mb-3">
@@ -30,19 +47,7 @@
                     <a href="{{ route('generation') }}" class="btn btn-reset w-100">Reset</a>
                 </div>
 
-                <!-- New Generate Button -->
-                <div class="col-md-6 mb-3 d-flex justify-content-end align-items-end">
-                    @can('create generation')
-                        <a href="{{ route('generation-add') }}" class="btn btn-primary d-flex align-items-center">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                                class="bi bi-plus-circle-fill me-2" viewBox="0 0 16 16">
-                                <path
-                                    d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M8.5 4.5a.5.5 0 0 0-1 0v3h-3a.5.5 0 0 0 0 1h3v3a.5.5 0 0 0 1 0v-3h3a.5.5 0 0 0 0-1h-3z" />
-                            </svg>
-                            New Generate
-                        </a>
-                    @endcan
-                </div>
+              
             </div>
         </form>
 
@@ -110,20 +115,7 @@
                                         </td>
                                     </tr>
                                 @empty
-                                    <tr>
-                                        <td colspan="4" class="text-center py-5">
-                                            <div class="d-flex flex-column align-items-center">
-                                                <i class="bi bi-inbox display-1 text-muted mb-3"></i>
-                                                <h5 class="text-muted">No generations found</h5>
-                                                <p class="text-muted mb-3">There are no generation records to display.</p>
-                                                @can('create generation')
-                                                    <a href="{{ route('generation-add') }}" class="btn btn-primary">
-                                                        <i class="bi bi-plus-circle me-2"></i>Create First Generation
-                                                    </a>
-                                                @endcan
-                                            </div>
-                                        </td>
-                                    </tr>
+                                   
                                 @endforelse
                             </tbody>
                         </table>
@@ -133,6 +125,7 @@
         </div>
 
     </div>
+    
 @endsection
 {{-- END:: Table Content --}}
 {{-- Custom Script --}}
