@@ -75,11 +75,7 @@
     transition: all 0.2s ease;
 }
 
-.table tbody tr:hover {
-    background-color: #f8f9fa;
-    transform: translateY(-1px);
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-}
+
 .table tbody .student-id {
     margin-left: -64px;
 }
@@ -167,57 +163,21 @@
     box-shadow: 0 0 0 0.2rem rgba(66, 133, 244, 0.25);
 }
 
-/* .no-image-placeholder {
-    background: linear-gradient(135deg, #f1f3f4 0%, #e8eaed 100%);
-    color: #5f6368;
-    padding: 1rem;
-    border-radius: 50%;
-    width: 70px;
-    height: 70px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin: 0 auto;
-    font-size: 0.85rem;
-    font-weight: 500;
-} */
+/* Form Create */
 
-/* .empty-state {
-    padding: 3rem 2rem;
-    text-align: center;
-    color: #6c757d;
-    background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
-} */
-
-/* .row-number {
-    background: linear-gradient(135deg, #e9ecef 0%, #dee2e6 100%);
-    color: #495057;
-    font-weight: 600;
-    border-radius: 50%;
-    width: 30px;
-    height: 30px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin: 0 auto;
-    font-size: 0.85rem;
-} */
-
-/* Form Style */
 .card-form {
-    background: linear-gradient(145deg, #ffffff 0%, #f1f3f4 100%);
-    padding: 2.5rem;
-    border-radius: 20px;
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.05),
-        inset 0 1px 0 rgba(255, 255, 255, 0.8);
-    position: relative;
-    overflow: hidden;
-    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-    backdrop-filter: blur(10px);
+    background: #fff;
+    border-radius: 16px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+    padding: 2rem;
+    margin-bottom: 2rem;
+    border: 1px solid rgba(0, 0, 0, 0.05);
 }
+ 
 .card-form .btn-primary {
     background: linear-gradient(135deg, #0d3b66 0%, #376aa0 100%);
     border: none;
     box-shadow: 0 8px 20px rgba(13, 59, 102, 0.3);
 }
+
+

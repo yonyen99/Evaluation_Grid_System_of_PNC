@@ -24,7 +24,7 @@
 }
 
 .card-add {
-    background: #4e6688;
+    background: #53884e;
     border-radius: 2px;
     color: #ffff !important;
 }
@@ -173,16 +173,12 @@
 
 /* Form Create */
 .card-form {
-    background: linear-gradient(145deg, #ffffff 0%, #f1f3f4 100%);
-    padding: 2.5rem;
-    border-radius: 20px;
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.05),
-        inset 0 1px 0 rgba(255, 255, 255, 0.8);
-    position: relative;
-    overflow: hidden;
-    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-    backdrop-filter: blur(10px);
+    background: #fff;
+    border-radius: 16px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+    padding: 2rem;
+    margin-bottom: 2rem;
+    border: 1px solid rgba(0, 0, 0, 0.05);
 }
 
 .card-form::after {
@@ -215,7 +211,7 @@
 }
 
 /* Premium button styling */
-.card-form .btn {
+/* .card-form .btn {
     border-radius: 15px;
     padding: 10px 11px;
     font-weight: 600;
@@ -225,7 +221,7 @@
     text-transform: uppercase;
     letter-spacing: 0.5px;
     font-size: 0.9rem;
-}
+} */
 
 .card-form .btn-primary {
     background: linear-gradient(135deg, #0d3b66 0%, #376aa0 100%);

@@ -46,8 +46,6 @@
                     <button type="submit" class="btn btn-primary w-100"> Filter</button>
                     <a href="{{ route('generation') }}" class="btn btn-reset w-100">Reset</a>
                 </div>
-
-              
             </div>
         </form>
 

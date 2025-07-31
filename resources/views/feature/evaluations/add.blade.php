@@ -3,86 +3,75 @@
 @section('page_title', 'Create Evaluation')
 
 @section('stylesheet')
-    <style>
-        .evaluation-inputs {
-            margin-bottom: 10px;
-        }
-
-        .btn-remove-field {
-            margin-left: 5px;
-        }
-
-        .form-section {
-            background: #f8f9fa;
-            padding: 20px;
-            border-radius: 8px;
-            margin-bottom: 20px;
-        }
-
-        label.required::after {
-            content: " *";
-            color: red;
-        }
-    </style>
+   <link href="{{ asset('css/evaluation.css') }}" rel="stylesheet" />
 @endsection
 
+
 @section('content')
-<div class="container">
-    <h2 class="mb-4">Create Evaluation</h2>
-
-    <form action="{{ route('evaluations.store') }}" method="POST" id="evaluationForm">
-        @csrf
-
-        @if ($errors->has('duplicate'))
-            <div class="alert alert-danger">
-                {{ $errors->first('duplicate') }}
-            </div>
-        @endif
-
-        <div class="form-section">
-            <h5>Class Selection</h5>
-
-            <div class="mb-3">
-                <label for="class_id" class="form-label required">Class</label>
-                <select name="class_id" id="class_id" class="form-select" required>
-                    <option value="">-- Choose Class --</option>
-                    @foreach ($classes as $class)
-                        <option value="{{ $class->id }}">
-                            {{ $class->name }} ({{ $class->generation->name ?? '' }})
-                        </option>
-                    @endforeach
-                </select>
-            </div>
-
-            <div class="mb-3" id="subject-section" style="display:none;">
-                <label class="form-label required">Subject</label>
-                <div id="subject-radios"></div>
-            </div>
-
-            <div class="mb-3" id="subject-grids-section" style="display:none;">
-                <label class="form-label required">Subject Grid</label>
-                <div id="subject-grids-radios"></div>
-            </div>
-        </div>
-
-        <div class="form-section">
-            <h5>Evaluation Items</h5>
-
-            <div id="evaluationFields">
-                <div class="evaluation-inputs d-flex align-items-center gap-2">
-                    <input type="text" name="evaluation_names[]" placeholder="Evaluation Name"
-                        class="form-control" required>
-                    <input type="number" step="0.01" min="0" max="100" name="evaluation_points[]"
-                        placeholder="...30 Points" class="form-control" required>
-                    <button type="button" class="btn btn-danger btn-remove-field">Remove</button>
+<div class="row">
+     <div class="col-sm-12 col-md-12 col-xl-12">
+            <input type="hidden" value="0" id="last_number_term">
+             <h3 class="title mt-5">Create Evaluation</h3>
+             <form action="{{ route('evaluations.store') }}" method="POST" id="evaluationForm" class="card-form p-4 mb-6 border border-1 w-100">
+                 @csrf
+         
+                 @if ($errors->has('duplicate'))
+                     <div class="alert alert-danger">
+                         {{ $errors->first('duplicate') }}
+                     </div>
+                 @endif
+         
+                 <div class="form-section">
+                     <h5>Class Selection</h5>
+         
+                     <div class="mb-3">
+                         <label for="class_id" class="form-label required">Class</label>
+                         <select name="class_id" id="class_id" class="form-select" required>
+                             <option value="">Choose Class --</option>
+                             @foreach ($classes as $class)
+                                 <option value="{{ $class->id }}">
+                                     {{ $class->name }} ({{ $class->generation->name ?? '' }})
+                                 </option>
+                             @endforeach
+                         </select>
+                     </div>
+         
+                     <div class="mb-3" id="subject-section" style="display:none;">
+                         <label class="form-label required">Subject</label>
+                         <div id="subject-radios"></div>
+                     </div>
+         
+                     <div class="mb-3" id="subject-grids-section" style="display:none;">
+                         <label class="form-label required">Subject Grid</label>
+                         <div id="subject-grids-radios"></div>
+                     </div>
+                 </div>
+         
+                 <div class="form-section">
+                     <h5>Evaluation Items</h5>
+         
+                     <div id="evaluationFields">
+                         <div class="evaluation-inputs d-flex align-items-center gap-2">
+                             <input type="text" name="evaluation_names[]" placeholder="Evaluation Name"
+                                 class="form-control" required>
+                             <input type="number" step="0.01" min="0" max="100" name="evaluation_points[]"
+                                 placeholder="...30 Points" class="form-control" required>
+                             <button type="button" class="btn btn-danger btn-remove-field">Remove</button>
+                         </div>
+                     </div>
+         
+                     <button type="button" id="addEvaluationField" class="btn btn-outline-secondary mt-2">+ Add More</button>
+                 </div>
+                <div class="d-flex justify-content-between align-items-center mt-5">
+                    {{-- <a href="{{ route('student') }}" class="btn btn-outline-primary border-1 border-primary text-primary"><i class="bi bi-chevron-left me-1"></i>Cancel</a> --}}
+                    <a href="{{ route('evaluations.index') }}" class="btn btn-outline-primary">
+                        <i class="bi bi-chevron-left me-1"></i> Cancel 
+                    </a>
+                    <button type="submit" class="btn btn-primary ms-2"> <i class="bi bi-check-lg me-1"></i>Create Evaluation</button>
                 </div>
-            </div>
-
-            <button type="button" id="addEvaluationField" class="btn btn-outline-secondary mt-2">+ Add More</button>
-        </div>
-
-        <button type="submit" class="btn btn-primary">Create Evaluation</button>
-    </form>
+                 {{-- <button type="submit" class="btn btn-primary">Create Evaluation</button> --}}
+             </form>
+     </div>
 </div>
 @endsection
 

@@ -8,18 +8,26 @@
 
 @section('content')
 <div class="row">
-        <h4 class="title mt-5">Grid Type</h4>
-        <div class="col-md-12">
-            <h4 class="mb-4 fw-bold">
-                {{ strtoupper(optional($class->term)->name ?? 'NO TERM') }} -
-                {{ strtoupper(optional($class->generation)->name ?? 'NO GENERATION') }} FOLLOWUP
-            </h4>
+    <h4 class="title"> Grid Type Management</h4>
+    <div class="col-12">
+        
+        <div class="grid-type-container">
+            <!-- Class Header -->
+            <div class="class-header">
+                <h4>
+                    <i class="bi bi-calendar-check me-2"></i>
+                    {{ strtoupper(optional($class->term)->name ?? 'NO TERM') }} -
+                    {{ strtoupper(optional($class->generation)->name ?? 'NO GENERATION') }} FOLLOWUP
+                </h4>
+            </div>
 
             {{-- Class Filter --}}
-            <form method="GET" class="mb-3">
-                <div class="row g-2 align-items-center">
+            <form method="GET" class="filter-form">
+                <div class="row g-3 align-items-center">
                     <div class="col-auto">
-                        <label for="classSelector" class="col-form-label fw-bold">Select Class:</label>
+                        <label for="classSelector" class="col-form-label">
+                            <i class="bi bi-funnel me-2"></i>Select Class:
+                        </label>
                     </div>
                     <div class="col-auto">
                         <select id="classSelector" class="form-select" onchange="onClassChange(this)">
@@ -31,24 +39,26 @@
                             @endforeach
                         </select>
                     </div>
+                   
                 </div>
             </form>
 
             {{-- Subject Tabs --}}
-            <ul class="nav nav-tabs mb-3" id="subjectTab" role="tablist">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <h5 class="mb-0 text-muted">
+                    <i class="bi bi-book me-2"></i>Subject Evaluation
+                </h5>
+               
+            </div>
+            
+            <ul class="nav nav-tabs" id="subjectTab" role="tablist">
                 @foreach ($subjects as $index => $subject)
                     <li class="nav-item" role="presentation">
-                        {{-- <button class="nav-link {{ $index === 0 ? 'active' : '' }}" id="tab-{{ $subject->id }}"
-                            data-bs-toggle="tab" data-bs-target="#subject-{{ $subject->id }}" type="button" role="tab"
-                            aria-controls="subject-{{ $subject->id }}"
-                            aria-selected="{{ $index === 0 ? 'true' : 'false' }}">
-                            {{ $subject->name }}
-                        </button> --}}
                         <button class="nav-link {{ $index === 0 ? 'active' : '' }}" id="tab-{{ $subject->id }}"
                             data-bs-toggle="tab" data-bs-target="#subject-{{ $subject->id }}" type="button" role="tab"
                             aria-controls="subject-{{ $subject->id }}"
                             aria-selected="{{ $index === 0 ? 'true' : 'false' }}">
-                            {{ $subject->name }}
+                            <i class="bi bi-journal-text me-2"></i>{{ $subject->name }}
                         </button>
                     </li>
                 @endforeach
@@ -59,22 +69,35 @@
                 @foreach ($subjects as $index => $subject)
                     <div class="tab-pane fade {{ $index === 0 ? 'show active' : '' }}" id="subject-{{ $subject->id }}"
                         role="tabpanel" aria-labelledby="tab-{{ $subject->id }}">
+                        
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <h6 class="mb-0 text-muted">
+                                <i class="bi bi-people me-2"></i>Students: {{ count($classeStudents) }}
+                            </h6>
+                           
+                        </div>
+                        
                         <div class="table-responsive">
-                            <table class="table table-bordered">
-                                <thead class="table-light">
+                            <table class="table table-hover">
+                                <thead>
                                     <tr>
-                                        <th>First Name</th>
-                                        <th>Last Name</th>
+                                        <th><i class="bi bi-person me-1"></i>First Name</th>
+                                        <th><i class="bi bi-person me-1"></i>Last Name</th>
                                         @foreach ($subject->subjectGrids as $grid)
-                                            <th>{{ $grid->grid_name }}<br><small>({{ $grid->percentage }}%)</small></th>
+                                            <th>
+                                                <div class="text-center">
+                                                    <div class="fw-bold">{{ $grid->grid_name }}</div>
+                                                    <small class="badge bg-light text-dark">({{ $grid->percentage }}%)</small>
+                                                </div>
+                                            </th>
                                         @endforeach
-                                        <th>Total</th>
+                                        <th><i class="bi bi-calculator me-1"></i>Total Score</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     @foreach ($classeStudents as $cs)
                                         <tr data-student-id="{{ $cs->id }}" data-subject-id="{{ $subject->id }}">
-                                            <td>{{ $cs->student->first_name }}</td>
+                                            <td><i class="bi bi-person-circle me-2 text-primary"></i>{{ $cs->student->first_name }}</td>
                                             <td>{{ $cs->student->last_name }}</td>
 
                                             @php $total = 0; @endphp
@@ -119,7 +142,8 @@
                                                         <input type="number"
                                                             class="form-control score-input input-disabled-clickable"
                                                             value="{{ $scoreValue }}" readonly
-                                                            data-url="{{ $url }}">
+                                                            data-url="{{ $url }}"
+                                                            title="Click to view detailed evaluation">
                                                     @else
                                                         <input type="number" min="0" max="100"
                                                             class="form-control score-input"
@@ -127,22 +151,33 @@
                                                             data-subject-grid-id="{{ $grid->id }}"
                                                             data-subject-id="{{ $subject->id }}"
                                                             data-percentage="{{ $grid->percentage }}"
-                                                            value="{{ $scoreValue }}">
+                                                            value="{{ $scoreValue }}"
+                                                            title="Enter score (0-100)">
                                                     @endif
                                                 </td>
                                             @endforeach
 
-                                            <td class="total-score"><strong>{{ round($total, 2) }}</strong></td>
+                                            <td class="total-score">
+                                                <i class="bi bi-trophy me-1"></i>{{ round($total, 2) }}%
+                                            </td>
                                         </tr>
                                     @endforeach
                                 </tbody>
                             </table>
                         </div>
+                        
+                        @if(count($classeStudents) === 0)
+                            <div class="text-center py-5">
+                                <i class="bi bi-inbox display-1 text-muted"></i>
+                                <p class="text-muted mt-3">No students found for this class.</p>
+                            </div>
+                        @endif
                     </div>
                 @endforeach
             </div>
         </div>
     </div>
+</div>
 @endsection
 
 @section('script')

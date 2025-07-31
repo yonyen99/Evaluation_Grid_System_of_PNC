@@ -8,7 +8,7 @@
 
 @section('content')
 <div class="row">
-     <div class="col-md-12 position-relative mt-5 mb-3">
+    <div class="col-md-12 position-relative mt-5 mb-3">
         <h4 class="title">Student List</h4>
         @can('create student')
             <a href="{{ route('student-add') }}"

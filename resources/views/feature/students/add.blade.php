@@ -110,9 +110,8 @@
         <div class="col-sm-12 col-md-12 col-xl-12">
             <input type="hidden" value="0" id="last_number_term">
             <h3 class="title mt-5">Create Student</h3>
-        </div>
-        
-        <form class="card-form p-3" action="{{ route('student-create') }}" method="POST" enctype="multipart/form-data">
+            
+            <form class="card-form p-4 mb-6 border border-1 w-100" action="{{ route('student-create') }}" method="POST" enctype="multipart/form-data">
             @csrf
                 <div class="row mb-3">
                     <div class="col-md-6">
@@ -140,7 +139,7 @@
                     </div>
                 </div>
 
-                <div class="mb-3">
+                <div class="mb-4">
                     <label class="form-label">Gender</label>
                     <div class="d-flex gap-3">
                         <div class="form-check">
@@ -156,16 +155,16 @@
                     </div>
                 </div>
 
-                <div class="mb-3">
+                <div class="mb-4">
                     <label for="profile" class="form-label">Profile Image</label>
                     <input class="form-control" type="file" name="profile" accept="image/*">
                 </div>
 
-                <div class="row mb-3">
+                <div class="row mb-4">
                     <div class="col-md-6">
                         <label for="province_id" class="form-label">Province</label>
                         <select name="province_id" class="form-select" required>
-                            <option value="">-- Select Province --</option>
+                            <option value="">Select Province</option>
                             @foreach ($provinces as $province)
                                 <option value="{{ $province->id }}"
                                     {{ old('province_id') == $province->id ? 'selected' : '' }}>
@@ -178,7 +177,7 @@
                     <div class="col-md-6">
                         <label for="generation_id" class="form-label">Generation</label>
                         <select name="generation_id" class="form-select" required>
-                            <option value="">-- Select Generation --</option>
+                            <option value="">Select Generation </option>
                             @foreach ($generations as $generation)
                                 <option value="{{ $generation->id }}"
                                     {{ old('generation_id') == $generation->id ? 'selected' : '' }}>
@@ -189,13 +188,14 @@
                     </div>
                 </div>
 
-                <div class="d-flex justify-content-between align-items-center ">
-                    <a href="{{ route('student') }}"
-                        class="btn btn-white border-1 border-primary btn-outline-info text-black">Cancel</a>
-                    <button type="submit" class="btn btn-primary ms-2">Create Student</button>
+                <div class="d-flex justify-content-between align-items-center mt-5">
+                    {{-- <a href="{{ route('student') }}" class="btn btn-outline-primary border-1 border-primary text-primary"><i class="bi bi-chevron-left me-1"></i>Cancel</a> --}}
+                    <a href="{{ route('student') }}" class="btn btn-outline-primary">
+                        <i class="bi bi-chevron-left me-1"></i> Cancel 
+                    </a>
+                    <button type="submit" class="btn btn-primary ms-2"> <i class="bi bi-check-lg me-1"></i>Create Student</button>
                 </div>
             </form>
-            
         </div>
     </div>
 @endsection
