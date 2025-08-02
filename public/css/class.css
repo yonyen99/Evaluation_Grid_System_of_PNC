@@ -1,0 +1,127 @@
+/* Title styling */
+.title {
+    color: #0d3b66;
+    font-weight: 600;
+    margin-bottom: 1rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 3px solid #0d3b66;
+    position: relative;
+}
+.title::after {
+    content: "";
+    position: absolute;
+    bottom: -3px;
+    left: 0;
+    width: 60px;
+    height: 3px;
+    background-color: #376aa0;
+    border-radius: 2px;
+}
+
+/* Filter Styling */
+.filter-card {
+    border: none;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    border-radius: 30px;
+    background: linear-gradient(135deg, #fafbfc 0%, #ffffff 100%);
+}
+.filter-btn {
+    background: linear-gradient(135deg, #4285f4 0%, #1a73e8 100%);
+    border: none;
+    font-weight: 600;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+}
+
+.filter-btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(66, 133, 244, 0.3);
+}
+
+/* Reset Button  */
+.btn-reset {
+    background-color: #6c757d;
+    border-color: #6c757d;
+    color: #ffffff;
+}
+.btn-reset:hover {
+    background-color: #5a6268;
+    border-color: #545b62;
+    color: #ffffff;
+}
+
+
+/* Table list */
+.class-table-card {
+    border: none;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+.class-table-header {
+    background: linear-gradient(#e9ecef);
+    color: black;
+    padding: 1.25rem;
+    border: none;
+}
+
+.class-table-header h5 {
+    margin: 0;
+    font-weight: 600;
+    font-size: 1.1rem;
+}
+
+/* Form Create */
+
+.card-form {
+    background: #fff;
+    border-radius: 16px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+    padding: 2rem;
+    margin-bottom: 2rem;
+    border: 1px solid rgba(0, 0, 0, 0.05);
+}
+.card-form .btn-primary {
+    background: linear-gradient(135deg, #0d3b66 0%, #376aa0 100%);
+    border: none;
+    box-shadow: 0 8px 20px rgba(13, 59, 102, 0.3);
+}
+.card-form .btn-remove {
+    margin-top: 16px;
+}
+
+
+
+/* Assignn Studennt  */
+
+.card-form .btn-primary {
+    background: linear-gradient(135deg, #0d3b66 0%, #376aa0 100%);
+    border: none;
+    box-shadow: 0 8px 20px rgba(13, 59, 102, 0.3);
+}
+
+.card-form .btn-primary:hover {
+    background: linear-gradient(135deg, #376aa0 0%, #0d3b66 100%);
+    box-shadow: 0 12px 30px rgba(13, 59, 102, 0.4);
+}
+.assign-student-btn {
+        background: linear-gradient(135deg, #376aa0 0%, #0d3b66 100%);
+
+}
+.btn-cancel{
+        border: 2px solid #0d3b66;
+    color: #0d3b66;
+    border-radius: 12px;
+    padding: 0.75rem 2rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    transition: all 0.3s ease;
+}
+.btn-cancel:hover {
+    background: #0d3b66;
+    border-color: #0d3b66;
+    color: white;
+    box-shadow: 0 8px 25px rgba(13, 59, 102, 0.2);
+}

@@ -70,11 +70,10 @@
                                 <i class="bi bi-graph-up me-2"></i>
                                 Evaluations
                             </h5>
-                          
                         </div>
-                       
                     </div>
                 </div>
+                
                 <div class="card-body p-0">
                     <div class="table-responsive">
                         <table class="table table-hover evaluation-table mb-0" role="table" aria-label="Evaluations list">

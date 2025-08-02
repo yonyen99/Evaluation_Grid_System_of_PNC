@@ -5,7 +5,9 @@
 @section('stylesheet')
     <link href="{{ asset('dashboard/css/generation.css') }}" rel="stylesheet" />
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <style>
+    <link href="{{ asset('css/class.css') }}" rel="stylesheet" />
+
+    {{-- <style>
         /* Additional custom styles */
         .form-section {
             background-color: #f8f9fa;
@@ -45,11 +47,11 @@
                 margin-top: 10px;
             }
         }
-    </style>
+    </style> --}}
 @endsection
 
 @section('content')
-    <div class="row justify-content-center">
+    {{-- <div class="row justify-content-center">
         <div class="col-md-10 col-lg-8">
             <div class="card shadow-sm mt-5">
                 <div class="card-header bg-primary text-white text-center">
@@ -86,7 +88,6 @@
                                 <label for="term_id" class="form-label">Term <span class="text-danger">*</span></label>
                                 <select name="term_id" id="term_id" class="form-select form-select-lg" required>
                                     <option value="" disabled selected>-- Select Term --</option>
-                                    {{-- Options populated dynamically --}}
                                 </select>
                             </div>
                         </div>
@@ -139,6 +140,94 @@
                     </form>
                 </div>
             </div>
+        </div>
+    </div> --}}
+
+
+    <div class="row d-flex justify-content-center">
+        <div class="col-sm-12 col-md-12 col-xl-12">
+            <input type="hidden" value="0" id="last_number_term">
+            <h3 class="title mt-5">Create Class</h3>
+            <form class="card-form" action="{{ route('class-create') }}" method="POST" novalidate>
+                @csrf
+                <div class="form-section">
+                    <!-- Class Name -->
+                    <div class="mb-4">
+                        <label for="name" class="form-label">Class Name <span class="text-danger">*</span></label>
+                        <input type="text" name="name" class="form-control form-control-lg" id="class_name"
+                            placeholder="Enter class name" required>
+                    </div>
+
+                    <!-- Generation Select -->
+                    <div class="mb-4">
+                        <label for="generation_id" class="form-label">Generation <span class="text-danger">*</span></label>
+                        <select name="generation_id" id="generation_id" class="form-select form-select-lg" required>
+                            <option value="" disabled selected> Select Generation</option>
+                            @foreach ($generations as $generation)
+                                <option value="{{ $generation->id }}">
+                                    {{ $generation->name ?? 'Generation ' . $generation->id }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+
+                    <!-- Term Select -->
+                    <div class="mb-4">
+                        <label for="term_id" class="form-label">Term <span class="text-danger">*</span></label>
+                        <select name="term_id" id="term_id" class="form-select form-select-lg" required>
+                            <option value="" disabled selected>Select Term</option>
+                            {{-- Options populated dynamically --}}
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <h6 class="fw-semibold mb-3">Subjects and Teachers</h6>
+
+                    <div id="subject-teacher-wrapper">
+                        <div class="row subject-teacher-group gx-3">
+                            <div class="col-md-5">
+                                <label class="form-label">Subject</label>
+                                <select name="subjects[]" class="form-select" required>
+                                    @foreach ($subjects as $subject)
+                                        <option value="{{ $subject->id }}">{{ $subject->name }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div class="col-md-5">
+                                <label class="form-label">Teacher</label>
+                                <select name="teachers[]" class="form-select" required>
+                                    @foreach ($teachers as $teacher)
+                                        <option value="{{ $teacher->id }}">
+                                            {{ $teacher->first_name }} {{ $teacher->last_name }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div class="col-md-2 d-flex p-3">
+                                <button type="button" class="btn btn-danger btn-remove w-100"
+                                    title="Remove this subject-teacher pair">
+                                    <i class="bi bi-trash"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Add Button -->
+                    <div class="mb-3 mt-3">
+                        <button type="button" id="add-row" class="btn btn-outline-primary w-100">
+                            <i class="bi bi-plus-circle me-2"></i> Add Another Subject
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Submit Buttons -->
+                <div class="d-flex justify-content-between gap-3">
+                    <a href="{{ route('class') }}" class="btn btn-cancel px-4"> 
+                        <i class="bi bi-chevron-left me-1"></i> Cancel </a>
+                    <button type="submit" class="btn btn-primary px-4"><i class="bi bi-check-lg me-1"></i>Create
+                        Class</button>
+                </div>
+            </form>
         </div>
     </div>
 @endsection

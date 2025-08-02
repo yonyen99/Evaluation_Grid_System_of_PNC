@@ -196,6 +196,7 @@
                     <button type="submit" class="btn btn-primary ms-2"> <i class="bi bi-check-lg me-1"></i>Create Student</button>
                 </div>
             </form>
+            
         </div>
     </div>
 @endsection
