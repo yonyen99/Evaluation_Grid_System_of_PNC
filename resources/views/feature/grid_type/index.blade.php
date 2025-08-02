@@ -8,7 +8,7 @@
 
 @section('content')
 <div class="row">
-    <h4 class="title"> Grid Type Management</h4>
+    <h4 class="title"> Grid Type</h4>
     <div class="col-12">
         
         <div class="grid-type-container">

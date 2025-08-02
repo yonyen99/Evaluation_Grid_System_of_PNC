@@ -164,12 +164,7 @@
                 <div class="empty-state-icon mb-3">
                     <i class="bi bi-clipboard-x text-muted" style="font-size: 4rem;"></i>
                 </div>
-                <h5 class="text-muted mb-2">No Evaluations Found</h5>
-                <p class="text-muted mb-4">Get started by creating your first evaluation.</p>
-                <a href="{{ route('evaluations.create') }}" class="btn btn-primary">
-                    <i class="bi bi-plus-circle me-2"></i>
-                    Create Evaluation
-                </a>
+                <h5 class="text-muted mb-2">No Evaluations Found</h5>               
             </div>
         @endif
     </div>
