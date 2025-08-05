@@ -26,23 +26,26 @@ class Teacher extends Model
      * The attributes that are mass assignable.
      * @var Array
      */
-    protected $fillable = [ 
+    protected $fillable = [
+        'username',
         'first_name',
         'last_name',
+        'profile',
         'email',
         'phone',
-        'profile',
-        'password' 
+        'password'
     ];
 
-    
     /**
      * *********************************
      *      Relationship table
      * *********************************
      */
 
-     
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 
     /**
      * *****************************
@@ -50,49 +53,47 @@ class Teacher extends Model
      * *****************************
      */
 
-        /**
-         * Get all data of teachers from database
-         * @return response
-         */
+    /**
+     * Get all data of teachers from database
+     * @return response
+     */
 
-        public static function getTeachers()
-        {
-            $response = (object)[];
+    public static function getTeachers()
+    {
+        $response = (object)[];
 
-            try {
-                $teachers = self::all();
+        try {
+            $teachers = self::all();
 
-                $response->data = $teachers;
-                $response->message = 'Teacher get successfully!';
-
-            } catch (Exception $e) {
-                $response->data = false;
-                $response->message = 'Teacher have any problem';
-            }
-
-            return $response;
+            $response->data = $teachers;
+            $response->message = 'Teacher get successfully!';
+        } catch (Exception $e) {
+            $response->data = false;
+            $response->message = 'Teacher have any problem';
         }
 
+        return $response;
+    }
 
-        /**
-         * Get data of Teacher by id.
-         * @return response
-         */
 
-        public static function  getTeacherById($id)
-        {
-            $response = (object)[];
+    /**
+     * Get data of Teacher by id.
+     * @return response
+     */
 
-            try {
-                $teacher = self::findOrFail($id);
-                $response->data = $teacher;
-                $response->message = 'teacher get by id successfully!';
+    public static function  getTeacherById($id)
+    {
+        $response = (object)[];
 
-            } catch (ModelNotFoundException $e) {
-                $response->data = false;
-                $response->message = 'teacher not found!';
-            }
-
-            return $response;
+        try {
+            $teacher = self::findOrFail($id);
+            $response->data = $teacher;
+            $response->message = 'teacher get by id successfully!';
+        } catch (ModelNotFoundException $e) {
+            $response->data = false;
+            $response->message = 'teacher not found!';
         }
+
+        return $response;
+    }
 }

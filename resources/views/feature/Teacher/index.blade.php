@@ -40,8 +40,10 @@
                                 <tr>
                                     <th>No</th>
                                     <th>Profile</th>
+                                    <th>Username</th>
                                     <th>First Name</th>
                                     <th>Last Name</th>
+                                    <th>Email</th>
                                     <th>Phone</th>
                                     <th class="text-end">Action</th>
                                 </tr>
@@ -51,11 +53,12 @@
                                     <tr>
                                         <td>{{ $key + 1 }}</td>
                                         <td class="text-center">
-                                            <img src="{{ asset('storage/' . $teacher->profile) }}" class="rounded-circle"
-                                                width="40" height="40" alt="Profile">
+                                            <img src="{{ asset('storage/' . $teacher->profile) }}" class="rounded-circle" width="40" height="40" alt="Profile">
                                         </td>
+                                        <th class="text-center">{{ $teacher->username }}</th>
                                         <td class="text-center">{{ $teacher->first_name }}</td>
                                         <td class="text-center">{{ $teacher->last_name }}</td>
+                                        <td class="text-center">{{ $teacher->email}}</td>
                                         <td class="text-center">{{ $teacher->phone }}</td>
                                         <td class="text-end">
                                             @can('delete teacher')

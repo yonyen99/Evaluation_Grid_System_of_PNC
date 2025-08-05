@@ -65,6 +65,7 @@ class UserController extends Controller
             $request['lastname'],
             $request['email'],
         );
+        
         if (!$requestValidResult->data) {
             return back()->with('error', $requestValidResult->message);
         }
