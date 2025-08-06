@@ -63,7 +63,7 @@
                         <div class="col-md-4"> <!-- preview thumbnail -->
                             <div class="text-center" style="width: 3rem;">
                                 <label for="preview-teacher-profile" class="form-label text-secondary">Profile</label>
-                                <img id="preview-teacher-profile" class="img-fluid rounded border" alt="Show your Gallery">
+                                <img id="preview-teacher-profile" class="img-fluid rounded border" alt="Show your Gallery" >
                             </div>
                         </div>
                     </div>

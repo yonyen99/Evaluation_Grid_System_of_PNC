@@ -42,7 +42,8 @@ class User extends Authenticatable
         'google_id',
         'profile',
         'display',
-        'teacher_id'
+        'teacher_id',
+        'student_id'
     ];
 
     /**

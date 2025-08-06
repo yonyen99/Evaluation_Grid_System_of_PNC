@@ -23,6 +23,7 @@ return new class extends Migration
             $table->string('email')->nullable()->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->integer('teacher_id')->nullable();
+            $table->integer('student_id')->nullable();
             $table->string('display')->nullable();
             $table->string('password');
             $table->rememberToken();

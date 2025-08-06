@@ -17,6 +17,9 @@ class Student extends Model
         'province_id',
         'generation_id',
         'profile',
+        'username',
+        'phone',
+        'password',
     ];
     // Each student belongs to one province
     public function province()

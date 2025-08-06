@@ -60,11 +60,11 @@ class TeacherController extends Controller
         $request->validate([
             'first_name' => 'required|string',
             'last_name'  => 'required|string',
+            'password'   => 'required|string|min:6',
+            'phone'      => 'nullable|string',
             'username'   => 'required|string',
             'email'      => 'required|email|unique:teachers,email',
-            'phone'      => 'nullable|string',
             'profile'    => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
-            'password'   => 'required|string|min:6',
         ]);
 
         try {
