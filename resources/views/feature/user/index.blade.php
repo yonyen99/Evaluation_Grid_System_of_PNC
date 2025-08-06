@@ -20,11 +20,13 @@
                 <thead class="table-light">
                     <tr>
                         <th>ID</th>
+                        <th>Profile</th>
                         <th>Username</th>
                         <th>First Name</th>
                         <th>Last Name</th>
                         <th>Role</th>
                         <th>Email</th>
+                        <th>Phone</th>
                         <th>Register Date</th>
                         <th>Action</th>
                     </tr>
@@ -35,6 +37,10 @@
                     @foreach ($users as $user)
                         <tr>
                             <td>{{ $user->id }}</td>
+                            <td class="text-center">
+                                <img src="{{ asset('storage/' . $user->profile) }}" class="rounded-circle" width="40"
+                                    height="40" alt="Profile">
+                            </td>
                             <td>{{ $user->username }}</td>
                             <td>{{ ucwords($user->firstname) }}</td>
                             <td>{{ ucwords($user->lastname) }}</td>
@@ -42,6 +48,7 @@
                                 {{ $user->roles()->exists() ? ucwords($user->roles()->first()->name) : 'No Role' }}
                             </td>
                             <td>{{ $user->email }}</td>
+                            <td>{{ $user->phone}}</td>
                             <td>{{ $user->created_at }}</td>
                             <td>
                                 <div class="d-flex justify-content-center gap-2">

@@ -6,9 +6,11 @@ use App\Models\Student;
 use App\Models\Generation;
 use App\Models\LogHistory;
 use App\Models\Province;
+use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 
 class StudentController extends Controller
 {
@@ -44,23 +46,33 @@ class StudentController extends Controller
 
     public function create()
     {
+        $roles = User::getRoles();
+        if (!$roles->data) {
+            return back()->with('error', $roles->message);
+        }
+        $roles = $roles->data;
+
         $provinces = Province::all();
         $generations = Generation::all();
-        return view('feature.students.add', compact('provinces', 'generations'));
+        return view('feature.students.add', compact('provinces', 'generations','roles'));
     }
 
     public function store(Request $request)
     {
+        // dd(request()->all());
         // Validate input
-        $validated = $request->validate([
-            'student_id' => 'required|string|unique:students,student_id',
-            'first_name' => 'required|string|max:255',
-            'last_name' => 'required|string|max:255',
-            'gender' => 'required|in:male,female,other',
-            'email' => 'required|email|unique:students,email',
-            'province_id' => 'required|exists:provinces,id',
+        $request->validate([
+            'student_id'    => 'required|string|unique:students,student_id',
+            'first_name'    => 'required|string|max:255',
+            'last_name'     => 'required|string|max:255',
+            'password'      => 'required|string|min:6',
+            'phone'         => 'nullable|string',
+            'username'      => 'required|string',
+            'gender'        => 'required|in:male,female,other',
+            'email'         => 'required|email|unique:students,email',
+            'province_id'   => 'required|exists:provinces,id',
             'generation_id' => 'required|exists:generations,id',
-            'profile' => 'nullable|image|max:2048', // max 2MB
+            'profile'       => 'nullable|image|max:2048', // max 2MB
         ]);
 
         // Handle profile image upload if exists
@@ -69,17 +81,48 @@ class StudentController extends Controller
             $profilePath = $request->file('profile')->store('profiles', 'public');
         }
 
+        $role = User::getRole($request['role']);
+        if (!$role->data) {
+            return back()->with('error', $role->message);
+        }
+        $role = $role->data;
+        // dd(Hash::make($request->password));
+
         // Create student
         $student = Student::create([
-            'student_id' => $validated['student_id'],
-            'first_name' => $validated['first_name'],
-            'last_name' => $validated['last_name'],
-            'gender' => $validated['gender'],
-            'email' => $validated['email'],
-            'province_id' => $validated['province_id'],
-            'generation_id' => $validated['generation_id'],
-            'profile' => $profilePath,
+            'student_id'    => $request->student_id,
+            'first_name'    => $request->first_name,
+            'last_name'     => $request->last_name,
+            'gender'        => $request->gender,
+            'email'         => $request->email,
+            'province_id'   => $request->province_id,
+            'username'      => $request->username,
+            'phone'         => $request->phone,
+            'password'     => Hash::make($request->password),
+            'generation_id' => $request->generation_id,
+            'profile'       => $request->profile,
         ]);
+
+        $student->save();
+        $user = new User([
+            'lastname'          => $request->last_name,
+            'firstname'         => $request->first_name,
+            'email'             => $request->email,
+            'phone'             => $request->phone,
+            'username'          => $request->username,
+            'password'          => Hash::make($request->password),
+            'profile'           => $request->profile,
+            'teacher_id'        => null,
+            'student_id'        => $student->id,
+            'email_verified_at' => Carbon::now()->toDateTimeString(),
+            'display'           => 'student',
+        ]);
+
+        $user->save();
+
+        // attach user with role
+        $user->assignRole($role);
+
 
         $currentUser = auth()->user();
         $logHistory  = new LogHistory([
