@@ -4,7 +4,10 @@ namespace App\Http\Controllers\Dashboard;
 
 use App\Http\Controllers\Controller;
 use App\Models\Generation;
+use App\Models\LogHistory;
 use App\Models\Term;
+use Carbon\Carbon;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -15,15 +18,22 @@ class GenerationController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $generations = Generation::getGenerations();
-        if (!$generations->data) {
-            return back()->with('error', $generations->message);
-        }
-        $generations = $generations->data;
+        $allGenerations = Generation::all(); // for the dropdown
 
-        return view('feature.generation.index', compact('generations'));
+        // Pass filters (from query params)
+        $result = Generation::getGenerations([
+            'generation_id' => $request->input('generation_id'),
+        ]);
+
+        if (!$result->data) {
+            return back()->with('error', $result->message);
+        }
+
+        $generations = $result->data;
+
+        return view('feature.generation.index', compact('generations', 'allGenerations'));
     }
 
     /**
@@ -63,7 +73,30 @@ class GenerationController extends Controller
             return back()->with('error', 'Generation cant add , pls try again!');
         }
         DB::commit();
+        $currentUser = auth()->user();
+        $logHistory  = new LogHistory([
+            'log_header'      => 'create role',
+            'permission_slug' => 'view role_history',
+            'username'        => $currentUser->username,
+            'user_id'         => $currentUser->id,
+            'description'     => 'Generation [ ' . ucwords($generation->name) . ' ] was created on [ ' . Carbon::now() . ' ] by ' . $currentUser->username . ' user',
+        ]);
+        $logHistory->save();
         return redirect()->route('generation');
+    }
+
+    /**
+     * Display the specified resource.
+     */
+    public function show($id)
+    {
+        $generation = Generation::getGenerationById($id);
+        if (!$generation->data) {
+            return back()->with('error', $generation->message);
+        }
+        $generation = $generation->data;
+
+        return view('feature.generation.show', compact('generation'));
     }
 
     /**
@@ -76,6 +109,16 @@ class GenerationController extends Controller
             return back()->with('error', $generation->message);
         }
         $generation = $generation->data;
+
+        $currentUser = auth()->user();
+        $logHistory  = new LogHistory([
+            'log_header'      => 'create role',
+            'permission_slug' => 'view role_history',
+            'username'        => $currentUser->username,
+            'user_id'         => $currentUser->id,
+            'description'     => 'Generation [ ' . ucwords($generation->name) . ' ] was update on [ ' . Carbon::now() . ' ] by ' . $currentUser->username . ' user',
+        ]);
+        $logHistory->save();
 
         return view('feature.generation.edit', compact('generation'));
     }
@@ -154,8 +197,86 @@ class GenerationController extends Controller
             return back()->with('error', 'Something went wrong!');
         }
         DB::commit();
+        $currentUser = auth()->user();
+        $logHistory  = new LogHistory([
+            'log_header'      => 'create role',
+            'permission_slug' => 'view role_history',
+            'username'        => $currentUser->username,
+            'user_id'         => $currentUser->id,
+            'description'     => 'Generation [ ' . ucwords($generation->name) . ' ] was deleted on [ ' . Carbon::now() . ' ] by ' . $currentUser->username . ' user',
+        ]);
+        $logHistory->save();
         return redirect()
             ->route('generation')
             ->with('200', 'Delete successfully!');
+    }
+
+    /**
+     * export generation record 
+     */
+    public function generationExport($id)
+    {
+
+        $generation = Generation::findOrFail($id);
+
+        $headers = [
+            "Content-type" => "text/csv",
+            "Content-Disposition" => "attachment; filename=generation.csv",
+            "Pragma" => "no-cache",
+            "Cache-Control" => "must-revalidate, post-check=0, pre-check=0",
+            "Expires" => "0"
+        ];
+
+        $callback = function () use ($generation) {
+            $handle = fopen('php://output', 'w');
+            fputcsv($handle, ['No', 'id', 'Name', 'Term Name']);
+            foreach ($generation->terms as $key => $term) {
+                fputcsv($handle, [$key + 1, $generation->id, $generation->name, $term->name]);
+            }
+            fclose($handle);
+        };
+
+        return response()->stream($callback, 200, $headers);
+    }
+
+    /**
+     * import csv
+     */
+    public function generationImport(Request $request){
+        $request->validate([
+            'importCsv' => 'required|file|mimes:csv,txt',
+        ]);
+
+        DB::beginTransaction();
+
+        $file = $request->file('importCsv');
+        $data = array_map('str_getcsv', file($file));
+        $header = array_map('trim', $data[0]); // First row = header
+        unset($data[0]); // Remove header
+
+        
+        foreach ($data as $row) {
+            $rowData = array_combine($header, $row); // Map headers to values
+
+            // Example: insert into generations table
+            $generation = Generation::create([
+                'name' => $rowData['Generation']
+            ]);
+            $generation->save();
+
+        // Split terms (delimiter: | )
+        $terms = explode('|', $rowData['Terms']);
+
+        foreach ($terms as $term) {
+            Term::create([
+                'generation_id' => $generation->id,
+                'name' => trim($term),
+            ]);
+        }
+
+        }
+        DB::commit();
+        return back()->with('success', 'CSV imported successfully!');     
+            
     }
 }

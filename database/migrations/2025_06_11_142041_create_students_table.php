@@ -18,6 +18,9 @@ return new class extends Migration
             $table->string('profile')->nullable(); // For image path
             $table->unsignedBigInteger('generation_id')->nullable();
             $table->foreign('generation_id')->references('id')->on('generations')->onDelete('cascade');
+            $table->string('username')->nullable()->unique();
+            $table->integer('phone')->unique()->nullable();
+            $table->string('password');
 
             $table->timestamps();
         });

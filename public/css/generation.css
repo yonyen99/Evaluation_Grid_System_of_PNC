@@ -1,0 +1,252 @@
+.box {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.logo-form {
+    width: 125px;
+    padding: 20px;
+    border: 1px solid #27293d;
+    border-radius: 50%;
+}
+
+.card-title {
+    font-weight: bold !important;
+}
+
+.add {
+    color: #ffff !important;
+}
+.card-body {
+    text-align: center;
+}
+
+.card-add {
+    background: #53884e;
+    border-radius: 2px;
+    color: #ffff !important;
+}
+
+.btn-term {
+    border: none;
+    background: unset;
+}
+
+.btn-term:hover {
+    background: grey;
+    border-radius: 5px;
+}
+
+.btn-submit {
+    color: #121111 !important;
+}
+.form-label {
+    font-size: 14px;
+    color: #686969;
+}
+
+/* Title styling */
+.title {
+    color: #0d3b66;
+    font-weight: 600;
+    margin-bottom: 1rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 3px solid #0d3b66;
+    position: relative;
+}
+.title::after {
+    content: "";
+    position: absolute;
+    bottom: -3px;
+    left: 0;
+    width: 60px;
+    height: 3px;
+    background-color: #376aa0;
+    border-radius: 2px;
+}
+.filter-card {
+    border: none;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    border-radius: 21px;
+    background: linear-gradient(135deg, #fafbfc 0%, #ffffff 100%);
+}
+.btn-filter {
+    background-color: #0d3b66;
+    border-color: #0d3b66;
+    color: #ffffff;
+}
+.btn-filter:hover {
+    background-color: #376aa0;
+    border-color: #376aa0;
+    color: #ffffff;
+}
+
+/* Reset Button  */
+.btn-reset {
+    background-color: #6c757d;
+    border-color: #6c757d;
+    color: #ffffff;
+}
+.btn-reset:hover {
+    background-color: #5a6268;
+    border-color: #545b62;
+    color: #ffffff;
+}
+
+/* Create Generation Button*/
+.btn-new-generate {
+    background-color: #0d3b66;
+    color: #ffffff;
+    border-radius: 5px;
+    padding: 0.375rem 0.75rem; /* Match Bootstrap button padding */
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    transition: background-color 0.3s ease;
+    border: 1px solid #0d3b66; /* Add border to match other buttons */
+    height: calc(1.5em + 0.75rem + 2px); /* Match form control height */
+}
+.btn-new-generate:hover {
+    background-color: #376aa0;
+    color: #ffffff;
+    border-color: #376aa0;
+}
+
+/* Table List */
+.generation-table-card {
+    border: none;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    border-radius: 12px;
+    overflow: hidden;
+}
+.generation-table-header {
+    background: linear-gradient(#e9ecef);
+    color: black;
+    padding: 1.25rem;
+    border: none;
+}
+.generation-table-header h5 {
+    margin: 0;
+    font-weight: 600;
+    font-size: 1.1rem;
+}
+.table th {
+    font-weight: 600;
+    color: #495057;
+    border: none;
+    padding: 0.75rem 0.5rem;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+.table td {
+    border: none;
+    padding: 0.75rem 0.5rem;
+    vertical-align: middle;
+    border-bottom: 1px solid #f1f3f4;
+}
+
+/* Custom action button colors to match design */
+.btn-view {
+    background-color: #0d3b66;
+    border-color: #0d3b66;
+    color: #ffffff;
+}
+.btn-view:hover {
+    background-color: #376aa0;
+    border-color: #376aa0;
+    color: #ffffff;
+}
+
+.btn-delete {
+    background-color: #dc3545;
+    border-color: #dc3545;
+    color: #ffffff;
+}
+.btn-delete:hover {
+    background-color: #c82333;
+    border-color: #bd2130;
+    color: #ffffff;
+}
+
+/* Form Create */
+.card-form {
+    background: #fff;
+    border-radius: 16px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+    padding: 2rem;
+    margin-bottom: 2rem;
+    border: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.card-form::after {
+    content: "";
+    position: absolute;
+    top: -50%;
+    right: -50%;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(
+        circle,
+        rgba(13, 59, 102, 0.03) 0%,
+        transparent 70%
+    );
+    pointer-events: none;
+}
+
+
+.card-form .form-control:focus {
+    border-color: #0d3b66;
+    box-shadow: 0 0 0 0.25rem rgba(13, 59, 102, 0.15),
+        0 8px 25px rgba(13, 59, 102, 0.1);
+    background: #ffffff;
+}
+
+.card-form .form-control::placeholder {
+    color: #6c757d;
+    font-style: italic;
+    opacity: 0.7;
+}
+
+/* Premium button styling */
+/* .card-form .btn {
+    border-radius: 15px;
+    padding: 10px 11px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    font-size: 0.9rem;
+} */
+
+.card-form .btn-primary {
+    background: linear-gradient(135deg, #0d3b66 0%, #376aa0 100%);
+    border: none;
+    box-shadow: 0 8px 20px rgba(13, 59, 102, 0.3);
+}
+
+.card-form .btn::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+        90deg,
+        transparent,
+        rgba(255, 255, 255, 0.3),
+        transparent
+    );
+    transition: left 0.6s ease;
+}
+.card-form .term-bg {
+    background-color: #0d3b66;
+}
+.card-form .term-bg span,.term-icon {
+      color: #d0d1d3;
+}

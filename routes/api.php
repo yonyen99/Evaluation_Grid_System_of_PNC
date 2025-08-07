@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\EvaluationController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -17,3 +18,9 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+Route::prefix('class/{classId}')->group(function () {
+    Route::get('/subjects', [EvaluationController::class, 'getSubjects']);
+    Route::get('/subject/{subjectId}/evaluations', [EvaluationController::class, 'getEvaluations']);
+});
+

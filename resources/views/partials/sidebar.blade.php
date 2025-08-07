@@ -1,44 +1,106 @@
-  <div class="sidebar">
-      <div class="sidebar-wrapper">
-        <div class="d-flex flex-column justify-content-center align-items-center flex-shrink-0 p-3 bg-white">
-            <img src="https://avpn.asia/wp-content/uploads/2024/02/PN-Round-Logo1.png"
-                alt="User"
-                class="rounded-circle bg-secondary mb-3"
-                width="80" height="80">
-        </div>
+<nav class="navbar navbar-light bg-primary d-md-none">
+    <div class="container-fluid">
+        <button class="navbar-toggler text-white" type="button" data-bs-toggle="collapse" data-bs-target="#sidebarMenu">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+    </div>
+</nav>
 
-        <ul class="nav nav-pills flex-column mb-auto">
+<div class="collapse d-md-block sidebar" id="sidebarMenu">
+    <div class="sidebar-wrapper d-flex flex-column justify-content-center align-items-center py-4">
+        <a href="/">
+            <img src="https://avpn.asia/wp-content/uploads/2024/02/PN-Round-Logo1.png" alt="User"
+                class="rounded-circle bg-secondary mb-3" width="80" height="80">
+        </a>
+        <ul class="nav nav-pills flex-column text-center justify-center w-100">
+            @can('view generation')
+                <li class="nav-item">
+                    <a href="{{ route('generation') }}" class="nav-link text-white hover-active">
+                        <i class="bi bi-mortarboard-fill me-2"></i> Generation
+                    </a>
+                </li>
+            @endcan
+            @can('view student')
+                <li>
+                    <a href="{{ route('student') }}" class="nav-link text-white hover-active">
+                        <i class="bi bi-person-circle   me-2"></i> Student
+                    </a>
+                </li>
+            @endcan
+            @can('view term')
+                <li>
+                    <a href="{{ route('term.index') }}" class="nav-link text-white hover-active">
+                        <i class="bi bi-calendar-event me-2"></i> Term
+                    </a>
+                </li>
+            @endcan
+            @can('view grid')
+                <li>
+                    <a href="{{ route('grid-types.latest') }}" class="nav-link text-white hover-active">
+                        <i class="bi bi-grid me-2"></i> Grid Type
+                    </a>
+                </li>
+            @endcan
+            {{-- @can('view evaluation') --}}
+                <li>
+                    <a href="{{ route('evaluations.index') }}" class="nav-link text-white hover-active">
+                        <i class="bi bi-graph-up me-2"></i> Evaluation
+                    </a>
+                </li>
+            {{-- @endcan --}}
+            @can('view class')
+                <li>
+                    <a href="{{ route('class') }}" class="nav-link text-white hover-active">
+                        <i class="bi bi-people-fill me-2"></i> Class
+                    </a>
+                </li>
+            @endcan
+            @can('view subject')
+                <li>
+                    <a href="{{ route('subject') }}" class="nav-link text-white hover-active">
+                        <i class="bi bi-book me-2"></i> Subject
+                    </a>
+                </li>
+            @endcan
+            @can('view teacher')
+                <li>
+                    <a href="{{ route('teacher') }}" class="nav-link text-white hover-active">
+                        <i class="bi bi-person-workspace me-2"></i> Teacher
+                    </a>
+                </li>
+            @endcan
+            <hr class="sidebar-divider d-none d-md-block border-white">
             <li class="nav-item">
-                <a href="{{route('generation')}}" class="nav-link text-dark fs-6 hover-active ">
-                    <i class="bi bi-clock-history me-2"></i> Generation
+                <a class="nav-link" data-bs-toggle="collapse" href="#collapseTwo" role="button" aria-expanded="false"
+                    aria-controls="collapseTwo">
+                    <i class="bi bi-gear-fill"></i> Settings
                 </a>
-            </li>
-            <li>
-                <a href="{{route('student')}}" class="nav-link text-dark fs-6 hover-active">
-                    <i class="bi bi-people me-2"></i> Student
-                </a>
-            </li>
-            <li>
-                <a href="#" class="nav-link text-dark fs-6 hover-active">
-                    <i class="bi bi-calendar3 me-2"></i> Term
-                </a>
-            </li>
-            <li>
-                <a href="#" class="nav-link text-dark fs-6 hover-active">
-                    <i class="bi bi-grid-3x3-gap me-2"></i> Grid
-                </a>
-            </li>
-            <li>
-                <a href="#" class="nav-link text-dark fs-6  hover-active">
-                    <i class="bi bi-door-open me-2"></i> Class
-                </a>
-            </li>
-             <li class="nav-item">
-                <a href="{{route('teacher')}}" class="nav-link text-dark fs-6 hover-active ">
-                    <i class="bi bi-clock-history me-2"></i> Teacher
-                </a>
+                <ul class="list-unstyled collapse" id="collapseTwo" data-bs-parent="#accordionSidebar">
+                    @if (Gate::check('view system_user') || Gate::check('view role'))
+                        @can('view role')
+                            <li>
+                                <a href="{{ route('role-list') }}" class="nav-link text-white hover-active" style="font-size:13px;">
+                                    <i class="bi bi-shield-lock me-2"></i>Roles
+                                </a>
+                            </li>
+                        @endcan
+                        @can('view system_user')
+                            <li>
+                                <a href="{{ route('user-list') }}" class="nav-link text-white hover-active" style="font-size:13px;">
+                                    <i class="bi bi-person"></i> User
+                                </a>
+                            </li>
+                        @endcan
+                        @can('view loghistory')
+                            <li>
+                                <a href="{{ route('logHistory-list') }}" class="nav-link text-white hover-active" style="font-size:13px;">
+                                    <i class="bi bi-journal-text me-2"></i> History
+                                </a>
+                            </li>
+                        @endcan
+                    @endif
+                </ul>
             </li>
         </ul>
-
-      </div>
-  </div>
+    </div>
+</div>

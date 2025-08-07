@@ -17,6 +17,9 @@ class Student extends Model
         'province_id',
         'generation_id',
         'profile',
+        'username',
+        'phone',
+        'password',
     ];
     // Each student belongs to one province
     public function province()
@@ -28,5 +31,13 @@ class Student extends Model
     public function generation()
     {
         return $this->belongsTo(Generation::class);
+    }
+    public function classeStudents()
+    {
+        return $this->hasMany(ClasseStudent::class);
+    }
+    public function user()
+    {
+        return $this->belongsTo(User::class);
     }
 }

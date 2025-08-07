@@ -31,7 +31,7 @@ class Term extends Model
     protected $fillable = [
         'name',
         'generation_id'
-       
+
     ];
 
     /**
@@ -40,65 +40,14 @@ class Term extends Model
      * *********************************
      */
 
-       /**
-         * Many terms to one generation relationship.
-         * @return App\Models\Generation
-         */
-        public function product(){
-            return $this->belongsTo(
-                Generation::class,
-                'product_id',
-            );
-        }
-    /**
-     * *************************
-     *      Modules Function
-     * *************************
-     */
-
-        /**
-         * Get all data of Term from database
-         * @return response
-         */
-
-        public static function getTerms()
-        {
-            $response = (object)[];
-
-            try {
-                $terms = self::all();
-
-                $response->data = $terms;
-                $response->message = 'Term get successfully!';
-
-            } catch (Exception $e) {
-                $response->data = false;
-                $response->message = 'Term have any problem';
-            }
-
-            return $response;
-        }
-
-
-        /**
-         * Get data of term by id.
-         * @return response
-         */
-
-        public static function  getTermById($id)
-        {
-            $response = (object)[];
-
-            try {
-                $term = self::findOrFail($id);
-                $response->data = $term;
-                $response->message = 'Term get by id successfully!';
-
-            } catch (Exception $e) {
-                $response->data = false;
-                $response->message = 'Term not found!';
-            }
-
-            return $response;
-        }
+    // public function classes()
+    // {
+    //     return $this->belongsToMany(Classe::class, 'add_class_to_terms', 'term_id', 'class_id');
+    // }
+    public function classes()
+    {
+        // Important: no need to filter by generation_id here
+        // Because the term_id in classes already points to this term
+        return $this->hasMany(Classe::class);
+    }
 }

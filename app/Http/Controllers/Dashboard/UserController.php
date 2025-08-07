@@ -1,0 +1,257 @@
+<?php
+
+namespace App\Http\Controllers\Dashboard;
+
+use App\Http\Controllers\Controller;
+use App\Models\LogHistory;
+use App\Models\User;
+use Carbon\Carbon;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Database\QueryException;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
+
+class UserController extends Controller
+{
+    /**
+     * Display a listing of the resource.
+     * @return \Illuminate\Http\Response
+     */
+    public function index()
+    {
+        // get record
+        $users = User::getSystemUsers();
+        if (!$users->data) {
+            return view('feature.user.index')->with('error', $users->message);
+        }
+        $users = $users->data;
+        return view('feature.user.index', compact('users'));
+    }
+
+    /**
+     * Show the form for creating a new resource.
+     * @return \Illuminate\Http\Response
+     */
+    public function create()
+    {
+        // get role records
+        $roles = User::getRoles();
+        if (!$roles->data) {
+            return back()->with('error', $roles->message);
+        }
+        $roles = $roles->data;
+        
+        return view('feature.user.add', compact('roles'));
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function store(Request $request)
+    {
+        $role = User::getRole($request['role']);
+        if (!$role->data) {
+            return back()->with('error', $role->message);
+        }
+        $role = $role->data;
+
+        // validat all request
+        $requestValidResult = User::checkReuqestValidation(
+            $request['username'],
+            $request['firstname'],
+            $request['lastname'],
+            $request['email'],
+        );
+        
+        if (!$requestValidResult->data) {
+            return back()->with('error', $requestValidResult->message);
+        }
+
+        // save record
+        try {
+            DB::beginTransaction();
+
+            $user = new User([
+                'email'             => $requestValidResult->email,
+                'username'          => $requestValidResult->username,
+                'lastname'          => $requestValidResult->lastname,
+                'firstname'         => $requestValidResult->firstname,
+                'password'          => Hash::make($request['password']),
+                'email_verified_at' => Carbon::now()->toDateTimeString(),
+            ]);
+            $user->save();
+
+            // attach user with role
+            $user->assignRole($role);
+
+            // create log history
+            $currentUser = auth()->user();
+            $logHistory  = new LogHistory([
+                'log_header'      => 'create user',
+                'permission_slug' => 'view system_user_history',
+                'username'        => $currentUser->username,
+                'user_id'         => $currentUser->id,
+                'description'     => 'Username [ ' . ucwords($user->username) . ' ] with email [ ' . strtolower($user->email) . ' ] was created and assigned as [ ' . strtolower($user->roles()->get()->first()->name) . ' ] on [ ' . Carbon::now() . ' ] by ' . $currentUser->username . ' user',
+            ]);
+            $logHistory->save();
+        } catch (QueryException $queryEx) {
+            DB::rollBack();
+            if ($queryEx->errorInfo[1] == 1062) {
+                $message = 'Username or Email already exist!';
+            } else {
+                $message = 'There is a problem while trying to create user!';
+            }
+            return redirect()->back()->with('error', $message);
+        };
+
+        DB::commit();
+        return redirect()->route('user-list')
+            ->with('success', 'User created successfully!');
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function edit($id)
+    {
+        // get role records
+        $roles = User::getRoles();
+        if (!$roles->data) {
+            return back()->with('error', $roles->message);
+        }
+        $roles = $roles->data;
+
+        // get user record
+        $user = User::getUser($id);
+        if (!$user->data) {
+            return back()->with('error', $user->message);
+        }
+        $user = $user->data;
+
+        return view('feature.User.edit', compact('user', 'roles'));
+    }
+
+    /**
+     * Update the specified resource in storage.
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function update(Request $request, $id)
+    {
+        // get user record
+        $user = User::getUser($id);
+        if (!$user->data) {
+            return back()->with('error', $user->message);
+        }
+        $user = $user->data;
+
+        // get role record
+        $role = User::getRole($request['role']);
+        if (!$role->data) {
+            return back()->with('error', $role->message);
+        }
+        $role = $role->data;
+
+        // validat all request
+        $requestValidResult = User::checkReuqestValidation(
+            $request['username'],
+            $request['firstname'],
+            $request['lastname'],
+            $request['email'],
+        );
+        if (!$requestValidResult->data) {
+            return back()->with('error', $requestValidResult->message);
+        }
+
+        // update record
+        try {
+            DB::beginTransaction();
+
+            $user->username     = $requestValidResult->username;
+            $user->firstname    = $requestValidResult->firstname;
+            $user->lastname     = $requestValidResult->lastname;
+            $user->email        = $requestValidResult->email;
+
+            // password reset option
+            if ($request['password'] != null) {
+                $user->password = Hash::make($request['password']);
+            }
+
+            $user->update();
+
+            // detach user with old role
+            $user->removeRole($user->roles->first()->name);
+
+            // attach user with new role
+            $user->assignRole($role);
+
+            // create log history
+            $currentUser = auth()->user();
+            $logHistory  = new LogHistory([
+                'log_header'      => 'edit user',
+                'permission_slug' => 'view system_user_history',
+                'username'        => $currentUser->username,
+                'user_id'         => $currentUser->id,
+                'description'     => 'Username [ ' . ucwords($user->username) . ' ] was edited on [ ' . Carbon::now() . ' ] by ' . $currentUser->username . ' user',
+            ]);
+            $logHistory->save();
+        } catch (QueryException $queryEx) {
+            DB::rollBack();
+            if ($queryEx->errorInfo[1] == 1062) {
+                $message = 'Username or Email already exist!';
+            } else {
+                $message = 'There is a problem while trying to create user!';
+            }
+            return redirect()->back()->with('error', $message);
+        }
+
+        DB::commit();
+        return redirect()->route('user-list')
+            ->with('success', 'User updated successfully');
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy($id)
+    {
+        // get user record
+        $user = User::getUser($id);
+        if (!$user->data) {
+            return back()->with('error', $user->message);
+        }
+        $user = $user->data;
+
+        // delete record
+        try {
+            DB::beginTransaction();
+            $user->roles()->detach();
+            $user->permissions()->detach();
+            $user->delete();
+
+            // create log history
+            $currentUser = auth()->user();
+            $logHistory  = new LogHistory([
+                'log_header'      => 'delete user',
+                'permission_slug' => 'view system_user_history',
+                'username'        => $currentUser->username,
+                'user_id'         => $currentUser->id,
+                'description'     => 'Username [ ' . ucwords($user->username) . ' ] with email [ ' . strtolower($user->email) . ' ] was deleted on [ ' . Carbon::now() . ' ] by ' . $currentUser->username . ' user',
+            ]);
+            $logHistory->save();
+        } catch (ModelNotFoundException $e) {
+            DB::rollBack();
+            return back()->with('error', 'Problem occured while trying to delete user record!');
+        }
+        DB::commit();
+        return redirect()->route('user-list')->with('success', 'User delete successfully');
+    }
+}
