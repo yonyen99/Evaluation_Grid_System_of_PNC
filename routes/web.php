@@ -71,6 +71,8 @@ Route::middleware(['auth'])->group(function () {
         Route::get('{id}/edit', [GenerationController::class, 'edit'])->name('generation-edit'); // show form update
         Route::patch('{id}/edit', [GenerationController::class, 'update'])->name('generation-update'); // update data to database
         Route::delete('{id}', [GenerationController::class, 'destroy'])->name('generation-delete'); // delete data
+        Route::get('{id}/downloadCsv', [GenerationController::class, 'generationExport'])->name('downloadCsv');
+        Route::post('/import', [GenerationController::class, 'generationImport'])->name('importCsv');
     });
 
     // student 

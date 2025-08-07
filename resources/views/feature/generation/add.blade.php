@@ -11,7 +11,6 @@
         <div class="col-sm-12 col-md-12 col-xl-12">
             <input type="hidden" value="0" id="last_number_term">
             <h3 class="title  mt-5">Create Generation</h3>
-            
             {{-- Display validation errors --}}
             @if ($errors->any())
                 <div class="alert alert-danger">
