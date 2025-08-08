@@ -2,7 +2,36 @@
 @section('page_title', 'Subject')
 @section('stylesheet')
     <link href="{{ asset('css/subject.css') }}" rel="stylesheet" />
-@endsection
+  <style>
+        .table-responsive {
+            overflow: visible !important;
+        }
+
+        /* Make menu items feel clickable */
+        .dropdown-menu .dropdown-item {
+            transition: background-color 0.15s ease, color 0.15s ease;
+            padding: 8px 14px;
+            font-size: 14px;
+            border-radius: 6px;
+        }
+
+        /* Hover effect */
+        .dropdown-menu .dropdown-item:hover {
+            background-color: #f1f3f5;
+        }
+
+        /* Soft shadow for modern look */
+        .dropdown-menu {
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+        }
+
+        /* Delete action more obvious */
+        .dropdown-menu .dropdown-item.text-danger:hover {
+            background-color: #ffe5e5;
+            color: #dc3545 !important;
+        }
+    </style>
+    @endsection
 {{-- BEGIN:: Table Content --}}
 @section('content')
     {{-- <div class="row">
@@ -130,7 +159,7 @@
 
                 <div class="card-body p-0">
                     <div class="table-responsive">
-                        <table class="table table-hover evaluation-table mb-0" role="table"  id="">
+                        <table class="table table-hover evaluation-table mb-0" role="table" id="">
                             <thead class="table-header-enhanced">
                                 <tr role="row">
                                     <th class="text-center">No</th>
@@ -143,7 +172,7 @@
                                     <tr class="subject-row">
                                         <td class="text-center">{{ $key + 1 }}</td>
                                         <td class="text-center">{{ $subject->name }}</td>
-                                        <td class="text-center">
+                                        {{-- <td class="text-center">
                                             <div class="d-flex justify-content-center gap-2">
                                                 @can('edit subject')
                                                     <a href="{{ url("subject/$subject->id/edit") }}"
@@ -162,8 +191,47 @@
                                                     </form>
                                                 @endcan
                                             </div>
-                                        </td>
+                                        </td> --}}
+                                        <td class="py-3 d-flex justify-content-center align-items-center">
+                                            <div class="dropdown d-flex justify-content-center gap-2">
+                                                <button
+                                                    class="btn btn-sm btn-light rounded-circle d-flex align-items-center "
+                                                    id="actionsDropdown{{ $subject->id }}" data-bs-toggle="dropdown"
+                                                    aria-expanded="false" style="width: 36px; height: 36px;">
+                                                    <i class="text-center bi bi-three-dots-vertical fs-5"></i>
+                                                </button>
+                                                <ul class="dropdown-menu dropdown-menu-end shadow-lg border-0 rounded-3 py-3"
+                                                    aria-labelledby="actionsDropdown{{ $subject->id }}"
+                                                    style="min-width: 160px;">
 
+                                                    @can('edit subject')
+                                                        <li>
+                                                            <a href="{{ url("subject/$subject->id/edit") }}"
+                                                                class="btn btn-sm btn-primary dropdown-item d-flex align-items-center gap-2"
+                                                                title="Edit">
+                                                                <i class="bi bi-pencil-square text-warning"></i>
+                                                                Edit
+                                                            </a>
+                                                        </li>
+                                                    @endcan
+
+                                                    @can('delete subject')
+                                                        <form action="{{ route('subject-delete', $subject->id) }}"
+                                                            method="POST" class="d-inline delete-form">
+                                                            @csrf
+                                                            @method('DELETE')
+                                                            <button type="submit" class="btn btn-sm btn-danger dropdown-item d-flex align-items-center gap-2 text-danger" title="Delete">
+                                                                <i class="bi bi-trash-fill"></i>
+                                                                Delete
+                                                            </button>
+                                                        </form>
+                                                    @endcan
+
+
+                                                </ul>
+
+
+                                            </div>
                                         </td>
                                     </tr>
                                 @endforeach

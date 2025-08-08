@@ -14,16 +14,7 @@ body {
     position: relative;
     letter-spacing: -0.5px;
 }
-.title::after {
-    content: "";
-    position: absolute;
-    bottom: -3px;
-    left: 0;
-    width: 80px;
-    height: 3px;
-    background: linear-gradient(90deg, #0d3b66, #376aa0);
-    border-radius: 2px;
-}
+
 
 /* Enhanced card styling */
 .grid-type-container {

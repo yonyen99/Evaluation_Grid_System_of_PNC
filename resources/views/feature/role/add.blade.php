@@ -92,11 +92,23 @@
             </div>
 
             {{-- Buttons --}}
-            <div class="row mt-4">
+            {{-- <div class="row mt-4">
                 <div class="col-md-6">
                     <input type="submit" class="btn btn-outline-info me-2" value="Register">
                     <button type="reset" id="role-reset-btn" class="btn btn-outline-danger">Reset</button>
                 </div>
+            </div> --}}
+
+            <div class="form-section d-flex justify-content-between mb-3 mt-3">
+                <a href="{{ route('role-list') }}" class="btn btn-outline-primary">
+                    <i class="bi bi-chevron-left me-1"></i> Cancel
+                </a>
+                <div>
+                    <button type="reset" id="role-reset-btn" class="btn btn-outline-danger">Reset</button>
+                    <input type="submit" class="btn btn-outline-info me-2" value="Register">
+
+                </div>
+
             </div>
         </form>
     </div>

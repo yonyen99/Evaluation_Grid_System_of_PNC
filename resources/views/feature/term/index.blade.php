@@ -3,7 +3,8 @@
 @section('page_title', 'Class List by Term')
 @section('stylesheet')
     <link href="{{ asset('css/term.css') }}" rel="stylesheet" />
-@endsection 
+
+@endsection
 
 @section('content')
     <div class="row">
@@ -36,7 +37,7 @@
                 </span>
                 <span class="badge bg-success">
                     <i class="bi bi-calendar-check me-1"></i>
-                    {{ $generations->sum(function($g) { return $g->terms->count(); }) }} Term
+                    {{ $generations->sum(function ($g) {return $g->terms->count();}) }} Term
                 </span>
             </div>
         </div>
@@ -50,18 +51,19 @@
                             <label for="generation_id" class="form-label">
                                 <i class="bi bi-funnel me-2"></i>Filter by Generation
                             </label>
-                            <select name="generation_id" id="generation_id" class="form-select" onchange="this.form.submit()">
+                            <select name="generation_id" id="generation_id" class="form-select"
+                                onchange="this.form.submit()">
                                 <option value="">All Generations</option>
                                 @foreach ($allGenerations as $gen)
                                     <option value="{{ $gen->id }}"
                                         {{ isset($selectedGenerationId) && $selectedGenerationId == $gen->id ? 'selected' : '' }}>
-                                         {{ $gen->name }}
+                                        {{ $gen->name }}
                                     </option>
                                 @endforeach
                             </select>
                         </div>
                         <div class="col-md-4 mb-2">
-                            @if(isset($selectedGenerationId) && $selectedGenerationId)
+                            @if (isset($selectedGenerationId) && $selectedGenerationId)
                                 <a href="{{ route('term.index') }}" class="btn btn-outline-secondary">
                                     <i class="bi bi-x-circle me-1"></i>Clear Filter
                                 </a>
@@ -75,12 +77,12 @@
         <!-- Content Area -->
         <div class="row">
             <div class="col-12">
-                @if($generations->count() > 0)
+                @if ($generations->count() > 0)
                     @foreach ($generations as $generation)
                         <div class="generation-card">
                             <h4 class="generation-title">{{ $generation->name }}</h4>
-                            
-                            @if($generation->terms->count() > 0)
+
+                            @if ($generation->terms->count() > 0)
                                 @foreach ($generation->terms as $term)
                                     <div class="term-section">
                                         <h5 class="term-title">{{ $term->name }}</h5>
@@ -128,18 +130,22 @@
                                                                 </td> --}}
                                                                 <td class="text-center py-3">
                                                                     <div class="d-flex justify-content-center gap-1">
-                                                                        <a href="#" class="btn btn-sm btn-view" title="View" data-bs-toggle="tooltip">
-                                                                            <i class="bi bi-eye-fill"></i>   
+                                                                        <a href="#" class="btn btn-sm btn-view"
+                                                                            title="View" data-bs-toggle="tooltip">
+                                                                            <i class="bi bi-eye-fill"></i>
                                                                         </a>
 
                                                                         @can('edit generation')
-                                                                            <a href="{{ route('class-edit', $class->id) }}" 
-                                                                                class="btn btn-sm btn-primary" title="Edit" data-bs-toggle="tooltip">
+                                                                            <a href="{{ route('class-edit', $class->id) }}"
+                                                                                class="btn btn-sm btn-primary" title="Edit"
+                                                                                data-bs-toggle="tooltip">
                                                                                 <i class="bi bi-pencil-square"></i>
                                                                             </a>
                                                                         @endcan
                                                                     </div>
                                                                 </td>
+
+                                                           
                                                             </tr>
                                                         @endforeach
                                                     </tbody>
@@ -154,10 +160,11 @@
                                                 <p class="text-muted mb-3">
                                                     Start building your academic structure by adding classes.
                                                 </p>
-                                                <a href="{{ route('class') }}" class="add-class-btn btn btn-outline-primary">
+                                                <a href="{{ route('class') }}"
+                                                    class="add-class-btn btn btn-outline-primary">
                                                     <i class="bi bi-plus-circle me-1"></i>Add Classes
                                                 </a>
-                                                
+
                                             </div>
                                         @endif
                                     </div>
@@ -181,7 +188,7 @@
                             <span class="icon">🎓</span>
                             <h5 class="mb-3">No Generations Found</h5>
                             <p class="text-muted mb-4">
-                                It looks like you haven't created any generations yet. 
+                                It looks like you haven't created any generations yet.
                                 Start by creating a generation to organize your academic terms and classes.
                             </p>
                             <div class="d-flex justify-content-center gap-2">

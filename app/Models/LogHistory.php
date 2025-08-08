@@ -126,6 +126,16 @@ class LogHistory extends Model
     public static function getLogHistoryBaseOnPagination()
     {
         $respond = (object)[];
+        // Get IDs of records to delete (everything except latest 20)
+        $logHistories = LogHistory::orderBy('created_at', 'desc')
+            ->skip(900) // skip the first 20 (latest)
+            ->take(PHP_INT_MAX) // take the rest
+            ->pluck('id');
+        // Delete them in bulk
+        if ($logHistories->isNotEmpty()) {
+            LogHistory::destroy($logHistories);
+        }
+
         // get records
         $logHistories = LogHistory::getLogHistories();
         if (!$logHistories->data) {

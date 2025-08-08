@@ -4,6 +4,21 @@
 
 @section('stylesheet')
     <link href="{{ asset('css/class.css') }}" rel="stylesheet" />
+<<<<<<< HEAD
+=======
+
+    {{-- <style>
+    /* Optional: smooth button spacing */
+    .action-btns > * {
+        margin-right: 0.375rem;
+    }
+    .action-btns > *:last-child {
+        margin-right: 0;
+    }
+</style> --}}
+
+
+>>>>>>> e60fe47794b3b8fac55976f674851d8a613328f7
 @endsection
 
 
@@ -97,7 +112,7 @@
                                                 <span class="text-muted">No term</span>
                                             @endif
                                         </td>
-                                        <td>
+                                        {{-- <td>
                                             <div class="d-flex gap-2 justify-content-center action-btns">
                                                 <a href="{{ route('class-student-form', $class->id) }}"
                                                     class="btn btn-sm btn-success assign-student-btn"
@@ -122,7 +137,60 @@
                                                     </form>
                                                 @endcan
                                             </div>
+                                        </td> --}}
+                                        <td class="py-3 d-flex justify-content-center align-items-center">
+                                            <div class="dropdown d-flex gap-3 justify-content-center action-btns">
+                                                <button
+                                                    class="btn btn-sm btn-light rounded-circle d-flex align-items-center "
+                                                    id="actionsDropdown{{ $class->id }}" data-bs-toggle="dropdown"
+                                                    aria-expanded="false" style="width: 36px; height: 36px;">
+                                                    <i class="text-center bi bi-three-dots-vertical fs-5"></i>
+                                                </button>
+
+                                                <ul class="dropdown-menu dropdown-menu-end shadow-lg border-0 rounded-3 py-3"
+                                                    aria-labelledby="actionsDropdown{{ $class->id }}"
+                                                    style="min-width: 160px;">
+                                                    <li>
+                                                        <a href="{{ route('class-student-form', $class->id) }}"
+                                                            class="btn btn-sm btn-success assign-student-btn dropdown-item d-flex align-items-center gap-2"
+                                                            title="Assign Students">
+                                                            <i class="bi bi-person-plus-fill text-primary"></i> Add Students
+                                                        </a>
+                                                    </li>
+
+                                                    @can('edit class')
+                                                        <li>
+                                                            <a href="{{ route('class-edit', $class->id) }}"
+                                                                class="btn btn-sm btn-primary dropdown-item d-flex align-items-center gap-2"
+                                                                title="Edit">
+                                                                <i class="bi bi-pencil-square text-warning"></i>
+                                                                Edit
+                                                            </a>
+                                                        </li>
+                                                    @endcan
+
+                                                    @can('delete class')
+                                                        <form action="{{ route('classes.destroy', $class->id) }}"
+                                                            method="POST"
+                                                            onsubmit="return confirm('Are you sure you want to delete this class?');"
+                                                            style="display:inline-block;">
+                                                            @csrf
+                                                            @method('DELETE')
+                                                            <button type="submit"
+                                                                class="btn btn-sm btn-danger dropdown-item d-flex align-items-center gap-2 text-danger"
+                                                                title="Delete">
+                                                                <i class="bi bi-trash-fill"></i>
+                                                                Delete
+                                                            </button>
+                                                            </button>
+                                                        </form>
+                                                    @endcan
+
+                                                </ul>
+
+                                            </div>
                                         </td>
+
                                     </tr>
                                 @empty
                                     <tr>
