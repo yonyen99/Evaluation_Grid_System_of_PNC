@@ -4,11 +4,6 @@
 
 @section('stylesheet')
     <link href="{{ asset('css/evaluation.css') }}" rel="stylesheet" />
-    <style>
-        .table-responsive {
-            overflow: visible !important;
-        }
-    </style>
 @endsection
 
 @section('content')
@@ -101,10 +96,10 @@
                                     </tr>
                                 </thead>
                                 <tbody role="rowgroup">
-                                    @foreach ($evaluations as $eval)
+                                    @foreach ($evaluations as $index => $eval)
                                         <tr class="evaluation-row" role="row">
                                             <td class="text-center" role="gridcell">
-                                                <span class="evaluation-id-badge">{{ $eval->id }}</span>
+                                                <span class="evaluation-id-badge">{{ $index + 1 }}</span>
                                             </td>
                                             <td role="gridcell">
                                                 <div class="class-info">
@@ -127,67 +122,24 @@
                                                     @endif
                                                 </div>
                                             </td>
-                                            {{-- <td role="gridcell">
-                                            <div class="action-buttons d-flex gap-2 justify-content-center">
-                                                <a href="{{ route('evaluations.scores', $eval->id) }}" 
-                                                   class="btn btn-primary btn-sm action-btn" 
-                                                   data-bs-toggle="tooltip" 
-                                                   title="Enter Scores">
-                                                    <i class="bi bi-pencil-square"></i>
-                                                    <span class="btn-text">Scores</span>
-                                                </a>
-                                                <form action="{{ route('evaluations.destroy', $eval->id) }}" 
-                                                      method="POST" 
-                                                      class="d-inline" 
-                                                      onsubmit="return confirmDelete(this)">
-                                                    @csrf
-                                                    @method('DELETE')
-                                                    <button type="submit" 
-                                                            class="btn btn-danger btn-sm action-btn"
-                                                            data-bs-toggle="tooltip" 
-                                                            title="Delete Evaluation">
-                                                        <i class="bi bi-trash3"></i>
-                                                    </button>
-                                                </form>
-                                            </div>
-                                        </td> --}}
-                                            <td role="gridcell"
-                                                class="py-3 d-flex justify-content-center align-items-center">
-
-                                                <div class="dropdown action-buttons d-flex gap-2 justify-content-center">
-                                                    <button
-                                                        class="btn btn-sm btn-light rounded-circle d-flex align-items-center "
-                                                        id="actionsDropdown{{ $eval->id }}" data-bs-toggle="dropdown"
-                                                        aria-expanded="false" style="width: 36px; height: 36px;">
-                                                        <i class="text-center bi bi-three-dots-vertical fs-5"></i>
-                                                    </button>
-
-                                                    <ul class="dropdown-menu dropdown-menu-end shadow-lg border-0 rounded-3 py-2"
-                                                        aria-labelledby="actionsDropdown{{ $eval->id }}"
-                                                        style="min-width: 160px;">
-                                                        <li>
-                                                            <a href="{{ route('evaluations.scores', $eval->id) }}"
-                                                                class="btn btn-primary btn-sm action-btn dropdown-item d-flex align-items-center gap-2"
-                                                                data-bs-toggle="tooltip" title="Enter Scores">
-                                                                <i class="bi bi-pencil-square text-primary"></i>
-                                                                <span class="btn-text">Scores</span>
-                                                            </a>
-                                                        </li>
-                                                        <form action="{{ route('evaluations.destroy', $eval->id) }}"
-                                                            method="POST" class="d-inline"
-                                                            onsubmit="return confirmDelete(this)">
-                                                            @csrf
-                                                            @method('DELETE')
-                                                            <button type="submit" class="btn btn-sm action-btn dropdown-item d-flex align-items-center gap-2 text-danger mt-1"
-                                                                data-bs-toggle="tooltip" title="Delete Evaluation">
-                                                                <i class="bi bi-trash-fill"></i>
-                                                                Delete </button>
-                                                        </form>
-
-                                                    </ul>
-
-
-
+                                            <td role="gridcell">
+                                                <div class="action-buttons d-flex gap-2 justify-content-center">
+                                                    <a href="{{ route('evaluations.scores', $eval->id) }}"
+                                                        class="btn btn-primary btn-sm action-btn" data-bs-toggle="tooltip"
+                                                        title="Enter Scores">
+                                                        <i class="bi bi-pencil-square"></i>
+                                                        <span class="btn-text">Scores</span>
+                                                    </a>
+                                                    <form action="{{ route('evaluations.destroy', $eval->id) }}"
+                                                        method="POST" class="d-inline"
+                                                        onsubmit="return confirmDelete(this)">
+                                                        @csrf
+                                                        @method('DELETE')
+                                                        <button type="submit" class="btn btn-danger btn-sm action-btn"
+                                                            data-bs-toggle="tooltip" title="Delete Evaluation">
+                                                            <i class="bi bi-trash3"></i>
+                                                        </button>
+                                                    </form>
                                                 </div>
                                             </td>
                                         </tr>

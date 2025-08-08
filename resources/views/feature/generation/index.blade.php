@@ -110,6 +110,7 @@
                             </tr>
                         </thead>
                         <tbody>
+                            {{-- {{dd($generations)}} --}}
                             @forelse ($generations as $index => $generation)
                                 <tr class="border-bottom">
                                     <td class="text-start py-3 fw-medium">{{ $index + 1 }}</td>

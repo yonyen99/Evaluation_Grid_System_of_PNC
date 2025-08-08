@@ -34,7 +34,7 @@ class ClassController extends Controller
             $query->where('generation_id', $request->generation_id);
         }
 
-        $classes = $query->with('generation')->get();
+        $classes = $query->with('generation')->orderBy('id', 'desc')->get();
         $generations = Generation::all();
 
         return view('feature.class.index', compact('classes', 'generations'));
