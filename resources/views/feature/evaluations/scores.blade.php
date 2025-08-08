@@ -42,7 +42,7 @@
                                             <th style="min-width: 50px;">Last Name</th>
 
                                             @foreach ($scoreTypes as $scoreType)
-                                                <th class="score-header position-relative">
+                                                <th class="score-header position-relative" style="min-width: 120px;">
                                                     <a id="link_{{ $scoreType->id }}"
                                                         href="{{ route('evaluations.scoreType.detail', [$evaluation->id, $scoreType->id]) }}"
                                                         class="d-block small-link text-decoration-underline">

@@ -85,7 +85,6 @@ Route::middleware(['auth'])->group(function () {
         Route::delete('{id}', [StudentController::class, 'destroy'])->name('student-delete');
         Route::get('/import', [StudentController::class, 'importform'])->name('importForm');
         Route::post('/import', [StudentController::class, 'studentImport'])->name('importCsvStudent');
-
     });
 
     // Subject 
@@ -126,6 +125,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/grid-types', [GridTypeController::class, 'latest'])->name('grid-types.latest');
     Route::get('/grid-types/class/{class}', [GridTypeController::class, 'index'])->name('grid-types.index');
     Route::post('/grid-types/update-score', [GridTypeController::class, 'updateScore'])->name('grid-types.update-score');
+    Route::get('/grid-types/{classId}/export', [GridTypeController::class, 'gridTypeExport'])->name('grid-types.export');
 
     Route::prefix('evaluations')->group(function () {
         // Show list of evaluations

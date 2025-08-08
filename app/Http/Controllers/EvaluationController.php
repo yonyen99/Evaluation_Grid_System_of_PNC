@@ -35,7 +35,7 @@ class EvaluationController extends Controller
     }
     public function index()
     {
-        $evaluations = Evaluation::with(['class', 'subject'])->paginate(15);
+        $evaluations = Evaluation::with(['class', 'subject'])->orderBy('id', 'desc')->paginate(15);
         return view('feature.evaluations.index', compact('evaluations'));
     }
 
@@ -220,8 +220,6 @@ class EvaluationController extends Controller
 
     public function saveScores(Request $request, $evaluationId)
     {
-        // dd(request()->all());
-
         $data = $request->input('scores'); // 2D array: [evaluation_grid_type_id][evaluation_score_id] => score
         $hasDetail = $request->input('has_detail', []);
         // Step 1: Load score definitions
@@ -378,16 +376,34 @@ class EvaluationController extends Controller
             }
 
             // Sum all set_scores for this evaluation_score_student_id
-            $total = ScoreSubColumn::whereIn('score_table_id', function ($query) use ($evaluationScoreStudentId) {
-                $query->select('id')
-                    ->from('score_tables')
-                    ->where('evaluation_score_student_id', $evaluationScoreStudentId);
-            })->sum('set_score');
+            // $total = ScoreSubColumn::whereIn('score_table_id', function ($query) use ($evaluationScoreStudentId) {
+            //     $query->select('id')
+            //         ->from('score_tables')
+            //         ->where('evaluation_score_student_id', $evaluationScoreStudentId);
+            // })->sum('set_score');
 
-            // ✅ Update the correct column
-            $evaluationScoreStudent->score = $total;
-            $evaluationScoreStudent->save();
-            
+            // // ✅ Update the correct column
+            // $evaluationScoreStudent->score = $total;
+            // $evaluationScoreStudent->save();
+
+            $evaluationGrid = EvaluationGridType::find($evaluationScoreStudent->evaluation_grid_type_id);
+            $studentId = $evaluationGrid->student_id ?? null;
+
+            if ($studentId) {
+                // ✅ Sum only the sub-columns where student_id matches
+                $total = ScoreSubColumn::whereIn('score_table_id', function ($query) use ($evaluationScoreStudentId) {
+                    $query->select('id')
+                        ->from('score_tables')
+                        ->where('evaluation_score_student_id', $evaluationScoreStudentId);
+                })
+                    ->where('student_id', $studentId)
+                    ->sum('set_score');
+
+                // ✅ Update the correct column
+                $evaluationScoreStudent->score = $total;
+                $evaluationScoreStudent->save();
+            }
+
             // === ALSO UPDATE total of EvaluationGridType and GridType ===
             $gridTypeId = $evaluationScoreStudent->evaluation_grid_type_id;
 

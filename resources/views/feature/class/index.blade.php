@@ -4,31 +4,12 @@
 
 @section('stylesheet')
     <link href="{{ asset('css/class.css') }}" rel="stylesheet" />
-
-    {{-- <style>
-    /* Optional: smooth button spacing */
-    .action-btns > * {
-        margin-right: 0.375rem;
-    }
-    .action-btns > *:last-child {
-        margin-right: 0;
-    }
-</style> --}}
 @endsection
 
 
 
 @section('content')
     <div class="row">
-        {{-- @can('view class')
-            <div class="col-12 d-flex justify-content-end mb-3">
-            <a href="{{ route('class-add') }}" class="btn btn-outline-primary d-flex align-items-center">
-                <i class="bi bi-plus-circle-fill me-2"></i>
-                New Class
-            </a>
-        </div>
-        @endcan --}}
-
         <div class="col-md-12 position-relative mt-5 mb-3">
             <h4 class="title">Class List</h4>
             @can('create class')
@@ -43,33 +24,6 @@
                 </a>
             @endcan
         </div>
-
-        <!-- Filter Form -->
-        {{-- <form action="{{ route('class') }}" method="GET" class=" card filter-card p-3 shadow-sm mb-4">
-            <div class="row g-3 align-items-end p-2">
-                <div class="col-md-4">
-                    <label for="search" class="form-label fw-semibold">Search Class Name</label>
-                    <input type="text" name="search" id="search" class="form-control" value="{{ request('search') }}"
-                        placeholder="Enter Class Name...">
-                </div>
-                <div class="col-md-3 mb-3">
-                    <label for="generation_id" class="form-label fw-semibold">Generation</label>
-                    <select name="generation_id" id="generation_id" class="form-select">
-                        <option value="">All Generations</option>
-                        @foreach ($generations as $generation)
-                            <option value="{{ $generation->id }}"
-                                {{ request('generation_id') == $generation->id ? 'selected' : '' }}>
-                                {{ $generation->name }}
-                            </option>
-                        @endforeach
-                    </select>
-                </div>
-                <div class="col-md-4 d-flex gap-2">
-                    <button type="submit" class="btn btn-primary flex-grow-1">Filter</button>
-                    <a href="{{ route('class') }}" class="btn btn-outline-secondary flex-grow-1">Reset</a>
-                </div>
-            </div>
-        </form> --}}
 
         <!-- Filter Form -->
         <form action="{{ route('class') }}" method="GET" class="card filter-card p-3 shadow-sm mb-4">
@@ -146,7 +100,8 @@
                                         <td>
                                             <div class="d-flex gap-2 justify-content-center action-btns">
                                                 <a href="{{ route('class-student-form', $class->id) }}"
-                                                    class="btn btn-sm btn-success assign-student-btn" title="Assign Students">
+                                                    class="btn btn-sm btn-success assign-student-btn"
+                                                    title="Assign Students">
                                                     <i class="bi bi-person-plus-fill"></i>
                                                 </a>
 

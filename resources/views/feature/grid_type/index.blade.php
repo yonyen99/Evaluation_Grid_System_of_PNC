@@ -32,20 +32,17 @@
                     </div>
                 </div>
             </form>
-
+            
+            <a href="{{ route('grid-types.export', ['classId' => $class->id]) }}" class="btn btn-success mb-3">
+                ⬇️ Export Grid Types CSV
+            </a>
             {{-- Subject Tabs --}}
             <ul class="nav nav-tabs mb-3" id="subjectTab" role="tablist">
                 @foreach ($subjects as $index => $subject)
                     <li class="nav-item" role="presentation">
-                        {{-- <button class="nav-link {{ $index === 0 ? 'active' : '' }}" id="tab-{{ $subject->id }}"
-                            data-bs-toggle="tab" data-bs-target="#subject-{{ $subject->id }}" type="button" role="tab"
-                            aria-controls="subject-{{ $subject->id }}"
-                            aria-selected="{{ $index === 0 ? 'true' : 'false' }}">
-                            {{ $subject->name }}
-                        </button> --}}
                         <button class="nav-link {{ $index === 0 ? 'active' : '' }}" id="tab-{{ $subject->id }}"
-                            data-bs-toggle="tab" data-bs-target="#subject-{{ $subject->id }}" type="button" role="tab"
-                            aria-controls="subject-{{ $subject->id }}"
+                            data-bs-toggle="tab" data-bs-target="#subject-{{ $subject->id }}" type="button"
+                            role="tab" aria-controls="subject-{{ $subject->id }}"
                             aria-selected="{{ $index === 0 ? 'true' : 'false' }}">
                             {{ $subject->name }}
                         </button>
