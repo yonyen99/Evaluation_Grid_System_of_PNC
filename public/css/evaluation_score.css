@@ -1,0 +1,46 @@
+/* public/dashboard/css/evaluation_score.css */
+
+input[readonly] {
+    background-color: #f2f2f2;
+    cursor: not-allowed;
+}
+
+.score-header {
+    width: 60px;
+    font-size: 13px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    vertical-align: middle;
+    padding: 4px;
+}
+
+.checkbox-hover {
+    display: none;
+}
+
+.score-header:hover .checkbox-hover {
+    display: block;
+}
+
+.small-checkbox {
+    width: 16px;
+    height: 16px;
+    opacity: 0.5;
+    cursor: pointer;
+}
+
+.small-link {
+    font-size: 12px;
+    display: block;
+}
+
+th,
+td {
+    vertical-align: middle;
+}
+
+.form-control-sm {
+    padding: 2px 4px;
+    font-size: 13px;
+}

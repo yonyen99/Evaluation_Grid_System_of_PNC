@@ -9,6 +9,8 @@ use App\Models\EvaluationScore;
 use App\Models\EvaluationScoreStudent;
 use App\Models\GridType;
 use App\Models\LogHistory;
+use App\Models\ScoreSubColumn;
+use App\Models\ScoreTable;
 use App\Models\Subject;
 use App\Models\SubjectGrid;
 use Carbon\Carbon;
@@ -158,76 +160,6 @@ class EvaluationController extends Controller
         ));
     }
 
-
-    // public function update(Request $request, Evaluation $evaluation)
-    // {
-    //     $request->validate([
-    //         'class_id' => 'required|exists:classes,id',
-    //         'subject_id' => 'required|exists:subjects,id',
-    //         'evaluation_names' => 'required|array',
-    //         'evaluation_point' => 'required|array',
-    //         // Optional validation for subject grids, if used
-    //         'subject_grid_ids' => 'nullable|array',
-    //         'subject_grid_ids.*' => 'exists:subject_grids,id',
-    //         // Optional: validation for score IDs if editing existing
-    //         'score_ids' => 'nullable|array',
-    //     ]);
-
-    //     // 1. Update main evaluation info
-    //     $evaluation->update([
-    //         'class_id' => $request->class_id,
-    //         'subject_id' => $request->subject_id,
-    //     ]);
-
-    //     // 2. Sync subject grids ONLY if provided (to avoid deleting on empty)
-    //     if ($request->has('subject_grid_ids')) {
-    //         $evaluation->subjectGrids()->sync($request->subject_grid_ids);
-    //     }
-
-    //     // 3. Update evaluation scores carefully
-    //     $existingScoreIds = $evaluation->scores()->pluck('id')->toArray();
-    //     $submittedScoreIds = $request->input('score_ids', []);
-
-    //     $names = $request->input('evaluation_names');
-    //     $percentages = $request->input('evaluation_point');
-
-    //     // Update existing scores and add new ones
-    //     foreach ($names as $index => $name) {
-    //         $percentage = $percentages[$index] ?? 0;
-    //         $scoreId = $submittedScoreIds[$index] ?? null;
-
-    //         if ($scoreId && in_array($scoreId, $existingScoreIds)) {
-    //             // Update existing score
-    //             $score = $evaluation->scores()->find($scoreId);
-    //             if ($score) {
-    //                 $score->update([
-    //                     'evaluation_name' => $name,
-    //                     'percentage' => $percentage,
-    //                 ]);
-    //             }
-    //         } else {
-    //             // Create new score
-    //             $evaluation->scores()->create([
-    //                 'evaluation_name' => $name,
-    //                 'percentage' => $percentage,
-    //             ]);
-    //         }
-    //     }
-
-    //     // 4. Delete scores that were removed in the form (if any)
-    //     $scoresToDelete = array_diff($existingScoreIds, $submittedScoreIds);
-    //     if (!empty($scoresToDelete)) {
-    //         $evaluation->scores()->whereIn('id', $scoresToDelete)->delete();
-    //     }
-
-    //     // 5. (Optional) You may want to update related evaluation_grid_types and evaluation_score_students here
-    //     // based on your business logic, but be careful to NOT delete them unintentionally.
-
-    //     return redirect()->route('evaluations.index')->with('success', 'Evaluation updated successfully.');
-    // }
-
-
-
     public function destroy(Evaluation $evaluation)
     {
         // Get related evaluation_grid_types
@@ -288,8 +220,10 @@ class EvaluationController extends Controller
 
     public function saveScores(Request $request, $evaluationId)
     {
-        $data = $request->input('scores'); // 2D array: [evaluation_grid_type_id][evaluation_score_id] => score
+        // dd(request()->all());
 
+        $data = $request->input('scores'); // 2D array: [evaluation_grid_type_id][evaluation_score_id] => score
+        $hasDetail = $request->input('has_detail', []);
         // Step 1: Load score definitions
         $scoreTypes = EvaluationScore::where('evaluation_id', $evaluationId)->get()->keyBy('id');
 
@@ -298,6 +232,13 @@ class EvaluationController extends Controller
         // Step 2: Loop through submitted scores and validate
         foreach ($data as $gridTypeId => $scoreItems) {
             foreach ($scoreItems as $scoreId => $value) {
+                $hasDetailValue = array_key_exists($scoreId, $hasDetail) ? true : false;
+
+                EvaluationScoreStudent::where('evaluation_grid_type_id', $gridTypeId)
+                    ->where('evaluation_score_id', $scoreId)
+                    ->update([
+                        'has_detail_evaluation' => $hasDetailValue,
+                    ]);
                 $scoreType = $scoreTypes[$scoreId] ?? null;
 
                 if (!$scoreType) {
@@ -356,5 +297,124 @@ class EvaluationController extends Controller
 
         return redirect()->route('evaluations.scores', $evaluationId)
             ->with('success', 'Scores updated successfully.');
+    }
+
+
+
+    public function scoreTypeDetail($evaluationId, $scoreTypeId)
+    {
+        $evaluation = Evaluation::with(['class', 'subject'])->findOrFail($evaluationId);
+        $scoreType = EvaluationScore::findOrFail($scoreTypeId);
+
+        // Load student list from EvaluationGridType
+        $evaluationGridTypes = EvaluationGridType::with('student')
+            ->where('evaluation_id', $evaluationId)
+            ->get();
+
+        // Load scores with sub-columns
+        $scores = EvaluationScoreStudent::with(['scoreTables.subColumns'])
+            ->where('evaluation_score_id', $scoreTypeId)
+            ->get()
+            ->keyBy('evaluation_grid_type_id'); // group by grid_type_id for quick lookup
+
+        return view('feature.evaluations.detail', compact('evaluation', 'scoreType', 'evaluationGridTypes', 'scores'));
+    }
+
+    public function saveDetailedScores(Request $request)
+    {
+        // dd(request()->all());
+        $evaluationScoreStudentIds = $request->input('evaluation_score_student_id', []);
+        $scoreDetails = $request->input('score_details', []);
+
+        foreach ($evaluationScoreStudentIds as $evaluationScoreStudentId) {
+            $evaluationScoreStudent = EvaluationScoreStudent::find($evaluationScoreStudentId);
+
+            if (!$evaluationScoreStudent) {
+                continue;
+            }
+
+            // Get all existing ScoreTables for this student
+            $existingTables = ScoreTable::where('evaluation_score_student_id', $evaluationScoreStudentId)->get();
+
+            // Get all names from the incoming request
+            $newNames = collect($scoreDetails)->pluck('name')->toArray();
+
+            // Remove old tables that are not in the new request
+            foreach ($existingTables as $table) {
+                if (!in_array($table->name, $newNames)) {
+                    $table->subColumns()->delete(); // delete related sub columns first
+                    $table->delete();
+                }
+            }
+
+            foreach ($scoreDetails as $scoreDetail) {
+                // Create or get the score table
+                $scoreTable = ScoreTable::firstOrCreate(
+                    [
+                        'evaluation_score_student_id' => $evaluationScoreStudentId,
+                        'name' => $scoreDetail['name'],
+                    ]
+                );
+
+                $submittedStudentIds = collect($scoreDetail['scores'])->pluck('student_id')->toArray();
+
+                // Delete old sub columns that are not in the new request
+                ScoreSubColumn::where('score_table_id', $scoreTable->id)
+                    ->whereNotIn('student_id', $submittedStudentIds)
+                    ->delete();
+
+                // Create or update sub columns
+                foreach ($scoreDetail['scores'] as $score) {
+                    ScoreSubColumn::updateOrCreate(
+                        [
+                            'score_table_id' => $scoreTable->id,
+                            'student_id' => $score['student_id'],
+                        ],
+                        [
+                            'set_score' => $score['set_score'],
+                        ]
+                    );
+                }
+            }
+
+            // Sum all set_scores for this evaluation_score_student_id
+            $total = ScoreSubColumn::whereIn('score_table_id', function ($query) use ($evaluationScoreStudentId) {
+                $query->select('id')
+                    ->from('score_tables')
+                    ->where('evaluation_score_student_id', $evaluationScoreStudentId);
+            })->sum('set_score');
+
+            // ✅ Update the correct column
+            $evaluationScoreStudent->score = $total;
+            $evaluationScoreStudent->save();
+            
+            // === ALSO UPDATE total of EvaluationGridType and GridType ===
+            $gridTypeId = $evaluationScoreStudent->evaluation_grid_type_id;
+
+            if ($gridTypeId) {
+                // Sum all EvaluationScoreStudent for this gridType
+                $totalScore = EvaluationScoreStudent::where('evaluation_grid_type_id', $gridTypeId)->sum('score');
+
+                // Update EvaluationGridType
+                EvaluationGridType::where('id', $gridTypeId)->update(['total' => $totalScore]);
+
+                // Update GridType if it exists
+                $evalGrid = EvaluationGridType::find($gridTypeId);
+
+                if ($evalGrid) {
+                    GridType::where('id', $evalGrid->grid_type_id)
+                        ->where('student_id', $evalGrid->student_id)
+                        ->where('subject_grid_id', $evalGrid->subject_grid_id)
+                        ->update([
+                            'total_evaluation' => $totalScore,
+                            'has_evaluation' => true,
+                        ]);
+                }
+            }
+        }
+
+
+
+        return redirect()->back()->with('success', 'Scores saved successfully.');
     }
 }

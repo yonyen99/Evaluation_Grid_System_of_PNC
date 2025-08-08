@@ -153,4 +153,10 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/class/{id}/edit', [ClassController::class, 'edit'])->name('class-edit');
     Route::put('/class/{id}', [ClassController::class, 'update'])->name('class-update');
     Route::delete('/classes/{id}', [ClassController::class, 'destroy'])->name('classes.destroy');
+
+    Route::get('/evaluations/{evaluation}/scores/{scoreType}/detail', [EvaluationController::class, 'scoreTypeDetail'])
+        ->name('evaluations.scoreType.detail');
+
+    Route::post('/evaluations/{evaluation}/scores/save-details', [EvaluationController::class, 'saveDetailedScores'])
+        ->name('evaluations.scores.saveDetails');
 });
