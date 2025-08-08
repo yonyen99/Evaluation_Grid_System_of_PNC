@@ -7,16 +7,7 @@
     border-bottom: 3px solid #0d3b66;
     position: relative;
 }
-.title::after {
-    content: "";
-    position: absolute;
-    bottom: -3px;
-    left: 0;
-    width: 60px;
-    height: 3px;
-    background-color: #376aa0;
-    border-radius: 2px;
-}
+
 
 /* Filter Styling */
 .filter-card {
@@ -105,10 +96,10 @@
     background: linear-gradient(135deg, #376aa0 0%, #0d3b66 100%);
     box-shadow: 0 12px 30px rgba(13, 59, 102, 0.4);
 }
-.assign-student-btn {
+/* .assign-student-btn {
         background: linear-gradient(135deg, #376aa0 0%, #0d3b66 100%);
 
-}
+} */
 .btn-cancel{
         border: 2px solid #0d3b66;
     color: #0d3b66;
