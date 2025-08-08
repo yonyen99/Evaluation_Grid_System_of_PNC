@@ -4,21 +4,6 @@
 
 @section('stylesheet')
     <link href="{{ asset('css/class.css') }}" rel="stylesheet" />
-<<<<<<< HEAD
-=======
-
-    {{-- <style>
-    /* Optional: smooth button spacing */
-    .action-btns > * {
-        margin-right: 0.375rem;
-    }
-    .action-btns > *:last-child {
-        margin-right: 0;
-    }
-</style> --}}
-
-
->>>>>>> e60fe47794b3b8fac55976f674851d8a613328f7
 @endsection
 
 
