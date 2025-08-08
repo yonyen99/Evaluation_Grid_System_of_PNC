@@ -3,6 +3,8 @@ $(document).ready(function () {
     setupDeleteTermButtons();
     setupFormValidation();
     updateTermsCount();
+    imageFileUpload('.browseImport', '#importCsv', '#importCsvTitle');
+
 });
 
 /**
@@ -257,5 +259,39 @@ function setupDeleteTermButtons() {
             termCard.remove();
             updateTermsCount();
         }
+    });
+}
+
+
+/**
+ * Trigger openning file upload form by clicking on provided button id,
+ * validat provided file and and show file name on text place holder on success.
+ * @return void
+ */
+ function imageFileUpload(fileUploadBtnId, fileInputId, fileNameTextHolderId) {
+    // trigger file input base on browse button
+    $(fileUploadBtnId).on('click', function(){
+        $(fileInputId).trigger('click');
+    });
+        
+        // check file extension ( png, jpeg )
+        $(fileInputId).on('change', function(){            
+        let input = this;
+        let imgPath = $(this).val();
+        let imageFileNameOnly = imgPath.replace(/C:\\fakepath\\/i, '');
+
+        // check extension
+        let ext = imgPath.substring(imgPath.lastIndexOf('.') + 1).toLowerCase();
+        if(input.files && input.files[0] && (ext=="csv" || ext=='xlsx' || ext == 'xls') ){
+            reader = new FileReader();
+            reader.onload = function(e){
+                $('#generation-image-preview').attr('src', e.target.result);
+            }
+            reader.readAsDataURL(input.files[0]);
+
+            $(fileNameTextHolderId).text( imageFileNameOnly.replace(/[^a-zA-Z0-9]/g,'.').toLowerCase() );
+        } else {
+            alert('File extension not match the requirement, accept ( csv, xlsx, xls ) only!');
+        } 
     });
 }

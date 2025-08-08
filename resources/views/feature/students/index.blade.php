@@ -11,9 +11,14 @@
     <div class="col-md-12 position-relative mt-5 mb-3">
         <h4 class="title">Student List</h4>
         @can('create student')
+          
+            <a href="{{ route('importForm') }}"   class="btn btn-primary d-flex align-items-center position-absolute float-end" style="top: -2px; right: 20px;" >
+                <i class="bi bi-file-earmark-arrow-down me-2"></i>
+                Importlist
+            </a>
             <a href="{{ route('student-add') }}"
             class="btn btn-primary d-flex align-items-center position-absolute"
-            style="top: -2px; right: 20px;">
+            style="top: -2px; right: 150px;">
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
                     fill="currentColor" class="bi bi-plus-circle-fill me-2"
                     viewBox="0 0 16 16">
