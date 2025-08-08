@@ -4,24 +4,37 @@
 
 @section('stylesheet')
     <link href="{{ asset('css/student.css') }}" rel="stylesheet" />
+    <style>
+                .table-responsive {
+            overflow: visible !important;
+        }
+    </style>
 @endsection
 
 @section('content')
-    <div class="row">
-        <div class="col-md-12 position-relative mt-5 mb-3">
-            <h4 class="title">Student List</h4>
-            @can('create student')
-                <a href="{{ route('student-add') }}" class="btn btn-primary d-flex align-items-center position-absolute"
-                    style="top: -2px; right: 20px;">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                        class="bi bi-plus-circle-fill me-2" viewBox="0 0 16 16">
-                        <path
-                            d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M8.5 4.5a.5.5 0 0 0-1 0v3h-3a.5.5 0 0 0 0 1h3v3a.5.5 0 0 0 1 0v-3h3a.5.5 0 0 0 0-1h-3z" />
-                    </svg>
-                    New Student
-                </a>
-            @endcan
-        </div>
+<div class="row">
+    <div class="col-md-12 position-relative mt-5 mb-3">
+        <h4 class="title">Student List</h4>
+        @can('create student')
+          
+            <a href="{{ route('importForm') }}"   class="btn btn-primary d-flex align-items-center position-absolute float-end" style="top: -2px; right: 20px;" >
+                <i class="bi bi-file-earmark-arrow-down me-2"></i>
+                Importlist
+            </a>
+            <a href="{{ route('student-add') }}"
+            class="btn btn-primary d-flex align-items-center position-absolute"
+            style="top: -2px; right: 150px;">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                    fill="currentColor" class="bi bi-plus-circle-fill me-2"
+                    viewBox="0 0 16 16">
+                    <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M8.5 4.5a.5.5 0 0 0-1 0v3h-3a.5.5 0 0 0 0 1h3v3a.5.5 0 0 0 1 0v-3h3a.5.5 0 0 0 0-1h-3z"/>
+                </svg>
+                New Student
+            </a>
+        @endcan
+    </div>
+    
+   
 
         <!-- Filter Form -->
         <form action="{{ route('student') }}" method="GET" class="card filter-card p-3 shadow-sm mb-4">
@@ -143,7 +156,7 @@
                                                             @csrf
                                                             @method('DELETE')
                                                             <button type="submit"
-                                                                class="btn btn-sm btn-delete dropdown-item d-flex align-items-center gap-2 text-danger">
+                                                                class="btn btn-sm btn-delete dropdown-item d-flex align-items-center gap-2 text-danger mt-1">
                                                                 <i class="bi bi-trash-fill"></i>
                                                                 Delete
                                                             </button>

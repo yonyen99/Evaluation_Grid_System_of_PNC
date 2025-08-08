@@ -80,16 +80,7 @@
     text-overflow: ellipsis;
     max-width: 150px;
 }
-.btn-delete {
-    background-color: #dc3545;
-    border-color: #dc3545;
-    color: #ffffff;
-}
-.btn-delete:hover {
-    background-color: #c82333;
-    border-color: #bd2130;
-    color: #ffffff;
-}
+
 
 .filter-card {
     border: none;

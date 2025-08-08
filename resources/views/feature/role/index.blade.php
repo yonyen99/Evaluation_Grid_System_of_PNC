@@ -12,13 +12,16 @@
             border-bottom: 3px solid #0d3b66;
             position: relative;
         }
+          .table-responsive {
+            overflow: visible !important;
+        }
 
     </style>
 @endsection
 {{-- BEGIN:: Table Content --}}
 @section('content')
     <div class="role-content-wrapper mt-4">
-         <div class="col-md-12 position-relative mt-5 mb-3">
+        <div class="col-md-12 position-relative mt-5 mb-3">
             <h4 class="title">Role List</h4>
             @can('create role')
                 <a href="{{ route('role-add') }}" class="btn btn-primary d-flex align-items-center position-absolute"
@@ -32,7 +35,7 @@
                 </a>
             @endcan
         </div>
-         {{-- <h4 class="title">Role List</h4>
+        {{-- <h4 class="title">Role List</h4>
 
         <!-- Create Role -->
         @can('create system_user')
@@ -80,7 +83,7 @@
                                     </ul>
                                 </div>
                             </td>
-                            <td>
+                            {{-- <td>
                                 <div class="d-flex justify-content-center gap-2">
                                     <a href="{{ url("roles/$role->id/edit") }}" class="btn btn-sm btn-primary">
                                         <i class="bi bi-pencil-square"></i>
@@ -93,6 +96,39 @@
                                             <i class="bi bi-trash3"></i>
                                         </button>
                                     </form>
+                                </div>
+                            </td> --}}
+
+                            <td class="py-3 d-flex justify-content-center align-items-center">
+                                <div class="dropdown d-flex justify-content-center gap-2">
+                                    <button class="btn btn-sm btn-light rounded-circle d-flex align-items-center "
+                                        id="actionsDropdown{{ $role->id }}" data-bs-toggle="dropdown"
+                                        aria-expanded="false" style="width: 36px; height: 36px;">
+                                        <i class="text-center bi bi-three-dots-vertical fs-5"></i>
+                                    </button>
+                                    <ul class="dropdown-menu dropdown-menu-end shadow-lg border-0 rounded-3 py-2"
+                                        aria-labelledby="actionsDropdown{{ $role->id }}" style="min-width: 160px;">
+                                        <li>
+                                            <a href="{{ url("roles/$role->id/edit") }}"
+                                                class="btn btn-sm btn-primary dropdown-item d-flex align-items-center gap-2">
+                                                <i class="bi bi-pencil-square text-warning"></i>
+                                                Edit
+                                            </a>
+
+                                        </li>
+
+                                        <form action="{{ route('role-delete', ['id' => $role->id]) }}" method="POST"
+                                            class="d-inline delete-form">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="btn btn-sm btn-danger dropdown-item d-flex align-items-center gap-2 text-danger">
+                                                <i class="bi bi-trash-fill"></i>
+                                                Delete
+                                            </button>
+                                        </form>
+
+
+                                    </ul>
                                 </div>
                             </td>
                         </tr>

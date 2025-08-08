@@ -40,6 +40,33 @@
     outline: none;
 }
 
+
+.btn-view {
+    /* background: linear-gradient(135deg, #28a745, #20c997); */
+    background-color: #0d3b66;
+    color: white;
+    
+}
+
+.btn-view:hover {
+    background-color: #376aa0;
+    border-color: #376aa0;
+    color: #ffffff;
+}  
+
+.btn-edit {
+    background: linear-gradient(135deg, #376aa0, #0d3b66);
+    color: white;
+    border-color: #376aa0;
+}
+
+.btn-edit:hover {
+    background: linear-gradient(135deg, #2c5282, #0a2d52);
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(55, 106, 160, 0.3);
+    color: white;
+}
+
 /* Generation card styling */
 .generation-card {
     background: #fff;
@@ -166,32 +193,6 @@
     margin: 0 0.2rem;
 }
 
-
-.btn-view {
-    /* background: linear-gradient(135deg, #28a745, #20c997); */
-    background-color: #0d3b66;
-    color: white;
-    
-}
-
-.btn-view:hover {
-    background-color: #376aa0;
-    border-color: #376aa0;
-    color: #ffffff;
-}  
-
-.btn-edit {
-    background: linear-gradient(135deg, #376aa0, #0d3b66);
-    color: white;
-    border-color: #376aa0;
-}
-
-.btn-edit:hover {
-    background: linear-gradient(135deg, #2c5282, #0a2d52);
-    transform: translateY(-2px);
-    box-shadow: 0 5px 15px rgba(55, 106, 160, 0.3);
-    color: white;
-}
 
 /* No classes message styling */
 .no-classes-message {

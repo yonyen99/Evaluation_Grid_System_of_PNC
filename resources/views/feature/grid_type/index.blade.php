@@ -3,28 +3,7 @@
 @section('page_title', 'Grid Type Report')
 
 @section('stylesheet')
-    <style>
-        table th,
-        table td {
-            text-align: center;
-            vertical-align: middle;
-            padding: 0.75rem 1rem;
-        }
-
-        input.score-input {
-            width: 80px;
-            padding: 0.25rem 0.5rem;
-            text-align: center;
-            font-size: 1rem;
-            max-width: 100%;
-            box-sizing: border-box;
-        }
-
-        .input-disabled-clickable {
-            cursor: pointer;
-            background-color: #e9ecef;
-        }
-    </style>
+    <link href="{{ asset('css/grid_type.css') }}" rel="stylesheet" />
 @endsection
 
 @section('content')
@@ -167,90 +146,8 @@
 
 @section('script')
     <script>
-        function onClassChange(select) {
-            window.location.href = select.value;
-        }
-
-        document.addEventListener('DOMContentLoaded', () => {
-            // Prevent form submission on Enter and trigger blur to save
-            document.querySelectorAll('input.score-input').forEach(input => {
-                input.addEventListener('keydown', e => {
-                    if (e.key === 'Enter') {
-                        e.preventDefault();
-                        input.blur(); // trigger blur to save data
-                    }
-                });
-            });
-
-            // Handle update on blur (when input loses focus)
-            document.querySelectorAll('.score-input:not([readonly])').forEach(input => {
-                input.addEventListener('blur', sendUpdateAndReload);
-            });
-
-            // Handle click on readonly inputs to navigate to score page
-            document.querySelectorAll('.input-disabled-clickable').forEach(input => {
-                input.addEventListener('click', () => {
-                    const url = input.getAttribute('data-url');
-                    if (url && url !== '#') {
-                        window.location.href = url;
-                    }
-                });
-            });
-        });
-
-        function sendUpdateAndReload() {
-            const value = parseFloat(this.value);
-            const classeStudentId = this.dataset.classeStudentId;
-            const subjectGridId = this.dataset.subjectGridId;
-
-            if (isNaN(value) || value < 0 || value > 100) {
-                alert('Please enter a number between 0 and 100');
-                return;
-            }
-
-            fetch("{{ route('grid-types.update-score') }}", {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                    },
-                    body: JSON.stringify({
-                        classe_student_id: classeStudentId,
-                        subject_grid_id: subjectGridId,
-                        value: value
-                    })
-                })
-                .then(res => res.json())
-                .then(data => {
-                    if (data.status === 'success') {
-                        // Reload the page so total recalculates on server
-                        window.location.reload();
-                    } else {
-                        alert('Failed to update score');
-                    }
-                })
-                .catch(() => alert('Error updating score'));
-        }
-
-        document.addEventListener('DOMContentLoaded', function() {
-            // === Save tab to localStorage when clicked ===
-            const subjectTabs = document.querySelectorAll('#subjectTab button[data-bs-toggle="tab"]');
-            subjectTabs.forEach(tab => {
-                tab.addEventListener('shown.bs.tab', function(e) {
-                    const subjectId = e.target.getAttribute('data-bs-target'); // e.g. "#subject-2"
-                    localStorage.setItem('activeSubjectTab', subjectId);
-                });
-            });
-
-            // === Load tab from localStorage ===
-            const savedTab = localStorage.getItem('activeSubjectTab');
-            if (savedTab) {
-                const tabTrigger = document.querySelector(`#subjectTab button[data-bs-target="${savedTab}"]`);
-                if (tabTrigger) {
-                    const tab = new bootstrap.Tab(tabTrigger);
-                    tab.show();
-                }
-            }
-        });
+        window.csrfToken = "{{ csrf_token() }}";
+        window.gridTypeUpdateUrl = "{{ route('grid-types.update-score') }}";
     </script>
+    <script src="{{ asset('dashboard/js/feature/grid_type.js') }}"></script>
 @endsection

@@ -7,6 +7,7 @@ use App\Models\Generation;
 use App\Models\LogHistory;
 use App\Models\Term;
 use Carbon\Carbon;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -208,5 +209,74 @@ class GenerationController extends Controller
         return redirect()
             ->route('generation')
             ->with('200', 'Delete successfully!');
+    }
+
+    /**
+     * export generation record 
+     */
+    public function generationExport($id)
+    {
+
+        $generation = Generation::findOrFail($id);
+
+        $headers = [
+            "Content-type" => "text/csv",
+            "Content-Disposition" => "attachment; filename=generation.csv",
+            "Pragma" => "no-cache",
+            "Cache-Control" => "must-revalidate, post-check=0, pre-check=0",
+            "Expires" => "0"
+        ];
+
+        $callback = function () use ($generation) {
+            $handle = fopen('php://output', 'w');
+            fputcsv($handle, ['No', 'id', 'Name', 'Term Name']);
+            foreach ($generation->terms as $key => $term) {
+                fputcsv($handle, [$key + 1, $generation->id, $generation->name, $term->name]);
+            }
+            fclose($handle);
+        };
+
+        return response()->stream($callback, 200, $headers);
+    }
+
+    /**
+     * import csv
+     */
+    public function generationImport(Request $request){
+        $request->validate([
+            'importCsv' => 'required|file|mimes:csv,txt',
+        ]);
+
+        DB::beginTransaction();
+
+        $file = $request->file('importCsv');
+        $data = array_map('str_getcsv', file($file));
+        $header = array_map('trim', $data[0]); // First row = header
+        unset($data[0]); // Remove header
+
+        
+        foreach ($data as $row) {
+            $rowData = array_combine($header, $row); // Map headers to values
+
+            // Example: insert into generations table
+            $generation = Generation::create([
+                'name' => $rowData['Generation']
+            ]);
+            $generation->save();
+
+        // Split terms (delimiter: | )
+        $terms = explode('|', $rowData['Terms']);
+
+        foreach ($terms as $term) {
+            Term::create([
+                'generation_id' => $generation->id,
+                'name' => trim($term),
+            ]);
+        }
+
+        }
+        DB::commit();
+        return back()->with('success', 'CSV imported successfully!');     
+            
     }
 }

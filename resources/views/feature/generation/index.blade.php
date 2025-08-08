@@ -40,6 +40,18 @@
         <div class="col-md-12 position-relative mt-5 mb-3">
             <h4 class="title">Generation List</h4>
             @can('create generation')
+                            <form action="{{ route('importCsvGeneration') }}" method="POST" enctype="multipart/form-data" >
+                    @csrf
+                    <div class="float-end d-flex">
+                        <div class="border border-secondary rounded p-2 d-flex align-items-center m-2" style="cursor: pointer;"
+                            onclick="document.getElementById('importCsv').click();">
+                            <input type="file" name="importCsv" id="importCsv" accept=".csv" hidden>
+                            <i class="bi bi-file-earmark-arrow-down me-2"></i>
+                            <span id="importCsvTitle">CSV fie</span>
+                        </div>
+                        <button type="submit" class="btn btn-primary m-2">Import</button>
+                    </div>
+                </form>
                 <a href="{{ route('generation-add') }}" class="btn btn-primary d-flex align-items-center position-absolute"
                     style="top: -2px; right: 20px;">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
@@ -209,9 +221,7 @@
 {{-- END:: Table Content --}}
 {{-- Custom Script --}}
 @section('script')
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="{{ asset('dashboard/js/generation.js') }}"></script>
+    <script src="{{ asset('dashboard/js/feature/generation.js') }}"></script>
     <script>
         // One-click confirm before form submit
         document.querySelectorAll('.delete-form').forEach(function(form) {

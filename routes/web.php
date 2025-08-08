@@ -71,6 +71,8 @@ Route::middleware(['auth'])->group(function () {
         Route::get('{id}/edit', [GenerationController::class, 'edit'])->name('generation-edit'); // show form update
         Route::patch('{id}/edit', [GenerationController::class, 'update'])->name('generation-update'); // update data to database
         Route::delete('{id}', [GenerationController::class, 'destroy'])->name('generation-delete'); // delete data
+        Route::get('{id}/downloadCsv', [GenerationController::class, 'generationExport'])->name('downloadCsv');
+        Route::post('/import', [GenerationController::class, 'generationImport'])->name('importCsvGeneration');
     });
 
     // student 
@@ -81,6 +83,9 @@ Route::middleware(['auth'])->group(function () {
         Route::get('{id}/edit', [StudentController::class, 'edit'])->name('student-edit');
         Route::patch('{id}/edit', [StudentController::class, 'update'])->name('student-update');
         Route::delete('{id}', [StudentController::class, 'destroy'])->name('student-delete');
+        Route::get('/import', [StudentController::class, 'importform'])->name('importForm');
+        Route::post('/import', [StudentController::class, 'studentImport'])->name('importCsvStudent');
+
     });
 
     // Subject 
@@ -153,4 +158,10 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/class/{id}/edit', [ClassController::class, 'edit'])->name('class-edit');
     Route::put('/class/{id}', [ClassController::class, 'update'])->name('class-update');
     Route::delete('/classes/{id}', [ClassController::class, 'destroy'])->name('classes.destroy');
+
+    Route::get('/evaluations/{evaluation}/scores/{scoreType}/detail', [EvaluationController::class, 'scoreTypeDetail'])
+        ->name('evaluations.scoreType.detail');
+
+    Route::post('/evaluations/{evaluation}/scores/save-details', [EvaluationController::class, 'saveDetailedScores'])
+        ->name('evaluations.scores.saveDetails');
 });

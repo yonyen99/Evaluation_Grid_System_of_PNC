@@ -209,16 +209,19 @@ class StudentController extends Controller
     public function destroy($id)
     {
         $student = Student::find($id);
-
         if (!$student) {
             return back()->with('error', 'Student not found.');
         }
+        $user = User::where('student_id', $id)->first();
+
 
         try {
             DB::beginTransaction();
 
             $student->delete();
-
+            $user->roles()->detach();
+            $user->permissions()->detach();
+            $user->delete();
             DB::commit();
 
             $currentUser = auth()->user();
@@ -235,5 +238,78 @@ class StudentController extends Controller
             DB::rollBack();
             return back()->with('error', 'Error occurred while deleting the student: ' . $e->getMessage());
         }
+    }
+
+    public function importform()
+    {
+        $roles = User::getRoles();
+        if (!$roles->data) {
+            return back()->with('error', $roles->message);
+        }
+        $roles = $roles->data;
+
+        $provinces = Province::all();
+        $generations = Generation::all();
+        return view('feature.students.import', compact('provinces', 'generations','roles'));
+    }
+
+     /**
+     * import csv
+     */
+    public function studentImport(Request $request){
+        $request->validate([
+            'importCsv' => 'required|file|mimes:csv,txt',
+        ]);
+
+        $role = User::getRole($request['role']);
+        if (!$role->data) {
+            return back()->with('error', $role->message);
+        }
+        $role = $role->data;
+
+        DB::beginTransaction();
+
+        $file = $request->file('importCsv');
+        $data = array_map('str_getcsv', file($file));
+        $header = array_map('trim', $data[0]); // First row = header
+        unset($data[0]); // Remove header
+
+        
+        foreach ($data as $row) {
+            $rowData = array_combine($header, $row);
+            // Example: insert into generations table
+            $student = student::create([
+                'student_id'    => $rowData['student_id'],
+                'username'      => $rowData['username'],
+                'first_name'    => $rowData['first_name'],
+                'last_name'     => $rowData['last_name'],
+                'gender'        => $rowData['gender'],
+                'email'         => $rowData['email'],
+                'province_id'   => $rowData['province'],
+                'phone'         => $rowData['phone'],
+                'password'      => Hash::make($rowData['password']),
+                'generation_id' => $request['generation_id'],
+                'profile'       => null,
+            ]);
+            $student->save();
+            $user= User::create([
+                'lastname'          => $rowData['last_name'],
+                'firstname'         => $rowData['first_name'],
+                'email'             => $rowData['email'],
+                'phone'             => $rowData['phone'],
+                'username'          => $rowData['username'],
+                'password'          => Hash::make($rowData['password']),
+                'profile'           => null,
+                'teacher_id'        => null,
+                'student_id'        => $student->id,
+                'email_verified_at' => Carbon::now()->toDateTimeString(),
+                'display'           => 'student',
+            ]);
+            $user->save();
+            // attach user with role
+            $user->assignRole($role);
+        }
+        DB::commit();
+        return redirect()->route('student')->with('success', 'CSV imported successfully!.');
     }
 }
