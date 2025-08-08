@@ -11,16 +11,16 @@
         <div class="col-md-12 position-relative mt-5 mb-3">
             <h4 class="title">Generation List</h4>
             @can('create generation')
-                <form action="{{ route('importCsv') }}" method="POST" enctype="multipart/form-data">
+                <form action="{{ route('importCsvGeneration') }}" method="POST" enctype="multipart/form-data" >
                     @csrf
-                    <div class="float-end">
-                        <div class="border border-secondary rounded p-2 d-flex align-items-center" style="cursor: pointer;"
+                    <div class="float-end d-flex">
+                        <div class="border border-secondary rounded p-2 d-flex align-items-center m-2" style="cursor: pointer;"
                             onclick="document.getElementById('importCsv').click();">
                             <input type="file" name="importCsv" id="importCsv" accept=".csv" hidden>
                             <i class="bi bi-file-earmark-arrow-down me-2"></i>
                             <span id="importCsvTitle">CSV fie</span>
                         </div>
-                        <button type="submit" class="btn btn-primary mt-2">Import</button>
+                        <button type="submit" class="btn btn-primary m-2">Import</button>
                     </div>
                 </form>
                 <a href="{{ route('generation-add') }}" class="btn btn-primary d-flex align-items-center position-absolute"

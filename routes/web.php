@@ -72,7 +72,7 @@ Route::middleware(['auth'])->group(function () {
         Route::patch('{id}/edit', [GenerationController::class, 'update'])->name('generation-update'); // update data to database
         Route::delete('{id}', [GenerationController::class, 'destroy'])->name('generation-delete'); // delete data
         Route::get('{id}/downloadCsv', [GenerationController::class, 'generationExport'])->name('downloadCsv');
-        Route::post('/import', [GenerationController::class, 'generationImport'])->name('importCsv');
+        Route::post('/import', [GenerationController::class, 'generationImport'])->name('importCsvGeneration');
     });
 
     // student 
@@ -83,6 +83,9 @@ Route::middleware(['auth'])->group(function () {
         Route::get('{id}/edit', [StudentController::class, 'edit'])->name('student-edit');
         Route::patch('{id}/edit', [StudentController::class, 'update'])->name('student-update');
         Route::delete('{id}', [StudentController::class, 'destroy'])->name('student-delete');
+        Route::get('/import', [StudentController::class, 'importform'])->name('importForm');
+        Route::post('/import', [StudentController::class, 'studentImport'])->name('importCsvStudent');
+
     });
 
     // Subject 
