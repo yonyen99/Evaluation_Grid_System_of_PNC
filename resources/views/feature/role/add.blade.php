@@ -10,10 +10,9 @@
         <form id="role-form" action="{{ url('roles/create') }}" method="POST" enctype="multipart/form-data">
             @csrf
 
-            {{-- General Information --}}
+            <!-- General Information -->
             <div class="general-info-wrapper">
                 <div class="row">
-                    {{-- Role Name --}}
                     <div class="col-md-4 mb-3">
                         <label for="name" class="form-label">Role Name</label>
                         <input type="text" minlength="2" maxlength="30" class="form-control" name="name"
@@ -21,7 +20,7 @@
                     </div>
                 </div>
 
-                {{-- Permissions Table --}}
+                <!-- Permissions Table -->
                 <div class="table-responsive">
                     <table class="table table-bordered permission-table-wrapper">
                         <thead class="table-light">
@@ -49,15 +48,17 @@
                                     'class',
                                     'grid',
                                     'loghistory',
+                                    'admin_report',
+                                    'teacher_report',
+                                    'student_report',
                                 ];
                                 $permissions = ['view', 'create', 'edit', 'delete'];
-                                $permissionsHistroy = ['view'];
+                                $permissionsView = ['view'];
                             @endphp
-
                             @foreach ($modules as $module)
                                 <tr>
                                     <td class="text-capitalize">{{ str_replace('_', ' ', $module) }}</td>
-                                    @if ($module !== 'loghistory')
+                                    @if ($module !=='loghistory' && $module !=='admin_report' && $module !=='teacher_report' && $module !=='student_report' )
                                         @foreach ($permissions as $action)
                                             <td class="text-center">
                                                 <div class="form-check">
@@ -71,7 +72,7 @@
                                             </td>
                                         @endforeach
                                     @else
-                                        @foreach ($permissionsHistroy as $action)
+                                        @foreach ($permissionsView as $action)
                                             <td class="text-center">
                                                 <div class="form-check">
                                                     <input class="form-check-input" type="checkbox"
@@ -90,15 +91,6 @@
                     </table>
                 </div>
             </div>
-
-            {{-- Buttons --}}
-            {{-- <div class="row mt-4">
-                <div class="col-md-6">
-                    <input type="submit" class="btn btn-outline-info me-2" value="Register">
-                    <button type="reset" id="role-reset-btn" class="btn btn-outline-danger">Reset</button>
-                </div>
-            </div> --}}
-
             <div class="form-section d-flex justify-content-between mb-3 mt-3">
                 <a href="{{ route('role-list') }}" class="btn btn-outline-primary">
                     <i class="bi bi-chevron-left me-1"></i> Cancel
@@ -106,13 +98,10 @@
                 <div>
                     <button type="reset" id="role-reset-btn" class="btn btn-outline-danger">Reset</button>
                     <input type="submit" class="btn btn-outline-info me-2" value="Register">
-
                 </div>
-
             </div>
         </form>
     </div>
-
 @endsection
 {{-- END:: Table Content --}}
 
