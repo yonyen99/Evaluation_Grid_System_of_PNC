@@ -86,6 +86,13 @@ class PermissionsTableSeeder extends Seeder
             Permission::updateOrCreate(['name' => 'view loghistory']);
         // Log History Permissions Seeder [END]
 
+        //Report permission seeder[BEGIN]
+            Permission::updateOrCreate(['name' => 'view admin_report']);
+            Permission::updateOrCreate(['name' => 'view teacher_report']);
+            Permission::updateOrCreate(['name' => 'view student_report']);
+
+        //Report permission seeder[END]
+
         // give permissions to role
         $adminRole = Role::where('name', 'admin')->get()->first();
         $adminRole->givePermissionTo(Permission::all());

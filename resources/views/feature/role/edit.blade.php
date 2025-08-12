@@ -49,14 +49,17 @@
                                     'class',
                                     'grid',
                                     'loghistory',
+                                    'admin_report',
+                                    'teacher_report',
+                                    'student_report',
                                 ];
                                 $permissions = ['view', 'create', 'edit', 'delete'];
-                                $permissionsHistory = ['view'];
+                                $permissionsView = ['view'];
                             @endphp
                             @foreach ($modules as $module)
                                 <tr>
                                     <td class="text-capitalize">{{ str_replace('_', ' ', $module) }}</td>
-                                    @if ($module !=='loghistory')
+                                    @if ($module !=='loghistory' && $module !=='admin_report' && $module !=='teacher_report' && $module !=='student_report' )
                                         @foreach ($permissions as $action)
                                             <td class="text-center">
                                                 <div class="form-check">
@@ -70,7 +73,7 @@
                                             </td>
                                         @endforeach
                                     @else
-                                        @foreach ($permissionsHistory as $action)
+                                        @foreach ($permissionsView as $action)
                                             <td class="text-center">
                                                 <div class="form-check">
                                                     <input class="form-check-input" type="checkbox"

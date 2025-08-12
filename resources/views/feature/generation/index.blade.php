@@ -40,7 +40,7 @@
         <div class="col-md-12 position-relative mt-5 mb-3">
             <h4 class="title">Generation List</h4>
             @can('create generation')
-                            <form action="{{ route('importCsvGeneration') }}" method="POST" enctype="multipart/form-data" >
+                <form action="{{ route('importCsvGeneration') }}" method="POST" enctype="multipart/form-data" >
                     @csrf
                     <div class="float-end d-flex">
                         <div class="border border-secondary rounded p-2 d-flex align-items-center m-2" style="cursor: pointer;"

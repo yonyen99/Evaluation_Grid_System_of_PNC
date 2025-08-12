@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\dashboard\adminReportController;
 use App\Http\Controllers\Dashboard\DashboardController;
 use App\Http\Controllers\Dashboard\GenerationController;
 use App\Http\Controllers\Dashboard\SubjectController;
@@ -13,6 +14,8 @@ use App\Http\Controllers\StudentController;
 use App\Http\Controllers\Dashboard\ClassController;
 use App\Http\Controllers\Dashboard\LogHistoryController;
 use App\Http\Controllers\Dashboard\RoleController;
+use App\Http\Controllers\dashboard\studentReportController;
+use App\Http\Controllers\dashboard\teacherReportController;
 use App\Http\Controllers\Dashboard\TermController;
 use App\Http\Controllers\EvaluationController;
 use App\Http\Controllers\EvaluationScoreStudentController;
@@ -159,9 +162,26 @@ Route::middleware(['auth'])->group(function () {
     Route::put('/class/{id}', [ClassController::class, 'update'])->name('class-update');
     Route::delete('/classes/{id}', [ClassController::class, 'destroy'])->name('classes.destroy');
 
-    Route::get('/evaluations/{evaluation}/scores/{scoreType}/detail', [EvaluationController::class, 'scoreTypeDetail'])
-        ->name('evaluations.scoreType.detail');
+    Route::get('/evaluations/{evaluation}/scores/{scoreType}/detail', [EvaluationController::class, 'scoreTypeDetail'])->name('evaluations.scoreType.detail');
+    Route::post('/evaluations/{evaluation}/scores/save-details', [EvaluationController::class, 'saveDetailedScores'])->name('evaluations.scores.saveDetails');
 
-    Route::post('/evaluations/{evaluation}/scores/save-details', [EvaluationController::class, 'saveDetailedScores'])
-        ->name('evaluations.scores.saveDetails');
+    Route::group(['prefix' => 'report'], function () {
+        // List all terms grouped by admin
+        Route::get('/admin', [adminReportController::class, 'index'])->name('admin-report'); 
+        Route::get('/admin/detail', [adminReportController::class, 'show'])->name('admin-report-detail'); 
+        Route::get('/terms/{generation_id}', [adminReportController::class, 'showTermsBasedonGeneration']);
+        // your route ...................        
+        
+        // List all terms grouped by teacher
+        Route::get('/teacher', [teacherReportController::class, 'index'])->name('teacher-report');  
+        Route::get('/teacher/detail', [teacherReportController::class, 'show'])->name('teacher-report-detail'); 
+
+        // your route ...................       
+        
+        // List all terms grouped by student
+        Route::get('/student', [studentReportController::class, 'show'])->name('student-report');  
+        Route::get('/student/detail', [studentReportController::class, 'show'])->name('student-report-detail'); 
+
+        // your route ...................       
+    });
 });
