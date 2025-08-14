@@ -70,7 +70,6 @@
 
 {{-- custom script --}}
 @section('script')
-<script src="https://res.cloudinary.com/dxfq3iotg/raw/upload/v1569006273/BBBootstrap/choices.min.js?version=7.0.0"></script>
     <script src="{{ asset('dashboard/js/feature/admin_report.js') }}"></script>
 
     <script>

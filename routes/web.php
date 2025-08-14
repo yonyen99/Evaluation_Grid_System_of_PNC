@@ -174,13 +174,11 @@ Route::middleware(['auth'])->group(function () {
         
         // List all terms grouped by teacher
         Route::get('/teacher', [teacherReportController::class, 'index'])->name('teacher-report');  
-        Route::get('/teacher/detail', [teacherReportController::class, 'show'])->name('teacher-report-detail'); 
 
         // your route ...................       
         
         // List all terms grouped by student
-        Route::get('/student', [studentReportController::class, 'show'])->name('student-report');  
-        Route::get('/student/detail', [studentReportController::class, 'show'])->name('student-report-detail'); 
+        Route::get('/student', [studentReportController::class, 'index'])->name('student-report');  
 
         // your route ...................       
     });

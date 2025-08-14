@@ -6,6 +6,23 @@
 {{-- BEGIN:: Table Content --}}
 @section('content')
     <div class="container">
+          <div class="container-fluid border-bottom pb-2 mb-3">
+            <div class="row align-items-center">
+                <div class="col-md-4 text-start">
+                    <h6 class="mb-1">Generation: <span class="fw-normal">{{ $generation->name ?? '-' }}</span></h6>
+                    <h6 class="mb-0">Term: <span class="fw-normal">{{ $term->name ?? '-' }}</span></h6>
+                </div>
+                <div class="col-md-4 text-center">
+                   <img src="https://avpn.asia/wp-content/uploads/2024/02/PN-Round-Logo1.png" alt="User" class="rounded-circle bg-secondary mb-3" width="80" height="80">
+                </div>
+                <div class="col-md-4 text-end">
+                    <h6 class="mb-1">Class: <span class="fw-normal">{{ $class->name ?? '-' }}</span></h6>
+                    <h6 class="mb-0">Date: <span class="fw-normal">{{ \Carbon\Carbon::now()->format('d M Y') }}</span>
+                    </h6>
+                </div>
+
+            </div>
+        </div>
         <!-- Report Table -->
         <div class="card shadow-sm">
             <div class="card-header bg-primary text-white">
