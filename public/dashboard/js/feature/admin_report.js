@@ -1,6 +1,7 @@
 $(document).ready(function () {
     ReportSelectType();
-    showTermsBasedOnGeneration( apiUrl, apiToken )
+    showTermsBasedOnGeneration( apiUrl, apiToken );
+    showClassbasedOnTerm( apiUrl, apiToken )   
 });
 
 /**
@@ -9,22 +10,21 @@ $(document).ready(function () {
  * @return void
  */
 function ReportSelectType() {
-    $('#type').change(function () {
-        const adminTypeReport = $(this).val();
-        let form = document.getElementById('reportForm');
-        switch (adminTypeReport) {
-            case 'subject': 
-                form.action = "";
+    $('#type').on('change', function () {
+        let reportType = $(this).val();
+        switch (reportType) {
+            case 'subject':
+                $('#classContainer').prop('hidden', false); 
                 break;
             case 'class':
+                $('#classContainer').prop('hidden', true); 
                 break;
             default:
-                location.reload();
         }
-    })
+    });
 }
 
-
+// Show Terms based on Generation
 function showTermsBasedOnGeneration( url, PosToken ){
     $('#generation').on('change', function(){
         const geneartionId   = $(this).val(),
@@ -44,6 +44,35 @@ function showTermsBasedOnGeneration( url, PosToken ){
                 termSelect.append('<option value="">Select Term</option>');
                 $.each(response, function (key, term) {
                     termSelect.append('<option value="' + term.id + '">' + term.name + '</option>');
+                });
+            
+            }
+        });
+    });
+    
+}
+
+// Show Classes based on Term
+function showClassbasedOnTerm( url, PosToken ){
+    $('#termSelect').on('change', function(){
+        const termId   = $(this).val(),
+              MainUrl = `${url}/report/class/${termId}`;
+              console.log(MainUrl);
+              
+        $.ajax({
+            url: MainUrl,
+            type: 'GET',
+            data: { _token: PosToken, },
+            error: function (response) {
+                console.log(response);
+                alert('Something went wrong, please try to refresh the page!');
+            },
+            success: function (response) {
+                let classSelect = $('#classSelect');
+                classSelect.empty(); 
+                classSelect.append('<option value="">Select Term</option>');
+                $.each(response, function (key, clas) {
+                    classSelect.append('<option value="' + clas.id + '">' + clas.name + '</option>');
                 });
             
             }

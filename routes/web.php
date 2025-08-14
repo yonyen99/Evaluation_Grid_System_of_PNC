@@ -168,8 +168,8 @@ Route::middleware(['auth'])->group(function () {
     Route::group(['prefix' => 'report'], function () {
         // List all terms grouped by admin
         Route::get('/admin', [adminReportController::class, 'index'])->name('admin-report'); 
-        Route::get('/admin/detail', [adminReportController::class, 'show'])->name('admin-report-detail'); 
         Route::get('/terms/{generation_id}', [adminReportController::class, 'showTermsBasedonGeneration']);
+        Route::get('/class/{terms_id}', [adminReportController::class, 'showClassBasedOnTerm']);
         // your route ...................        
         
         // List all terms grouped by teacher

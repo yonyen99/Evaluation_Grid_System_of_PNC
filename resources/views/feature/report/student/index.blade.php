@@ -45,11 +45,11 @@
 
                     <!-- Buttons -->
                     <div class="col-12 d-flex justify-content-end gap-2 mt-3">
-                        <button type="submit" class="btn btn-success">
-                            <i class="bi bi-check-circle"></i> Submit
-                        </button>
-                        <button type="button" class="btn btn-danger">
+                        <button type="submit" value="dowdoadPdf"  name="action" class="btn btn-danger">
                             <i class="bi bi-file-earmark-pdf"></i> Generate PDF
+                        </button>
+                        <button type="submit" value="submit" name="action" class="btn btn-primary">
+                            <i class="bi bi-check-circle"></i> Submit
                         </button>
                     </div>
 
