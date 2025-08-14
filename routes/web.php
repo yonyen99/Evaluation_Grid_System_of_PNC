@@ -166,10 +166,12 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/evaluations/{evaluation}/scores/save-details', [EvaluationController::class, 'saveDetailedScores'])->name('evaluations.scores.saveDetails');
 
     Route::group(['prefix' => 'report'], function () {
+        // Component routes of report
+            Route::get('/terms/{generation_id}', [adminReportController::class, 'showTermsBasedonGeneration']);
+            Route::get('/class/{terms_id}', [adminReportController::class, 'showClassBasedOnTerm']);
+ 
         // List all terms grouped by admin
         Route::get('/admin', [adminReportController::class, 'index'])->name('admin-report'); 
-        Route::get('/terms/{generation_id}', [adminReportController::class, 'showTermsBasedonGeneration']);
-        Route::get('/class/{terms_id}', [adminReportController::class, 'showClassBasedOnTerm']);
         // your route ...................        
         
         // List all terms grouped by teacher
@@ -180,6 +182,8 @@ Route::middleware(['auth'])->group(function () {
         // List all terms grouped by student
         Route::get('/student', [studentReportController::class, 'index'])->name('student-report');  
 
-        // your route ...................       
+        // your route ...................   
+        
+        
     });
 });
