@@ -5,7 +5,7 @@
 @endsection
 {{-- BEGIN:: Table Content --}}
 @section('content')
-    <div class="container">
+    <div class="container-sm">
         <div class="card shadow-sm">
             <div class="card-header bg-primary text-white">
                 <h5 class="mb-0"><i class="bi bi-funnel"></i> Admin Report Filter</h5>
@@ -15,7 +15,7 @@
                     @csrf
                     <div class="row g-3">
                         <!-- Select Type -->
-                        <div class="col-md-6">
+                        <div class="col-md-12">
                             <label for="type" class="form-label">Type</label>
                             <select class="form-select" id="type" name="type" required>
                                 <option value="">-- Select Type --</option>
@@ -23,9 +23,10 @@
                                 <option value="class">Class</option>
                             </select>
                         </div>
-    
+                    </div>
+                    <div class="row g-3 mt-2" >
                         <!-- Select Generation -->
-                        <div class="col-md-6">
+                        <div class="col-md-4" id="generationContainer" hidden>
                             <label for="generation" class="form-label">Generation</label>
                             <select class="form-select" id="generation" name="generation" required>
                                 <option value="">-- Select Generation --</option>
@@ -34,17 +35,15 @@
                                 @endforeach
                             </select>
                         </div>
-                    </div>
-                    <div class="row g-3 mt-2">
                         <!-- Select Term -->
-                        <div class="col-md-6">
+                        <div class="col-md-4" id="termContainer" hidden>
                             <label for="term" class="form-label">Term</label>
                             <select class="form-select" id="termSelect" name="term" >
                                 <option value="">-- Select Term --</option>
                             </select>
                         </div>
                         <!-- Select class-->
-                        <div class="col-md-6" id="classContainer" >
+                        <div class="col-md-4" id="classContainer" hidden>
                             <label for="class" class="form-label">Class</label>
                             <select class="form-select"  id="classSelect" name="class">
                                 <option value="">-- Select class--</option>

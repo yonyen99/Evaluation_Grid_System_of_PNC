@@ -14,10 +14,14 @@ function ReportSelectType() {
         let reportType = $(this).val();
         switch (reportType) {
             case 'subject':
-                $('#classContainer').prop('hidden', false); 
+                $('#generationContainer').prop('hidden', false);
+                $('#termContainer').prop('hidden', false);
+                $('#classContainer').prop('hidden', false);
                 break;
             case 'class':
                 $('#classContainer').prop('hidden', true); 
+                $('#generationContainer').prop('hidden', false);
+                $('#termContainer').prop('hidden', false);
                 break;
             default:
         }
