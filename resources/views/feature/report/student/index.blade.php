@@ -2,10 +2,12 @@
 @section('page_title', 'Student Report')
 @section('stylesheet')
     <!-- your style.......... -->
+    <style>
+    </style>
 @endsection
 {{-- BEGIN:: Table Content --}}
 @section('content')
-    <div class="container">
+    <div class="container" >
         <div class="card shadow-sm">
             <div class="card-header bg-primary text-white">
                 <h5 class="mb-0"><i class="bi bi-funnel"></i> Admin Report Filter</h5>
