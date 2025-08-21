@@ -14,7 +14,7 @@
                 @csrf
                
                 <div class="row mb-4">
-                     <div class="col-md-4 mb-3">
+                     {{-- <div class="col-md-4 mb-3">
                         <label for="role" class="form-label">Role</label>
                         <select class="form-select" name="role" id="role" required>
                             <option value="" selected hidden></option>
@@ -24,7 +24,7 @@
                                 </option>
                             @endforeach
                         </select>
-                    </div>
+                    </div> --}}
                     <div class="col-md-4">
                         <label for="generation_id" class="form-label">Generation</label>
                         <select name="generation_id" class="form-select" required>
