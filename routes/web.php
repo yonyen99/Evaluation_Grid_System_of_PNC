@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Auth\ForgotPasswordController;
 use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\Auth\LoginController;
@@ -168,24 +169,29 @@ Route::middleware(['auth'])->group(function () {
     // Reoport Route ..
     Route::group(['prefix' => 'report'], function () {
         // Component routes of report
-            Route::get('/terms/{generation_id}', [adminReportController::class, 'showTermsBasedonGeneration']);
-            Route::get('/class/{terms_id}', [adminReportController::class, 'showClassBasedOnTerm']);
-            Route::get('/download-subject-report', [adminReportController::class, 'downloadSubjectReport'])->name('download.subject.report');
- 
+        Route::get('/terms/{generation_id}', [adminReportController::class, 'showTermsBasedonGeneration']);
+        Route::get('/class/{terms_id}', [adminReportController::class, 'showClassBasedOnTerm']);
+        Route::get('/download-subject-report', [adminReportController::class, 'downloadSubjectReport'])->name('download.subject.report');
+
         // List all terms grouped by admin
-        Route::get('/admin', [adminReportController::class, 'index'])->name('admin-report'); 
+        Route::get('/admin', [adminReportController::class, 'index'])->name('admin-report');
         // your route ...................        
-        
+
         // List all terms grouped by teacher
-        Route::get('/teacher', [teacherReportController::class, 'index'])->name('teacher-report');  
+        Route::get('/teacher', [teacherReportController::class, 'index'])->name('teacher-report');
 
         // your route ...................       
-        
+
         // List all terms grouped by student
-        Route::get('/student', [studentReportController::class, 'index'])->name('student-report');  
+        Route::get('/student', [studentReportController::class, 'index'])->name('student-report');
 
         // your route ...................   
-        
-        
+
+
     });
+
+    // Forgot Password Routes
+
+    Route::get('/forgot-password', [ForgotPasswordController::class, 'showForgotPasswordForm'])->name('password.request');
+    Route::post('/forgot-password', [ForgotPasswordController::class, 'sendResetLinkEmail'])->name('password.email');
 });
