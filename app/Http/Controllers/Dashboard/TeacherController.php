@@ -19,17 +19,23 @@ class TeacherController extends Controller
     public function index(Request $request)
     {
         $query = Teacher::query();
+
+        // Search filter
         if ($request->filled('search')) {
             $query->where(function ($q) use ($request) {
                 $q->where('first_name', 'like', '%' . $request->search . '%')
-                    ->orWhere('last_name', 'like', '%' . $request->search . '%');
+                ->orWhere('last_name', 'like', '%' . $request->search . '%');
             });
         }
 
-        $teachers = $query->get();
+        // Order + paginate + keep query params
+        $teachers = $query->orderBy('first_name')
+                        ->paginate(10)
+                        ->appends($request->query());
 
         return view('feature.teacher.index', compact('teachers'));
     }
+
 
     /**
      * Show the form for creating a new teacher.

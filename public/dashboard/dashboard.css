@@ -16726,10 +16726,10 @@ hr {
   margin-top: 5px;
 }
 .hover-active:hover {
-    background-color:  #ff0000 !important;
+    background-color:  #ffffff !important;
 }
 .nav-link-hover.active {
-    background-color:  #ff0000  !important;
+    background-color:  #ffffff  !important;
     color: white !important;
 }
 

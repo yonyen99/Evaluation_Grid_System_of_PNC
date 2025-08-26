@@ -14,14 +14,14 @@ use Illuminate\Support\Facades\Hash;
 
 class StudentController extends Controller
 {
-    public function index(Request $request)
+   public function index(Request $request)
     {
         $query = Student::query();
 
         if ($request->filled('search')) {
             $query->where(function ($q) use ($request) {
                 $q->where('first_name', 'like', '%' . $request->search . '%')
-                    ->orWhere('last_name', 'like', '%' . $request->search . '%');
+                ->orWhere('last_name', 'like', '%' . $request->search . '%');
             });
         }
 
@@ -37,7 +37,12 @@ class StudentController extends Controller
             $query->where('gender', $request->gender);
         }
 
-        $students = $query->with('generation')->get();
+        $query->with('generation');
+
+        $query->orderBy('first_name'); // or 'id', 'last_name', etc.
+
+        $students = $query->paginate(10)->appends($request->query());
+
         $generations = Generation::all();
         $provinces = Province::all();
 

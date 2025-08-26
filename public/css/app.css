@@ -60,8 +60,8 @@ main {
 }
 
 .nav-link-hover.active {
-    background-color: #000000 !important;
-    color: #ffffff !important;
+    background-color: #ffffff !important;
+    color: #000000 !important;
     font-weight: 600;
 }
 
