@@ -178,7 +178,7 @@ Route::middleware(['auth'])->group(function () {
         
         // List all terms grouped by teacher
         Route::get('/teacher', [teacherReportController::class, 'index'])->name('teacher-report');  
-
+        
         // your route ...................       
         
         // List all terms grouped by student

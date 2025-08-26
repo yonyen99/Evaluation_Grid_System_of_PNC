@@ -8,7 +8,7 @@
     <div class="container">
         <div class="card shadow-sm">
             <div class="card-header bg-primary text-white">
-                <h5 class="mb-0"><i class="bi bi-funnel"></i> Admin Report Filter</h5>
+                <h5 class="mb-0"><i class="bi bi-funnel"></i> Teacher Report Filter</h5>
             </div>
             <div class="card-body">
                 <form id="reportForm" method="GET">
@@ -19,8 +19,8 @@
                             <label for="type" class="form-label">Type</label>
                             <select class="form-select" id="type" name="type" required>
                                 <option value="">-- Select Type --</option>
-                                <option value="subject">Subject</option>
-                                <option value="class">Class</option>
+                                <option value="teaching_assigment">Teaching Assigments</option>
+                                <option value="student_performance">Student Performance</option>
                             </select>
                         </div>
 
@@ -35,28 +35,12 @@
                             </select>
                         </div>
                     </div>
-                    <div class="row g-3 mt-2">
-                        <!-- Select Term -->
-                        <div class="col-md-6">
-                            <label for="term" class="form-label">Term</label>
-                            <select class="form-select" id="termSelect" name="term">
-                                <option value="">-- Select Term --</option>
-                            </select>
-                        </div>
-                        <!-- Select class-->
-                        <div class="col-md-6" id="classContainer">
-                            <label for="class" class="form-label">Class</label>
-                            <select class="form-select" id="classSelect" name="class">
-                                <option value="">-- Select class--</option>
-                            </select>
-                        </div>
-                    </div>
 
                     <!-- Buttons -->
                     <div class="col-12 d-flex justify-content-end gap-2 mt-3">
-                        <button type="submit" value="dowdoadPdf" name="action" class="btn btn-danger">
+                        {{-- <button type="submit" value="dowdoadPdf" name="action" class="btn btn-danger">
                             <i class="bi bi-file-earmark-pdf"></i> Generate PDF
-                        </button>
+                        </button> --}}
                         <button type="submit" value="submit" name="action" class="btn btn-primary">
                             <i class="bi bi-check-circle"></i> Submit
                         </button>
@@ -70,10 +54,5 @@
 
 {{-- custom script --}}
 @section('script')
-    <script src="{{ asset('dashboard/js/feature/teacher_report.js') }}"></script>
 
-    <script>
-        const apiUrl = "{!! url('') !!}",
-            apiToken = "{!! csrf_token() !!}";
-    </script>
 @endsection
