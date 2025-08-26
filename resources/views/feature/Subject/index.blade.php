@@ -175,6 +175,9 @@
 
 
         </div>
+        <div class="mt-4">
+            {{ $subjects->links() }}
+        </div>
     </div>
     <!-- your ui-->
     </div>

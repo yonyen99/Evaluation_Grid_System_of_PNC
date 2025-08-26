@@ -7,23 +7,21 @@
 {{-- BEGIN:: Table Content --}}
 @section('content')
     <div class="row">
-  <!-- Title with full-width border and button aligned right -->
-    <div class="col-md-12 position-relative mt-5 mb-3">
-        <h4 class="title">Generation List</h4>
-        @can('create generation')
-            <a href="{{ route('generation-add') }}"
-            class="btn btn-primary d-flex align-items-center position-absolute"
-            style="top: -2px; right: 20px;">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-                    fill="currentColor" class="bi bi-plus-circle-fill me-2"
-                    viewBox="0 0 16 16">
-                    <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M8.5 4.5a.5.5 0 0 0-1 0v3h-3a.5.5 0 0 0 0 1h3v3a.5.5 0 0 0 1 0v-3h3a.5.5 0 0 0 0-1h-3z"/>
-                </svg>
-                New Generattion
-            </a>
-        @endcan
-    </div>
-
+    <!-- Title with full-width border and button aligned right -->
+        <div class="col-md-12 position-relative mt-5 mb-3">
+            <h4 class="title">Generation List</h4>
+            @can('create generation')
+                <a href="{{ route('generation-add') }}"
+                class="btn btn-primary d-flex align-items-center position-absolute"
+                style="top: -2px; right: 20px;">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                        fill="currentColor" class="bi bi-plus-circle-fill me-2"
+                        viewBox="0 0 16 16">
+                        <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M8.5 4.5a.5.5 0 0 0-1 0v3h-3a.5.5 0 0 0 0 1h3v3a.5.5 0 0 0 1 0v-3h3a.5.5 0 0 0 0-1h-3z"/>
+                    </svg>
+                    New Generattion
+                </a>
+            @endcan
         </div>
         <!-- Filter Form -->
         <form action="{{ route('generation') }}" method="GET" class=" filter-card shadow-sm mb-4 p-3 mt-2">
@@ -120,6 +118,9 @@
                     </div>
                 </div>
             </div>
+        </div>
+        <div class="mt-4">
+            {{ $generations->links() }}
         </div>
 
     </div>

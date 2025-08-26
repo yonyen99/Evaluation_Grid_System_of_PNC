@@ -177,8 +177,12 @@
                     </div>
                 </div>
             </div>
+           
 
-
+        </div>
+        <!-- Pagination -->
+        <div class="mt-4">
+            {{ $teachers->links() }}
         </div>
     </div>
     </div>

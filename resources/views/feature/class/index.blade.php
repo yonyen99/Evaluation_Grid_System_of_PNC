@@ -180,5 +180,8 @@
                 </div>
             </div>
         </div>
+        <div class="mt-4">
+            {{ $classes->links() }}
+        </div>
     </div>
 @endsection
