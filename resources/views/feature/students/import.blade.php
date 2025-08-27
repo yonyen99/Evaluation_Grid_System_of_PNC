@@ -12,20 +12,8 @@
             <h3 class="title mt-5">Create Student</h3>
               <form action="{{ route('importCsvStudent') }}" method="POST" enctype="multipart/form-data" >
                 @csrf
-               
                 <div class="row mb-4">
-                     <div class="col-md-4 mb-3">
-                        <label for="role" class="form-label">Role</label>
-                        <select class="form-select" name="role" id="role" required>
-                            <option value="" selected hidden></option>
-                            @foreach ($roles as $role)
-                                <option value="{{ $role->id }}" data-name="{{ $role->name }}">
-                                    {{ $role->name }}
-                                </option>
-                            @endforeach
-                        </select>
-                    </div>
-                    <div class="col-md-4">
+                    <div class="col-md-6">
                         <label for="generation_id" class="form-label">Generation</label>
                         <select name="generation_id" class="form-select" required>
                             <option value="">Select Generation </option>
@@ -37,7 +25,7 @@
                             @endforeach
                         </select>
                     </div>
-                     <div class="col-md-4">
+                     <div class="col-md-6">
                         <label for="file" class="form-label">Excel</label>
                        <div class="border border-secondary rounded p-1 d-flex align-items-center " style="cursor: pointer;"
                            onclick="document.getElementById('importCsv').click();">

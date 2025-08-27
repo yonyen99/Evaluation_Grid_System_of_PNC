@@ -7,6 +7,7 @@ use App\Models\Generation;
 use App\Models\LogHistory;
 use App\Models\Province;
 use App\Models\User;
+use App\Models\Role;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -266,11 +267,8 @@ class StudentController extends Controller
             'importCsv' => 'required|file|mimes:csv,txt',
         ]);
 
-        $role = User::getRole($request['role']);
-        if (!$role->data) {
-            return back()->with('error', $role->message);
-        }
-        $role = $role->data;
+        $role = Role::where('name', 'Student')->first();
+        $role = $role->name;
 
         DB::beginTransaction();
 
@@ -282,6 +280,7 @@ class StudentController extends Controller
         
         foreach ($data as $row) {
             $rowData = array_combine($header, $row);
+            $province_id = Province::where('name', $rowData['province'])->value('id');
             // Example: insert into generations table
             $student = student::create([
                 'student_id'    => $rowData['student_id'],
@@ -290,7 +289,7 @@ class StudentController extends Controller
                 'last_name'     => $rowData['last_name'],
                 'gender'        => $rowData['gender'],
                 'email'         => $rowData['email'],
-                'province_id'   => $rowData['province'],
+                'province_id'   => $province_id,
                 'phone'         => $rowData['phone'],
                 'password'      => Hash::make($rowData['password']),
                 'generation_id' => $request['generation_id'],
