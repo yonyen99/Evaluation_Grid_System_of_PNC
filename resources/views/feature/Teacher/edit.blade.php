@@ -20,6 +20,11 @@
 
                         <div class="row">
                             <div class="col-md-4 mb-3">
+                                <label for="username" class="form-label">Username</label>
+                                <input type="text" minlength="2" maxlength="30" class="form-control" name="username"
+                                    id="username" value="{{ $user->username }}" required>
+                            </div>
+                            <div class="col-md-4 mb-3">
                                 <label for="first_name" class="form-label">First Name *</label>
                                 <input type="text" name="first_name" class="form-control" placeholder="first_name" value="{{ $teacher->first_name }}"  id="firstname">
                             </div>
@@ -28,36 +33,19 @@
                                 <label for="last_name" class="form-label">Last Name *</label>
                                 <input type="text" name="last_name" class="form-control" placeholder="last_name" value="{{ $teacher->last_name }}" id="lastname">
                             </div>
-
-                            <!-- roles -->
-                            <div class="col-md-4 mb-3">
-                                <label for="role" class="form-label">Select Role</label>
-                                <select class="form-select" name="role" id="role" required>
-                                    <option value="{{ $user->roles->first()->id }}" selected hidden>
-                                        {{ $user->roles->first()->name }}
-                                    </option>
-                                    @foreach ($roles as $role)
-                                        <option value="{{ $role->id }}">{{ $role->name }}</option>
-                                    @endforeach
-                                </select>
-                            </div>
                         </div>
 
                         <div class="row">
                             <!-- username -->
-                            <div class="col-md-4 mb-3">
-                                <label for="username" class="form-label">Username</label>
-                                <input type="text" minlength="2" maxlength="30" class="form-control" name="username"
-                                    id="username" value="{{ $user->username }}" required>
-                            </div>
-                            <div class="col-md-4 mb-3">
+                           
+                            <div class="col-md-6 mb-3">
                                 <label for="email" class="form-label">Email *</label>
                                 <input type="email" name="email" class="form-control" placeholder="email" value="{{ $teacher->email }}" id="email">
                             </div>
-                            <div class="col-md-4 mb-3">
+                            <div class="col-md-6 mb-3">
                                 <label for="phone" class="form-label">Phone *</label>
                                 <input type="tel" name="phone" class="form-control" placeholder="phone" value="{{ $teacher->phone }}" required>
-                            </div>
+                            </div>  
                         </div>
 
                         <div class="row">

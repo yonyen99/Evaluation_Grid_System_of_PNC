@@ -14,30 +14,18 @@
                     id="color-form" enctype="multipart/form-data">
                     @csrf
                     <div class="row">
-                        <div class="col-md-3">
+                        <div class="col-md-4">
                             <label for="username" class="form-label">username*</label>
                             <input type="tel" name="username" class="form-control" placeholder="username" required>
                         </div>
-                        <div class="col-md-3 mb-3">
+                        <div class="col-md-4 mb-3">
                             <label for="first_name" class="form-label">First Name *</label>
                             <input type="text" name="first_name" class="form-control" placeholder="first_name" required>
                         </div>
-                        <div class="col-md-3 mb-3">
+                        <div class="col-md-4 mb-3">
                             <label for="last_name" class="form-label">Last Name *</label>
                             <input type="text" name="last_name" class="form-control" placeholder="last_name" required>
-                        </div>
-                        <!-- roles -->
-                        <div class="col-md-3 mb-3">
-                            <label for="role" class="form-label">Role</label>
-                            <select class="form-select" name="role" id="role" required>
-                                <option value="" selected hidden></option>
-                                @foreach ($roles as $role)
-                                    <option value="{{ $role->id }}" data-name="{{ $role->name }}">
-                                        {{ $role->name }}
-                                    </option>
-                                @endforeach
-                            </select>
-                        </div>
+                        </div>                      
                     </div>
 
                     <div class="row">

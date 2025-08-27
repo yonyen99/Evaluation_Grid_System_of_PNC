@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\LogHistory;
 use App\Models\Teacher;
 use App\Models\User;
+use App\Models\Role;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -42,14 +43,7 @@ class TeacherController extends Controller
      */
     public function create()
     {
-        // get role records
-        $roles = User::getRoles();
-        if (!$roles->data) {
-            return back()->with('error', $roles->message);
-        }
-        $roles = $roles->data;
-
-        return view('feature.teacher.add', compact('roles'));
+        return view('feature.teacher.add');
     }
 
     /**
@@ -57,11 +51,8 @@ class TeacherController extends Controller
      */
     public function store(Request $request)
     {
-        $role = User::getRole($request['role']);
-        if (!$role->data) {
-            return back()->with('error', $role->message);
-        }
-        $role = $role->data;
+        $role = Role::where('name', 'Teacher')->first();
+        $role = $role->name;
 
         $request->validate([
             'first_name' => 'required|string',
@@ -132,13 +123,6 @@ class TeacherController extends Controller
      */
     public function edit($id)
     {
-        // get role records
-        $roles = User::getRoles();
-        if (!$roles->data) {
-            return back()->with('error', $roles->message);
-        }
-        $roles = $roles->data;
-
         $response = Teacher::getTeacherById($id);
         if (!$response->data) {
             return back()->with('error', $response->message);
@@ -156,7 +140,7 @@ class TeacherController extends Controller
             'description'     => 'Teacher [ ' . ucwords($teacher->first_name) . ' ] was updated on [ ' . Carbon::now() . ' ] by ' . $currentUser->username . ' user',
         ]);
         $logHistory->save();
-        return view('feature.teacher.edit', compact('teacher', 'user', 'roles'));
+        return view('feature.teacher.edit', compact('teacher', 'user'));
     }
 
     /**
@@ -164,36 +148,23 @@ class TeacherController extends Controller
      */
     public function update(Request $request, $id)
     {
+    
         $response = Teacher::getTeacherById($id);
         if (!$response->data) {
             return back()->with('error', $response->message);
         }
         $teacher = $response->data;
-
+      
         // Get user record
         $user = User::where('teacher_id', $id)->first();
         if (!$user) {
             return back()->with('error', 'User linked to this teacher not found.');
         }
-
+       
         // Get role record
-        $roleResponse = User::getRole($request->role);
-        if (!$roleResponse->data) {
-            return back()->with('error', $roleResponse->message);
-        }
-        $role = $roleResponse->data;
-
-        // Validate request
-        $request->validate([
-            'first_name' => 'required|string|max:255',
-            'last_name'  => 'required|string|max:255',
-            'username'   => 'required|string|max:255',
-            'email'      => "required|email|unique:teachers,email,{$id}",
-            'phone'      => 'nullable|string|max:20',
-            'profile'    => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-            'password'   => 'nullable|string|min:6|confirmed',
-        ]);
-
+        $role = Role::where('name', 'Teacher')->first();
+        $role = $role->name;
+        
         try {
             DB::beginTransaction();
 
@@ -202,16 +173,16 @@ class TeacherController extends Controller
             if ($request->hasFile('profile')) {
                 $filePath = $request->file('profile')->store('profiles', 'public');
             }
-
+           
             // Update teacher
-            $teacher->username   = $request->username;
-            $teacher->first_name = $request->first_name;
+            $teacher->username   = $request['username'];
+            $teacher->first_name = $request['first_name'];
             $teacher->last_name  = $request->last_name;
             $teacher->email      = $request->email;
             $teacher->phone      = $request->phone;
             $teacher->profile    = $filePath;
             $teacher->save();
-
+          
             // Update user
             $user->username   = $request->username;
             $user->firstname  = $request->first_name;

@@ -47,11 +47,7 @@ class adminReportController extends Controller
                $logHistory->save();
                return view('feature.report.admin.detail', compact('generationName','termName','className','correntDate','userName','subjects','adminType'));
             }else{
-               $subjectDate = Report::getSubjectReport($generationId, $termId, $classId);
-               $generationName = $subjectDate->generation;
-               $termName       = $subjectDate->term;
-               $className      = $subjectDate->class;
-               $subjects       = $subjectDate->subject;
+
                $logHistory  = new LogHistory([
                   'log_header'      => 'create admin_report',
                   'permission_slug' => 'view admin_report',

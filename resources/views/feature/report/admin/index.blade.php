@@ -1,4 +1,4 @@
-@extends('layout.app')
+    `@extends('layout.app')
 @section('page_title', 'Admin Report')
 @section('stylesheet')
 

@@ -99,5 +99,27 @@ class PermissionsTableSeeder extends Seeder
 
         $adminUser = User::where('email', env('ADMIN_EMAIL'))->get()->first();
         $adminUser->assignRole('admin');
+       
+        // Get the Teacher role
+        $teacherRole = Role::where('name', 'Teacher')->first();
+        // Get all permissions except the ones you don’t want
+        $teacherPermissions = Permission::whereNotIn('name', [
+            'view system_user',
+            'view role',
+            'view admin_report',
+            'view student_report'
+        ])->get();
+
+        // Give permissions to Teacher role
+        $teacherRole->givePermissionTo($teacherPermissions);
+
+       // Get the Student role
+        $studentRole = Role::where('name', 'Student')->first();
+        if ($studentRole) {
+            // Give permissions to Student Role
+            $studentRole->givePermissionTo([
+                'view student_report'
+            ]);
+        }
     }
 }
