@@ -21,10 +21,38 @@ use App\Http\Controllers\EvaluationController;
 use App\Http\Controllers\EvaluationScoreStudentController;
 use App\Http\Controllers\GridTypeController;
 use GuzzleHttp\Middleware;
+use App\Http\Controllers\Auth\ForgotPasswordController;
+use App\Http\Controllers\Auth\ResetPasswordController;
 
 // Login Routes (Accessible without authentication)
 Route::get('/login', [LoginController::class, 'showLogin'])->name('login')->middleware('guest');
 Route::post('/login', [LoginController::class, 'login'])->middleware('guest');
+
+
+// Show forgot password form
+Route::get('/forgot-password', [ForgotPasswordController::class, 'showForgotForm'])->name('password.request');
+
+// Send reset link
+Route::post('/forgot-password', [ForgotPasswordController::class, 'sendResetLinkEmail'])->name('password.email');
+
+// Show reset password form
+Route::get('/reset-password/{token}', [ResetPasswordController::class, 'showResetForm'])->name('password.reset');
+
+// Handle new password submission
+Route::post('/reset-password', [ResetPasswordController::class, 'reset'])->name('password.update');
+
+
+
+// Route for forget password
+// Route::get('/forget-password', [ForgetPasswordManager::class, 'forgetPassword'])
+//     ->name('forget.password');
+// Route::post('/forget-password', [ForgetPasswordManager::class, 'forgetPasswordPost'])
+//     ->name('forget.password.post');
+// Route::get('/reset-password/{token}', [ForgetPasswordManager::class, 'resetPassword'])
+//     ->name('reset.password');
+// Route::post('/reset-password', [ForgetPasswordManager::class, 'resetPasswordPost'])
+//     ->name('reset.password.post');
+
 
 // Routes requiring authentication
 Route::middleware(['auth'])->group(function () {
@@ -168,24 +196,27 @@ Route::middleware(['auth'])->group(function () {
     // Reoport Route ..
     Route::group(['prefix' => 'report'], function () {
         // Component routes of report
-            Route::get('/terms/{generation_id}', [adminReportController::class, 'showTermsBasedonGeneration']);
-            Route::get('/class/{terms_id}', [adminReportController::class, 'showClassBasedOnTerm']);
-            Route::get('/download-subject-report', [adminReportController::class, 'downloadSubjectReport'])->name('download.subject.report');
- 
+        Route::get('/terms/{generation_id}', [adminReportController::class, 'showTermsBasedonGeneration']);
+        Route::get('/class/{terms_id}', [adminReportController::class, 'showClassBasedOnTerm']);
+        Route::get('/download-subject-report', [adminReportController::class, 'downloadSubjectReport'])->name('download.subject.report');
+
         // List all terms grouped by admin
-        Route::get('/admin', [adminReportController::class, 'index'])->name('admin-report'); 
+        Route::get('/admin', [adminReportController::class, 'index'])->name('admin-report');
         // your route ...................        
-        
+
         // List all terms grouped by teacher
-        Route::get('/teacher', [teacherReportController::class, 'index'])->name('teacher-report');  
-        
+        Route::get('/teacher', [teacherReportController::class, 'index'])->name('teacher-report');
+
         // your route ...................       
-        
+
         // List all terms grouped by student
-        Route::get('/student', [studentReportController::class, 'index'])->name('student-report');  
+        Route::get('/student', [studentReportController::class, 'index'])->name('student-report');
 
         // your route ...................   
-        
-        
+
+
     });
+
+    // Forgot Password Routes
+
 });
