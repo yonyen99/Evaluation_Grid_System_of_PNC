@@ -96,8 +96,9 @@
                                         </td>
                                         <td class="text-center">
                                             @if ($student->profile)
-                                                <img src="{{ asset('storage/' . $student->profile) }}" width="50"
-                                                    height="50" class="rounded-circle student-profile-img"
+                                                <img src="{{ asset('storage/' . $student->profile) }}" 
+                                                    width="50" height="50" 
+                                                    class="rounded-circle student-profile-img"
                                                     alt="{{ $student->first_name }}">
                                             @else
                                                 <div class="no-image-placeholder">
@@ -179,8 +180,7 @@
                                             <div class="empty-state">
                                                 <i class="bi bi-people display-1 text-muted mb-3"></i>
                                                 <h5 class="text-muted">No students found</h5>
-                                                <p class="text-muted">There are no students matching your search criteria.
-                                                </p>
+                                                <p class="text-muted">There are no students matching your search criteria.</p>
                                             </div>
                                         </td>
                                     </tr>
@@ -191,5 +191,10 @@
                 </div>
             </div>
         </div>
+        <!-- Pagination -->
+        <div class="mt-4">
+            {{ $students->appends(request()->query())->links() }}
+        </div>
+
     </div>
 @endsection

@@ -6,8 +6,8 @@ use App\Models\Student;
 use App\Models\Generation;
 use App\Models\LogHistory;
 use App\Models\Province;
-use App\Models\Role;
 use App\Models\User;
+use App\Models\Role;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -15,14 +15,14 @@ use Illuminate\Support\Facades\Hash;
 
 class StudentController extends Controller
 {
-    public function index(Request $request)
+   public function index(Request $request)
     {
         $query = Student::query();
 
         if ($request->filled('search')) {
             $query->where(function ($q) use ($request) {
                 $q->where('first_name', 'like', '%' . $request->search . '%')
-                    ->orWhere('last_name', 'like', '%' . $request->search . '%');
+                ->orWhere('last_name', 'like', '%' . $request->search . '%');
             });
         }
 
@@ -38,7 +38,12 @@ class StudentController extends Controller
             $query->where('gender', $request->gender);
         }
 
-        $students = $query->with('generation')->get();
+        $query->with('generation');
+
+        $query->orderBy('first_name'); // or 'id', 'last_name', etc.
+
+        $students = $query->paginate(10)->appends($request->query());
+
         $generations = Generation::all();
         $provinces = Province::all();
 
@@ -47,23 +52,15 @@ class StudentController extends Controller
 
     public function create()
     {
-        $roles = User::getRoles();
-        if (!$roles->data) {
-            return back()->with('error', $roles->message);
-        }
-        $roles = $roles->data;
-
         $provinces = Province::all();
         $generations = Generation::all();
-        return view('feature.students.add', compact('provinces', 'generations', 'roles'));
+        return view('feature.students.add', compact('provinces', 'generations'));
     }
 
     public function store(Request $request)
     {
-        // dd(request()->all());
         // Validate input
         $request->validate([
-            'student_id'    => 'required|string|unique:students,student_id',
             'first_name'    => 'required|string|max:255',
             'last_name'     => 'required|string|max:255',
             'password'      => 'required|string|min:6',
@@ -75,23 +72,20 @@ class StudentController extends Controller
             'generation_id' => 'required|exists:generations,id',
             'profile'       => 'nullable|image|max:2048', // max 2MB
         ]);
-
         // Handle profile image upload if exists
         $profilePath = null;
         if ($request->hasFile('profile')) {
             $profilePath = $request->file('profile')->store('profiles', 'public');
         }
 
-        $role = User::getRole($request['role']);
-        if (!$role->data) {
-            return back()->with('error', $role->message);
-        }
-        $role = $role->data;
-        // dd(Hash::make($request->password));
+        $role = Role::where('name', 'Student')->first();
+        $role = $role->name;
+
+        $generation = generation::where('id',$request->generation_id)->first();
 
         // Create student
         $student = Student::create([
-            'student_id'    => $request->student_id,
+            'student_id'    => $generation->name,
             'first_name'    => $request->first_name,
             'last_name'     => $request->last_name,
             'gender'        => $request->gender,
@@ -103,8 +97,9 @@ class StudentController extends Controller
             'generation_id' => $request->generation_id,
             'profile'       => $request->profile,
         ]);
-
         $student->save();
+        $student->student_id = $generation->name. 00 .$student->id;
+        $student->update();
         $user = new User([
             'lastname'          => $request->last_name,
             'firstname'         => $request->first_name,
@@ -321,16 +316,10 @@ class StudentController extends Controller
             'importCsv' => 'required|file|mimes:csv,txt',
         ]);
 
-        // $role = User::getRole($request['role']);
-        // if (!$role->data) {
-        //     return back()->with('error', $role->message);
-        // }
-        // $role = $role->data;
-
-        $role = Role::where('name', 'student')->first();
+        $role = Role::where('name', 'Student')->first();
         $role = $role->name;
-        $generation = Generation::getGenerationById($request['generation_id']);
-        $ganerationName  = $generation->data->name;
+
+        $generation = generation::where('id', $request['generation_id'])->first();
 
         DB::beginTransaction();
 
@@ -339,13 +328,15 @@ class StudentController extends Controller
         $header = array_map('trim', $data[0]); // First row = header
         unset($data[0]); // Remove header
 
-
-        foreach ($data as $key => $row) {
+        
+        foreach ($data as $key=> $row) {
+            
             $rowData = array_combine($header, $row);
+            $province_id = Province::where('name', $rowData['province'])->value('id');
             // Example: insert into generations table
             $province_id = Province::where('name', $rowData['province'])->value('id');
             $student = student::create([
-                'student_id' => $ganerationName . '-' . '00' . $key,
+                'student_id'    => $generation->name,
                 'username'      => $rowData['username'],
                 'first_name'    => $rowData['first_name'],
                 'last_name'     => $rowData['last_name'],
@@ -358,7 +349,9 @@ class StudentController extends Controller
                 'profile'       => null,
             ]);
             $student->save();
-            $user = User::create([
+            $student->student_id  = $generation->name. 00 .$student->id;
+            $student->update();
+            $user= User::create([
                 'lastname'          => $rowData['last_name'],
                 'firstname'         => $rowData['first_name'],
                 'email'             => $rowData['email'],

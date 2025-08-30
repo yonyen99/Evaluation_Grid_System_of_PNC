@@ -25,20 +25,23 @@ class ClassController extends Controller
         $query = Classe::query();
 
         if ($request->filled('search')) {
-            $query->where(function ($q) use ($request) {
-                $q->where('name', 'like', '%' . $request->search . '%');
-            });
+            $query->where('name', 'like', '%' . $request->search . '%');
         }
 
         if ($request->filled('generation_id')) {
             $query->where('generation_id', $request->generation_id);
         }
 
-        $classes = $query->with('generation')->orderBy('id', 'desc')->get();
+        $classes = $query->with('generation')
+                        ->orderBy('name')
+                        ->paginate(10) // ✅ pagination
+                        ->appends($request->query());
+
         $generations = Generation::all();
 
         return view('feature.class.index', compact('classes', 'generations'));
     }
+
     public function getTermsByGeneration($generationId)
     {
         $terms = Term::where('generation_id', $generationId)->get();

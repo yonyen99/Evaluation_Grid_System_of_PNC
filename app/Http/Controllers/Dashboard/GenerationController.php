@@ -20,18 +20,21 @@ class GenerationController extends Controller
      */
     public function index(Request $request)
     {
-        $allGenerations = Generation::all(); // for the dropdown
+        $allGenerations = Generation::all(); // for dropdown
 
-        // Pass filters (from query params)
-        $result = Generation::getGenerations([
-            'generation_id' => $request->input('generation_id'),
-        ]);
+        // Build query manually instead of getGenerations()
+        $query = Generation::query();
 
-        if (!$result->data) {
-            return back()->with('error', $result->message);
+        // Apply filter if generation_id is given
+        if ($request->filled('generation_id')) {
+            $query->where('id', $request->input('generation_id'));
         }
 
-        $generations = $result->data;
+        // Order by latest (optional, you can adjust)
+        $query->orderBy('id', 'desc');
+
+        // Paginate (10 per page) & keep query params for filters
+        $generations = $query->paginate(10)->appends($request->query());
 
         return view('feature.generation.index', compact('generations', 'allGenerations'));
     }
