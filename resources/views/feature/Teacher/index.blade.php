@@ -97,25 +97,6 @@
                                         <td>{{ $teacher->first_name }}</td>
                                         <td class="">{{ $teacher->last_name }}</td>
                                         <td>{{ $teacher->phone }}</td>
-                                        {{-- <td class="text-center">
-                                            @can('edit teacher')
-                                                <a class="btn btn-sm btn-primary ms-1"
-                                                    href="{{ url("teacher/$teacher->id/edit") }}" title="Edit">
-                                                    <i class="bi bi-pencil-square"></i>
-                                                </a>
-                                            @endcan
-                                            @can('delete teacher')
-                                                <form class="d-inline delete-form" method="POST"
-                                                    action="{{ route('teacher-delete', ['id' => $teacher->id]) }}">
-                                                    @csrf
-                                                    @method('delete')
-                                                    <button type="submit" class="btn btn-sm btn-danger" title="Delete">
-                                                        <i class="bi bi-trash-fill"></i>
-                                                    </button>
-                                                </form>
-                                            @endcan
-                                        </td> --}}
-
                                         <td class="py-3 d-flex justify-content-center align-items-center">
                                             <div class="dropdown d-flex justify-content-center gap-2">
                                                 <button
@@ -152,10 +133,6 @@
 
                                                 </ul>
                                             </div>
-
-
-
-
                                         </td>
                                     </tr>
                                 @endforeach

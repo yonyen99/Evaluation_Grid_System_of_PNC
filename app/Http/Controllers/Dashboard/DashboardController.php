@@ -29,4 +29,19 @@ class DashboardController extends Controller
         $totalClassesCurrentYears  = count($classes);
         return view('index',compact('totalStudentCurrentYears','totalTeacherCurrentYears','totalClassesCurrentYears'));
     }
+
+    /**
+     * Update profile beased on user 
+     * @param $corrent user id
+     * @return \Illuminate\Http\Response
+     */
+    public function updateProfile($id){
+        $user = User::find($id);
+        if ($request->hasFile('profile')) {
+            $filePath = $request->file('profile')->store('profile', 'public');
+            $user->profile = $filePath;
+        }
+        $user->update();
+        return view ('index');
+    }
 }

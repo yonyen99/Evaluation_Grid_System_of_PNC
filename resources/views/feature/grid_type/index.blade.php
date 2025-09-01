@@ -13,29 +13,34 @@
                 {{ strtoupper(optional($class->term)->name ?? 'NO TERM') }} -
                 {{ strtoupper(optional($class->generation)->name ?? 'NO GENERATION') }} FOLLOWUP
             </h4>
-
-            {{-- Class Filter --}}
-            <form method="GET" class="mb-3">
-                <div class="row g-2 align-items-center">
-                    <div class="col-auto">
-                        <label for="classSelector" class="col-form-label fw-bold">Select Class:</label>
-                    </div>
-                    <div class="col-auto">
-                        <select id="classSelector" class="form-select" onchange="onClassChange(this)">
-                            @foreach (\App\Models\Classe::with('generation')->get() as $c)
-                                <option value="{{ route('grid-types.index', $c->id) }}"
-                                    {{ $class->id == $c->id ? 'selected' : '' }}>
-                                    {{ $c->name }} ({{ $c->generation->name }})
-                                </option>
-                            @endforeach
-                        </select>
-                    </div>
+            <div class="row">
+                <div class="col-md-6">
+                    {{-- Class Filter --}}
+                    <form method="GET" class="mb-3">
+                        <div class="row g-2 align-items-center">
+                            <div class="col-auto">
+                                <label for="classSelector" class="col-form-label fw-bold">Select Class:</label>
+                            </div>
+                            <div class="col-auto">
+                                <select id="classSelector" class="form-select" onchange="onClassChange(this)">
+                                    @foreach (\App\Models\Classe::with('generation')->get() as $c)
+                                        <option value="{{ route('grid-types.index', $c->id) }}"
+                                            {{ $class->id == $c->id ? 'selected' : '' }}>
+                                            {{ $c->name }} ({{ $c->generation->name }})
+                                        </option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+                    </form>
                 </div>
-            </form>
+                <div class="col-md-6">
+                    <a href="{{ route('grid-types.export', ['classId' => $class->id]) }}" class="btn btn-success mb-3 float-end">
+                    ⬇️ Export Grid Types CSV
+                    </a>
+                </div>
+            </div>
             
-            <a href="{{ route('grid-types.export', ['classId' => $class->id]) }}" class="btn btn-success mb-3">
-                ⬇️ Export Grid Types CSV
-            </a>
             {{-- Subject Tabs --}}
             <ul class="nav nav-tabs mb-3" id="subjectTab" role="tablist">
                 @foreach ($subjects as $index => $subject)
