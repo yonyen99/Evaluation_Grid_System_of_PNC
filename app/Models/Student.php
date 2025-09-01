@@ -20,6 +20,7 @@ class Student extends Model
         'username',
         'phone',
         'password',
+        'db',
     ];
     // Each student belongs to one province
     public function province()
@@ -39,5 +40,10 @@ class Student extends Model
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function studentDetail()
+    {
+        return $this->hasOne(studentDetail::class);
     }
 }
