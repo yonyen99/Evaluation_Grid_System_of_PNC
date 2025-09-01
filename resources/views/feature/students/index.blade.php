@@ -118,24 +118,6 @@
                                         <td class="text-center">
                                             <span class="generation-name">{{ $student->generation->name ?? 'N/A' }}</span>
                                         </td>
-                                        {{-- <td class="text-center">
-                                        <div class="d-flex justify-content-center gap-1">
-                                            @can('edit student')
-                                                <a href="{{ url("student/$student->id/edit") }}" class="btn btn-sm btn-primary">
-                                                    <i class="bi bi-pencil-square"></i>
-                                                </a>
-                                            @endcan
-                                            @can('delete student')
-                                                <form action="{{ route('student-delete', $student->id) }}" method="POST" class="d-inline delete-form">
-                                                    @csrf
-                                                    @method('DELETE')
-                                                    <button type="submit" class="btn btn-sm btn-delete ">
-                                                        <i class="bi bi-trash3"></i>
-                                                    </button>
-                                                </form>
-                                            @endcan
-                                        </div>
-                                    </td> --}}
                                         <td class="py-3 d-flex justify-content-center align-items-center">
                                             <div class="dropdown d-flex justify-content-center gap-1">
                                                 <button

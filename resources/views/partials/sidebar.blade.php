@@ -21,19 +21,28 @@
                     </a>
                 </li>
             @endcan
-            @can('view student')
-                <li>
-                    <a href="{{ route('student') }}"
-                    class="nav-link text-white nav-link-hover {{ request()->routeIs('student') ? 'active' : '' }}">
-                        <i class="bi bi-person-circle me-2"></i> Student
-                    </a>
-                </li>
-            @endcan
+           
             @can('view term')
                 <li>
                     <a href="{{ route('term.index') }}"
                     class="nav-link text-white nav-link-hover {{ request()->routeIs('term.index') ? 'active' : '' }}">
                         <i class="bi bi-calendar-event me-2"></i> Term
+                    </a>
+                </li>
+            @endcan
+            @can('view class')
+                <li>
+                    <a href="{{ route('class') }}"
+                    class="nav-link text-white nav-link-hover {{ request()->routeIs('class') ? 'active' : '' }}">
+                        <i class="bi bi-people-fill me-2"></i> Class
+                    </a>
+                </li>
+            @endcan
+            @can('view subject')
+                <li>
+                    <a href="{{ route('subject') }}"
+                    class="nav-link text-white nav-link-hover {{ request()->routeIs('subject') ? 'active' : '' }}">
+                        <i class="bi bi-book me-2"></i> Subject
                     </a>
                 </li>
             @endcan
@@ -53,19 +62,12 @@
                     </a>
                 </li>
             {{-- @endcan --}}
-            @can('view class')
+          
+            @can('view student')
                 <li>
-                    <a href="{{ route('class') }}"
-                    class="nav-link text-white nav-link-hover {{ request()->routeIs('class') ? 'active' : '' }}">
-                        <i class="bi bi-people-fill me-2"></i> Class
-                    </a>
-                </li>
-            @endcan
-            @can('view subject')
-                <li>
-                    <a href="{{ route('subject') }}"
-                    class="nav-link text-white nav-link-hover {{ request()->routeIs('subject') ? 'active' : '' }}">
-                        <i class="bi bi-book me-2"></i> Subject
+                    <a href="{{ route('student') }}"
+                    class="nav-link text-white nav-link-hover {{ request()->routeIs('student') ? 'active' : '' }}">
+                        <i class="bi bi-person-circle me-2"></i> Student
                     </a>
                 </li>
             @endcan

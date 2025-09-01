@@ -58,6 +58,7 @@ Route::post('/reset-password', [ResetPasswordController::class, 'reset'])->name(
 Route::middleware(['auth'])->group(function () {
     Route::get('/', [DashboardController::class, 'index'])->name('home');
     Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
+    Route::patch('/{id}/profile', [DashboardController::class ,'updateProfile'])->name('update-profile');
 
     // Log History Router [BEGIN]
     Route::group([
