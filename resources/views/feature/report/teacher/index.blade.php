@@ -21,6 +21,9 @@
                                 <option value="">-- Select Type --</option>
                                 <option value="teaching_assigment">Teaching Assigments</option>
                                 <option value="student_performance">Student Performance</option>
+                                <option value="score_management">Score Management</option>
+                                <option value="retake_exams">Retake exams</option>
+
                             </select>
                         </div>
 
