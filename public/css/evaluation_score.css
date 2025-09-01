@@ -1,10 +1,10 @@
-/* public/dashboard/css/evaluation_score.css */
-
+/* Disable editing on readonly inputs */
 input[readonly] {
     background-color: #f2f2f2;
     cursor: not-allowed;
 }
 
+/* Score table header */
 .score-header {
     width: 60px;
     font-size: 13px;
@@ -13,34 +13,41 @@ input[readonly] {
     text-overflow: ellipsis;
     vertical-align: middle;
     padding: 4px;
+    position: relative;
 }
 
+/* Checkbox always visible */
 .checkbox-hover {
-    display: none;
+    display: block; /* always show */
 }
 
-.score-header:hover .checkbox-hover {
-    display: block;
-}
-
+/* Bold & clear checkbox */
 .small-checkbox {
-    width: 16px;
-    height: 16px;
-    opacity: 0.5;
+    width: 20px;               /* bigger */
+    height: 20px;
+    opacity: 1;                /* full visibility */
+    accent-color: #212529;     /* dark checkmark */
+    border: 2px solid #000;    /* bold border */
+    border-radius: 4px;        /* slightly rounded */
     cursor: pointer;
+    transform: scale(1.05);    /* subtle enlargement */
 }
 
+/* Small link in header */
 .small-link {
     font-size: 12px;
     display: block;
 }
 
+/* Table alignment */
 th,
 td {
     vertical-align: middle;
 }
 
+/* Smaller form control inside cells */
 .form-control-sm {
     padding: 2px 4px;
     font-size: 13px;
+    text-align: center;
 }
