@@ -1,5 +1,5 @@
 @extends('layout.app')
-@section('page_title', 'Teacher Report')
+@section('page_title', 'Admin Report')
 @section('stylesheet')
     <!-- your style.......... -->
 @endsection
@@ -8,7 +8,7 @@
     <div class="container">
         <div class="card shadow-sm">
             <div class="card-header bg-primary text-white">
-                <h5 class="mb-0"><i class="bi bi-funnel"></i> Teacher Report Filter</h5>
+                <h5 class="mb-0"><i class="bi bi-funnel"></i> Admin Report Filter</h5>
             </div>
             <div class="card-body">
                 <form id="reportForm" method="GET">

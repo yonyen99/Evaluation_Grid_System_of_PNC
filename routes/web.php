@@ -58,6 +58,7 @@ Route::post('/reset-password', [ResetPasswordController::class, 'reset'])->name(
 Route::middleware(['auth'])->group(function () {
     Route::get('/', [DashboardController::class, 'index'])->name('home');
     Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
+    Route::patch('/{id}/profile', [DashboardController::class ,'updateProfile'])->name('update-profile');
 
     // Log History Router [BEGIN]
     Route::group([
@@ -110,12 +111,14 @@ Route::middleware(['auth'])->group(function () {
     Route::group(['prefix' => 'student'], function () {
         Route::get('/', [StudentController::class, 'index'])->name('student');
         Route::get('/add', [StudentController::class, 'create'])->name('student-add');
+        
         Route::post('/create', [StudentController::class, 'store'])->name('student-create');
         Route::get('{id}/edit', [StudentController::class, 'edit'])->name('student-edit');
         Route::patch('{id}/edit', [StudentController::class, 'update'])->name('student-update');
         Route::delete('{id}', [StudentController::class, 'destroy'])->name('student-delete');
         Route::get('/import', [StudentController::class, 'importform'])->name('importForm');
         Route::post('/import', [StudentController::class, 'studentImport'])->name('importCsvStudent');
+        Route::get('/{id}/detail', [StudentController::class, 'studentDetail'])->name('studentShow');
     });
 
     // Subject 

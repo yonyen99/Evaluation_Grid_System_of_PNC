@@ -21,14 +21,7 @@
                     </a>
                 </li>
             @endcan
-            @can('view student')
-                <li>
-                    <a href="{{ route('student') }}"
-                    class="nav-link text-white nav-link-hover {{ request()->routeIs('student') ? 'active' : '' }}">
-                        <i class="bi bi-person-circle me-2"></i> Student
-                    </a>
-                </li>
-            @endcan
+           
             @can('view term')
                 <li>
                     <a href="{{ route('term.index') }}"
@@ -37,22 +30,6 @@
                     </a>
                 </li>
             @endcan
-            @can('view grid')
-                <li>
-                    <a href="{{ route('grid-types.latest') }}"
-                    class="nav-link text-white nav-link-hover {{ request()->routeIs('grid-types.index') ? 'active' : '' }}">
-                        <i class="bi bi-grid me-2"></i> Grid Type
-                    </a>
-                </li>
-            @endcan
-            {{-- @can('view evaluation') --}}
-                <li>
-                    <a href="{{ route('evaluations.index') }}"
-                    class="nav-link text-white nav-link-hover {{ request()->routeIs('evaluations.index') ? 'active' : '' }}">
-                        <i class="bi bi-graph-up me-2"></i> Evaluation
-                    </a>
-                </li>
-            {{-- @endcan --}}
             @can('view class')
                 <li>
                     <a href="{{ route('class') }}"
@@ -66,6 +43,31 @@
                     <a href="{{ route('subject') }}"
                     class="nav-link text-white nav-link-hover {{ request()->routeIs('subject') ? 'active' : '' }}">
                         <i class="bi bi-book me-2"></i> Subject
+                    </a>
+                </li>
+            @endcan
+            @can('view grid')
+                <li>
+                    <a href="{{ route('grid-types.latest') }}"
+                    class="nav-link text-white nav-link-hover {{ request()->routeIs('grid-types.index') ? 'active' : '' }}">
+                        <i class="bi bi-grid me-2"></i> Assessment 
+                    </a>
+                </li>
+            @endcan
+            {{-- @can('view evaluation') --}}
+                <li>
+                    <a href="{{ route('evaluations.index') }}"
+                    class="nav-link text-white nav-link-hover {{ request()->routeIs('evaluations.index') ? 'active' : '' }}">
+                        <i class="bi bi-graph-up me-2"></i> Evaluation
+                    </a>
+                </li>
+            {{-- @endcan --}}
+          
+            @can('view student')
+                <li>
+                    <a href="{{ route('student') }}"
+                    class="nav-link text-white nav-link-hover {{ request()->routeIs('student') ? 'active' : '' }}">
+                        <i class="bi bi-person-circle me-2"></i> Student
                     </a>
                 </li>
             @endcan
