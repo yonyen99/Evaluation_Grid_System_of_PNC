@@ -12,18 +12,11 @@ use Illuminate\Support\Facades\Auth;
 
 class studentReportController extends Controller
 {
-    public function index(Request $request)
+    public function index()
     {
         $user = Auth::user();
         $student_id = $user->student_id;
-        $generations = Generation::all();
-        $generation_id = $request->input('generation');
-        $term_id       = $request->input('term');
-        $class_id      = $request->input('class');
 
-        $student_id = Auth::user()->student_id;
-
-        // === Get the student's classes/subjects for the selected filters ===
         $subjectsQuery = DB::table('grid_types as gt')
             ->join('subject_grids as sg', 'gt.subject_grid_id', '=', 'sg.id')
             ->join('subjects as sub', 'sg.subject_id', '=', 'sub.id')
@@ -31,12 +24,10 @@ class studentReportController extends Controller
             ->join('terms as t', 'c.term_id', '=', 't.id')
             ->join('generations as g', 'c.generation_id', '=', 'g.id')
             ->where('gt.student_id', $student_id)
-            ->when($generation_id, fn($q) => $q->where('g.id', $generation_id))
-            ->when($term_id, fn($q) => $q->where('t.id', $term_id))
-            ->when($class_id, fn($q) => $q->where('c.id', $class_id))
             ->select(
                 'sub.id as subject_id',
                 'sub.name as subject_name',
+                'sg.grid_name as grid_name',
                 'c.id as class_id',
                 'c.name as class_name',
                 't.id as term_id',
@@ -50,36 +41,29 @@ class studentReportController extends Controller
             ->get();
 
         $performance = [];
+        $termTotals = [];
 
         foreach ($subjectsQuery as $subject) {
             $score = $subject->has_evaluation ? $subject->total_evaluation : $subject->value;
-            $status = $score >= 50 ? 'Passed' : 'Failed'; // example pass mark 50
+            $status = $score >= 50 ? 'Passed' : 'Failed';
 
             $performance[$subject->term_name][$subject->class_name][] = [
                 'subject_name' => $subject->subject_name,
+                'grid_name'    => $subject->grid_name,
                 'score'        => $score,
                 'status'       => $status,
-                'needs_retake' => $score < 50 ? true : false
+                'needs_retake' => $score < 50
             ];
+
+            // Calculate term totals
+            $termTotals[$subject->term_name]['total_score'] = ($termTotals[$subject->term_name]['total_score'] ?? 0) + $score;
+            $termTotals[$subject->term_name]['subject_count'] = ($termTotals[$subject->term_name]['subject_count'] ?? 0) + 1;
+            $termTotals[$subject->term_name]['percentage'] = round($termTotals[$subject->term_name]['total_score'] / $termTotals[$subject->term_name]['subject_count'], 2);
         }
 
-        // === Filters for dropdowns ===
-        $generations = Generation::all();
-        $terms       = $generation_id ? Term::where('generation_id', $generation_id)->get() : collect();
-        $classes     = ($generation_id && $term_id) ? Classe::where('generation_id', $generation_id)->where('term_id', $term_id)->get() : collect();
-
-        return view('feature.report.student.index', compact(
-            'performance',
-            'generations',
-            'terms',
-            'classes',
-            'generation_id',
-            'term_id',
-            'class_id',
-        ));
-
-        return view('feature.report.student.index', compact('generations'));
+        return view('feature.report.student.index', compact('performance', 'termTotals'));
     }
+
     
 
     /**
