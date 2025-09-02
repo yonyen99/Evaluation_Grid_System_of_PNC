@@ -222,7 +222,7 @@
 
                 <!-- Submit Buttons -->
                 <div class="d-flex justify-content-between gap-3">
-                    <a href="{{ route('class') }}" class="btn btn-cancel px-4"> 
+                    <a href="{{ route('class') }}" class="btn btn-cancel px-4">
                         <i class="bi bi-chevron-left me-1"></i> Cancel </a>
                     <button type="submit" class="btn btn-primary px-4"><i class="bi bi-check-lg me-1"></i>Create
                         Class</button>
@@ -238,15 +238,22 @@
         const subjectTeacherWrapper = document.getElementById('subject-teacher-wrapper');
         const addRowBtn = document.getElementById('add-row');
 
+        // Add new subject-teacher row
         addRowBtn.addEventListener('click', function() {
             const firstGroup = subjectTeacherWrapper.querySelector('.subject-teacher-group');
             const clone = firstGroup.cloneNode(true);
 
-            // Reset selects
+            // Reset dropdowns
             clone.querySelectorAll('select').forEach(select => select.selectedIndex = 0);
+
+            // Reset remove button class to be consistent
+            const removeBtn = clone.querySelector('button');
+            removeBtn.classList.add('btn-remove-row');
+
             subjectTeacherWrapper.appendChild(clone);
         });
 
+        // Remove subject-teacher row
         document.addEventListener('click', function(e) {
             if (e.target.closest('.btn-remove-row')) {
                 const groups = document.querySelectorAll('.subject-teacher-group');
@@ -256,13 +263,11 @@
             }
         });
 
-        // Load terms dynamically based on selected generation
-        document.getElementById('generation_id').addEventListener('change', function() {
+        // Load terms dynamically when generation changes
+        document.getElementById('generation_id')?.addEventListener('change', function() {
             const generationId = this.value;
             const termSelect = document.getElementById('term_id');
-
-            // Clear old options
-            termSelect.innerHTML = '<option value="" disabled selected>-- Select Term --</option>';
+            termSelect.innerHTML = '<option value="" disabled selected>Select Term</option>';
 
             if (generationId) {
                 fetch(`/get-terms/${generationId}`)
@@ -282,4 +287,5 @@
             }
         });
     </script>
+
 @endsection
