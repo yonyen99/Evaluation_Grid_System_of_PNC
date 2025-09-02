@@ -50,7 +50,7 @@
                 <li>
                     <a href="{{ route('grid-types.latest') }}"
                     class="nav-link text-white nav-link-hover {{ request()->routeIs('grid-types.index') ? 'active' : '' }}">
-                        <i class="bi bi-grid me-2"></i> Grid Type
+                        <i class="bi bi-grid me-2"></i> Assessment 
                     </a>
                 </li>
             @endcan
