@@ -22,6 +22,15 @@
 @section('content')
     <div class="container">
 
+        <div class="col-md-3">
+            <button type="button" class="btn btn-primary mt-4 mb-2">
+                
+                <a href="{{ route('student-report') }}" class="text-white text-decoration-none">
+                    Back 
+                </a>
+            </button>
+        </div>
+
         {{-- Detailed Personal Performance --}}
         @if($performance ?? false)
             <!-- Performance Table -->
