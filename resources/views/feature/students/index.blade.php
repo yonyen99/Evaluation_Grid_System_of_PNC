@@ -33,8 +33,6 @@
             @endcan
         </div>
 
-
-
         <!-- Filter Form -->
         <form action="{{ route('student') }}" method="GET" class="card filter-card p-3 shadow-sm mb-4">
             <div class="row align-items-end p-2">
@@ -126,10 +124,16 @@
                                                     aria-expanded="false" style="width: 36px; height: 36px;">
                                                     <i class="text-center bi bi-three-dots-vertical fs-5"></i>
                                                 </button>
-                                                <ul class="dropdown-menu dropdown-menu-end shadow-lg border-0 rounded-3 py-3"
+                                                <ul class="dropdown-menu dropdown-menu-end shadow-lg "
                                                     aria-labelledby="actionsDropdown{{ $student->id }}"
                                                     style="min-width: 160px;">
-
+                                                    @can('edit student')
+                                                        <a href="{{ url("student/$student->id/detail") }}"
+                                                            class="btn btn-sm btn-primary dropdown-item d-flex align-items-center gap-2">
+                                                            <i class="bi bi-file-earmark-text"></i> 
+                                                            Detail Information
+                                                        </a>
+                                                    @endcan
                                                     @can('edit student')
                                                         <a href="{{ url("student/$student->id/edit") }}"
                                                             class="btn btn-sm btn-primary dropdown-item d-flex align-items-center gap-2">

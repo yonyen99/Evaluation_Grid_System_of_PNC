@@ -16,7 +16,7 @@
                 enctype="multipart/form-data">
                 @csrf
                 <div class="row mb-3">
-                      <div class="col-md-4">
+                    <div class="col-md-4">
                         <label for="email" class="form-label">Email Address</label>
                         <input type="email" name="email" class="form-control" value="{{ old('email') }}" required>
                     </div>

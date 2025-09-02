@@ -249,67 +249,6 @@ class StudentController extends Controller
         return view('feature.students.import', compact('provinces', 'generations', 'roles'));
     }
 
-    /**
-     * import csv
-     */
-    // public function studentImport(Request $request){
-    //     $request->validate([
-    //         'importCsv' => 'required|file|mimes:csv,txt',
-    //     ]);
-
-    //     $role = User::getRole($request['role']);
-    //     if (!$role->data) {
-    //         return back()->with('error', $role->message);
-    //     }
-    //     $role = $role->data;
-
-    //     DB::beginTransaction();
-
-    //     $file = $request->file('importCsv');
-    //     $data = array_map('str_getcsv', file($file));
-    //     $header = array_map('trim', $data[0]); // First row = header
-    //     unset($data[0]); // Remove header
-
-
-    //     foreach ($data as $row) {
-    //         $rowData = array_combine($header, $row);
-    //         // Example: insert into generations table
-    //         $student = student::create([
-    //             'student_id'    => $rowData['student_id'],
-    //             'username'      => $rowData['username'],
-    //             'first_name'    => $rowData['first_name'],
-    //             'last_name'     => $rowData['last_name'],
-    //             'gender'        => $rowData['gender'],
-    //             'email'         => $rowData['email'],
-    //             'province_id'   => $rowData['province'],
-    //             'phone'         => $rowData['phone'],
-    //             'password'      => Hash::make($rowData['password']),
-    //             'generation_id' => $request['generation_id'],
-    //             'profile'       => null,
-    //         ]);
-    //         $student->save();
-    //         $user= User::create([
-    //             'lastname'          => $rowData['last_name'],
-    //             'firstname'         => $rowData['first_name'],
-    //             'email'             => $rowData['email'],
-    //             'phone'             => $rowData['phone'],
-    //             'username'          => $rowData['username'],
-    //             'password'          => Hash::make($rowData['password']),
-    //             'profile'           => null,
-    //             'teacher_id'        => null,
-    //             'student_id'        => $student->id,
-    //             'email_verified_at' => Carbon::now()->toDateTimeString(),
-    //             'display'           => 'student',
-    //         ]);
-    //         $user->save();
-    //         // attach user with role
-    //         $user->assignRole($role);
-    //     }
-    //     DB::commit();
-    //     return redirect()->route('student')->with('success', 'CSV imported successfully!.');
-    // }
-
-
     public function studentImport(Request $request)
     {
         $request->validate([
@@ -318,8 +257,6 @@ class StudentController extends Controller
 
         $role = Role::where('name', 'Student')->first();
         $role = $role->name;
-
-        $generation = generation::where('id', $request['generation_id'])->first();
 
         DB::beginTransaction();
 
@@ -333,10 +270,9 @@ class StudentController extends Controller
             
             $rowData = array_combine($header, $row);
             $province_id = Province::where('name', $rowData['province'])->value('id');
-            // Example: insert into generations table
-            $province_id = Province::where('name', $rowData['province'])->value('id');
+
             $student = student::create([
-                'student_id'    => $generation->name,
+                'student_id'    => $rowData['studentid'],
                 'username'      => $rowData['username'],
                 'first_name'    => $rowData['first_name'],
                 'last_name'     => $rowData['last_name'],
@@ -347,10 +283,9 @@ class StudentController extends Controller
                 'password'      => Hash::make($rowData['password']),
                 'generation_id' => $request['generation_id'],
                 'profile'       => null,
+                'db'            => $rowData['bate_of_birth'],
             ]);
             $student->save();
-            $student->student_id  = $generation->name. 00 .$student->id;
-            $student->update();
             $user= User::create([
                 'lastname'          => $rowData['last_name'],
                 'firstname'         => $rowData['first_name'],
@@ -370,5 +305,11 @@ class StudentController extends Controller
         }
         DB::commit();
         return redirect()->route('student')->with('success', 'CSV imported successfully!.');
+    }
+
+    public function studentDetail($id)
+    {
+        $student = Student::find($id);
+        return view('feature.students.detail',compact('student'));
     }
 }
