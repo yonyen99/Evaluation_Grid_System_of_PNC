@@ -29,7 +29,10 @@ class Subject extends Model
      */
     protected $fillable = [
         'name',
-        'description'
+        'description',
+        'subject_type',
+        'credit',
+        'nbhours'
     ];
 
     public function grids()
