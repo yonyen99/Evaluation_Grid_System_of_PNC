@@ -57,7 +57,9 @@ class GenerationController extends Controller
     {
         // Validate input
         $request->validate([
-            'name'          => 'required|string|max:255',
+            'name'          => 'required|string|max:255|unique:generations,name',
+            'start_year'    => 'required|integer|min:2000|max:2100',
+            'end_year'      => 'required|integer|gte:start_year|max:2100',
             'term_name'     => 'required|array|min:1',
             'term_name.*'   => 'required|string|max:50',
             'start_date'    => 'nullable|array',
@@ -69,9 +71,11 @@ class GenerationController extends Controller
         try {
             DB::beginTransaction();
 
-            // Create Generation
+            // Create Generation with year range
             $generation = Generation::create([
-                'name' => $request->input('name'),
+                'name'       => $request->input('name'),
+                'start_year' => $request->input('start_year'),
+                'end_year'   => $request->input('end_year'),
             ]);
 
             // Create Terms with start_date and end_date
@@ -106,6 +110,7 @@ class GenerationController extends Controller
             return back()->with('error', 'Failed to create generation. Please try again!');
         }
     }
+
 
     /**
      * Display the specified resource.
@@ -159,7 +164,9 @@ class GenerationController extends Controller
 
         // Validate input
         $request->validate([
-            'name'          => 'required|string|max:255',
+            'name'          => 'required|string|max:255|unique:generations,name,' . $generation->id,
+            'start_year'    => 'required|integer|min:2000|max:2100',
+            'end_year'      => 'required|integer|gte:start_year|max:2100',
             'term_name'     => 'required|array|min:1',
             'term_name.*'   => 'required|string|max:50',
             'term_id'       => 'nullable|array',
@@ -172,9 +179,12 @@ class GenerationController extends Controller
         try {
             DB::beginTransaction();
 
-            // Update generation name
-            $generation->name = $request->input('name');
-            $generation->update();
+            // Update generation fields
+            $generation->update([
+                'name'       => $request->input('name'),
+                'start_year' => $request->input('start_year'),
+                'end_year'   => $request->input('end_year'),
+            ]);
 
             // Delete removed terms
             $deletedIds = explode(',', $request->input('deleted_term_ids', ''));
@@ -182,7 +192,7 @@ class GenerationController extends Controller
                 Term::whereIn('id', $deletedIds)->delete();
             }
 
-            // Update existing and newly added terms
+            // Update existing and add new terms
             $termNames  = $request->input('term_name', []);
             $termIds    = $request->input('term_id', []);
             $startDates = $request->input('start_date', []);
@@ -212,7 +222,7 @@ class GenerationController extends Controller
             }
 
             DB::commit();
-            return redirect()->route('generation')->with('200', 'Generation and terms updated successfully!');
+            return redirect()->route('generation')->with('success', 'Generation and terms updated successfully!');
         } catch (\Throwable $th) {
             DB::rollBack();
             return back()->with('error', 'Something went wrong during update!');

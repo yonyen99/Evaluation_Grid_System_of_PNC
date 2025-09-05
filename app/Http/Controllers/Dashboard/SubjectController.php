@@ -41,24 +41,36 @@ class SubjectController extends Controller
 
     /**
      * store data into database
-     * @return \\illuminate\Http\response
+     * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
     {
+        $request->validate([
+            'name'         => 'required|string|max:255',
+            'subject_type' => 'required|in:IT Training,General Training',
+            'credit'       => 'required|numeric|min:0',
+            'nbhours'      => 'required|numeric|min:0',
+            'grids'        => 'required|array|min:1',
+            'grids.*.name' => 'required|string|max:255',
+            'grids.*.percentage' => 'required|numeric|min:0|max:100',
+        ]);
 
         try {
             DB::beginTransaction();
 
             $subject = Subject::create([
-                'name' => $request->name,
-                'description' => $request->description,
+                'name'         => $request->name,
+                'subject_type' => $request->subject_type,
+                'credit'       => $request->credit,
+                'nbhours'      => $request->nbhours,
+                'description'  => $request->description ?? null,
             ]);
 
             foreach ($request->grids as $grid) {
                 SubjectGrid::create([
-                    'subject_id' => $subject->id,
-                    'grid_name' => $grid['name'],
-                    'percentage' => $grid['percentage']
+                    'subject_id'  => $subject->id,
+                    'grid_name'   => $grid['name'],
+                    'percentage'  => $grid['percentage']
                 ]);
             }
 
@@ -66,30 +78,21 @@ class SubjectController extends Controller
 
             $currentUser = auth()->user();
             $logHistory  = new LogHistory([
-                'log_header'      => 'create role',
-                'permission_slug' => 'view role_history',
+                'log_header'      => 'create subject',
+                'permission_slug' => 'view subject_history',
                 'username'        => $currentUser->username,
                 'user_id'         => $currentUser->id,
                 'description'     => 'Subject [ ' . ucwords($subject->name) . ' ] was created on [ ' . Carbon::now() . ' ] by ' . $currentUser->username . ' user',
             ]);
             $logHistory->save();
+
             return redirect('subject')->with('success', 'Subject created successfully.');
         } catch (\Throwable $th) {
             DB::rollBack();
             return back()->with('error', 'Problem occurred while trying to create subject.');
         }
-        DB::commit();
-        $currentUser = auth()->user();
-        $logHistory  = new LogHistory([
-            'log_header'      => 'create role',
-            'permission_slug' => 'view role_history',
-            'username'        => $currentUser->username,
-            'user_id'         => $currentUser->id,
-            'description'     => 'Subject [ ' . ucwords($subject->name) . ' ] was created on [ ' . Carbon::now() . ' ] by ' . $currentUser->username . ' user',
-        ]);
-        $logHistory->save();
-        return redirect('subject');
     }
+
 
     /**
      * Display form update.
@@ -116,11 +119,21 @@ class SubjectController extends Controller
     }
 
     /**
-     * Update data to DB\
-     *@return \\illuminate\Http\response
+     * Update data to DB
+     * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
     {
+        $request->validate([
+            'name'         => 'required|string|max:255',
+            'subject_type' => 'required|in:IT Training,General Training',
+            'credit'       => 'required|numeric|min:0',
+            'nbhours'      => 'required|numeric|min:0',
+            'grids'        => 'required|array|min:1',
+            'grids.*.name' => 'required|string|max:255',
+            'grids.*.percentage' => 'required|numeric|min:0|max:100',
+        ]);
+
         $subject = Subject::getSubject($id);
         if (!$subject->data) {
             return back()->with('error', $subject->message);
@@ -130,22 +143,23 @@ class SubjectController extends Controller
             DB::beginTransaction();
 
             $subject = $subject->data;
-            $subject->name = $request->name;
-            $subject->description = $request->description;
+            $subject->name         = $request->name;
+            $subject->subject_type = $request->subject_type;
+            $subject->credit       = $request->credit;
+            $subject->nbhours      = $request->nbhours;
+            $subject->description  = $request->description ?? null;
             $subject->save();
 
             // Delete old grids
             SubjectGrid::where('subject_id', $subject->id)->delete();
 
             // Add new grids
-            if ($request->has('grids')) {
-                foreach ($request->grids as $grid) {
-                    SubjectGrid::create([
-                        'subject_id' => $subject->id,
-                        'grid_name' => $grid['name'],
-                        'percentage' => $grid['percentage']
-                    ]);
-                }
+            foreach ($request->grids as $grid) {
+                SubjectGrid::create([
+                    'subject_id' => $subject->id,
+                    'grid_name'  => $grid['name'],
+                    'percentage' => $grid['percentage']
+                ]);
             }
 
             DB::commit();
@@ -155,6 +169,7 @@ class SubjectController extends Controller
             return back()->with('error', 'Problem occurred while trying to update subject.');
         }
     }
+
 
     /**
      * Delete test from DB\

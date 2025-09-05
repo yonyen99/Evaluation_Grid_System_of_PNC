@@ -28,6 +28,8 @@ class Generation extends Model
      */
     protected $fillable = [
         'name',
+        'start_year',
+        'end_year'
     ];
 
 

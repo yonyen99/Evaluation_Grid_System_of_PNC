@@ -1,81 +1,94 @@
 @extends('layout.app')
-@section('page_title', 'Student Report')
+@section('page_title', 'Personal Performance')
+
 @section('stylesheet')
-    <!-- your style.......... -->
     <style>
+        .btn-action {
+            margin: 0 2px;
+        }
+
+        .table thead th {
+            background: #f1f1f1;
+            text-align: center;
+        }
+
+        .table tbody td {
+            text-align: center;
+            vertical-align: middle;
+        }
+        .term-summary {
+            font-weight: bold;
+            background: #f8f9fa;
+            padding: 10px;
+            border-top: 1px solid #dee2e6;
+        }
     </style>
 @endsection
-{{-- BEGIN:: Table Content --}}
+
 @section('content')
-    <div class="container" >
-        <div class="card shadow-sm">
-            <div class="card-header bg-primary text-white">
-                <h5 class="mb-0"><i class="bi bi-funnel"></i> Admin Report Filter</h5>
-            </div>
-            <div class="card-body">
-                <form id="reportForm" method="GET">
-                    @csrf
-                    <div class="row g-3">
-                        <!-- Select Type -->
-                        <div class="col-md-6">
-                            <label for="type" class="form-label">Type</label>
-                            <select class="form-select" id="type" name="type" required>
-                                <option value="">-- Select Type --</option>
-                                <option value="subject">Subject</option>
-                                <option value="class">Class</option>
-                            </select>
-                        </div>
+    <div class="container">
 
-                        <!-- Select Generation -->
-                        <div class="col-md-6">
-                            <label for="generation" class="form-label">Generation</label>
-                            <select class="form-select" id="generation" name="generation" required>
-                                <option value="">-- Select Generation --</option>
-                                @foreach ($generations as $generation)
-                                    <option value="{{ $generation->id }}">{{ $generation->name }}</option>
-                                @endforeach
-                            </select>
-                        </div>
+        {{-- Detailed Personal Performance --}}
+        @if(!empty($performance))
+            @foreach($performance as $termName => $classes)
+                <div class="card mb-4">
+                    <div class="card-header bg-primary text-white">
+                        Term: {{ $termName }}
                     </div>
-                    <div class="row g-3 mt-2">
-                        <!-- Select Term -->
-                        <div class="col-md-6">
-                            <label for="term" class="form-label">Term</label>
-                            <select class="form-select" id="termSelect" name="term">
-                                <option value="">-- Select Term --</option>
-                            </select>
-                        </div>
-                        <!-- Select class-->
-                        <div class="col-md-6" id="classContainer">
-                            <label for="class" class="form-label">Class</label>
-                            <select class="form-select" id="classSelect" name="class">
-                                <option value="">-- Select class--</option>
-                            </select>
-                        </div>
-                    </div>
+                    <div class="card-body p-0">
+                        @foreach($classes as $className => $subjects)
+                            <h5 class="p-3 mb-0 bg-light">{{ $className }}</h5>
+                            <table class="table table-hover mb-3">
+                                <thead>
+                                    <tr>
+                                        <th>Subject</th>
+                                        <th>Grid Name</th>
+                                        <th>Score</th>
+                                        <th>Status</th>
+                                        <th>Retake Needed</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach($subjects as $subject)
+                                        <tr>
+                                            <td>{{ $subject['subject_name'] }}</td>
+                                            <td>{{ $subject['grid_name'] }}</td>
+                                            <td>{{ $subject['score'] }}</td>
+                                            <td>
+                                                @if($subject['status'] == 'Passed')
+                                                    <span class="badge bg-success">Passed</span>
+                                                @else
+                                                    <span class="badge bg-danger">Failed</span>
+                                                @endif
+                                            </td>
+                                            <td>
+                                                @if($subject['needs_retake'])
+                                                    <span class="text-danger">Yes</span>
+                                                @else
+                                                    <span class="text-success">No</span>
+                                                @endif
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        @endforeach
 
-                    <!-- Buttons -->
-                    <div class="col-12 d-flex justify-content-end gap-2 mt-3">
-                        <button type="submit" value="dowdoadPdf" name="action" class="btn btn-danger">
-                            <i class="bi bi-file-earmark-pdf"></i> Generate PDF
-                        </button>
-                        <button type="submit" value="submit" name="action" class="btn btn-primary">
-                            <i class="bi bi-check-circle"></i> Submit
-                        </button>
+                        {{-- Term Summary --}}
+                        @if(isset($termTotals[$termName]))
+                            <div class="term-summary">
+                                Total Score: {{ $termTotals[$termName]['total_score'] }}pt |
+                                Percentage: {{ $termTotals[$termName]['percentage'] }}%
+                            </div>
+                        @endif
                     </div>
-                </form>
+                </div>
+            @endforeach
+        @else
+            <div class="alert alert-info">
+                No performance data found.
             </div>
-        </div>
+        @endif
+
     </div>
-@endsection
-{{-- END:: Table Content --}}
-
-{{-- custom script --}}
-@section('script')
-    <script src="{{ asset('dashboard/js/feature/student_report.js') }}"></script>
-
-    <script>
-        const apiUrl = "{!! url('') !!}",
-            apiToken = "{!! csrf_token() !!}";
-    </script>
 @endsection

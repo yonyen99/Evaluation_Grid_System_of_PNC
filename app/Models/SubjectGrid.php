@@ -15,5 +15,8 @@ class SubjectGrid extends Model
         return $this->belongsTo(Subject::class);
     }
 
-    
+    public function gridType()
+    {
+        return $this->hasMany(GridType::class, 'subject_grid_id');
+    }
 }

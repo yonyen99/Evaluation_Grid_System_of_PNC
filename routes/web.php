@@ -23,6 +23,7 @@ use App\Http\Controllers\GridTypeController;
 use GuzzleHttp\Middleware;
 use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\Auth\ResetPasswordController;
+use App\Http\Controllers\TranscriptController;
 
 // Login Routes (Accessible without authentication)
 Route::get('/login', [LoginController::class, 'showLogin'])->name('login')->middleware('guest');
@@ -58,7 +59,7 @@ Route::post('/reset-password', [ResetPasswordController::class, 'reset'])->name(
 Route::middleware(['auth'])->group(function () {
     Route::get('/', [DashboardController::class, 'index'])->name('home');
     Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
-    Route::patch('/{id}/profile', [DashboardController::class ,'updateProfile'])->name('update-profile');
+    Route::patch('/{id}/profile', [DashboardController::class, 'updateProfile'])->name('update-profile');
 
     // Log History Router [BEGIN]
     Route::group([
@@ -111,7 +112,7 @@ Route::middleware(['auth'])->group(function () {
     Route::group(['prefix' => 'student'], function () {
         Route::get('/', [StudentController::class, 'index'])->name('student');
         Route::get('/add', [StudentController::class, 'create'])->name('student-add');
-        
+
         Route::post('/create', [StudentController::class, 'store'])->name('student-create');
         Route::get('{id}/edit', [StudentController::class, 'edit'])->name('student-edit');
         Route::patch('{id}/edit', [StudentController::class, 'update'])->name('student-update');
@@ -210,16 +211,9 @@ Route::middleware(['auth'])->group(function () {
         // List all terms grouped by teacher
         Route::get('/teacher', [teacherReportController::class, 'index'])->name('teacher-report');
 
-        // your route ...................       
-
         // List all terms grouped by student
         Route::get('/student', [studentReportController::class, 'index'])->name('student-report');
-
-        // your route ...................   
-
-
     });
 
-    // Forgot Password Routes
-
+    Route::get('/transcript', [TranscriptController::class, 'index'])->name('transcript.index');
 });
