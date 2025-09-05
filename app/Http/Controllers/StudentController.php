@@ -97,6 +97,7 @@ class StudentController extends Controller
             'generation_id' => $request->generation_id,
             'profile'       => $request->profile,
         ]);
+        $student->profile = $profilePath;
         $student->save();
         $student->student_id = $generation->name. 00 .$student->id;
         $student->update();
@@ -113,7 +114,7 @@ class StudentController extends Controller
             'email_verified_at' => Carbon::now()->toDateTimeString(),
             'display'           => 'student',
         ]);
-
+        $user->profile = $profilePath;
         $user->save();
 
         // attach user with role

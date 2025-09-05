@@ -93,21 +93,23 @@
             <!-- Report -->
             <hr class="sidebar-divider d-none d-md-block border-white">
             <li class="nav-item">
-                <a class="nav-link {{ request()->routeIs('admin-report', 'teacher-report', 'student-report') ? '' : 'collapsed' }}"
-                    data-bs-toggle="collapse" href="#collapseReport" role="button"
-                    aria-expanded="{{ request()->routeIs('admin-report', 'teacher-report', 'student-report') ? 'true' : 'false' }}"
+                <a class="nav-link {{ request()->routeIs('admin-report','teacher-report','student-report') ? '' : 'collapsed' }}"
+                    data-bs-toggle="collapse"
+                    href="#collapseReport"
+                    role="button"
+                    aria-expanded="{{ request()->routeIs('admin-report','teacher-report','student-report') ? 'true' : 'false' }}"
                     aria-controls="collapseReport">
                     <i class="bi bi-file-earmark-text"></i> Report
                 </a>
-                <ul class="list-unstyled collapse {{ request()->routeIs('admin-report', 'teacher-report', 'student-report') ? 'show' : '' }}"
+                <ul class="list-unstyled collapse {{ request()->routeIs('admin-report','teacher-report','student-report') ? 'show' : '' }}"
                     id="collapseReport" data-bs-parent="#accordionSidebar">
 
                     @can('view admin_report')
                         <li>
                             <a href="{{ route('admin-report') }}"
-                                class="nav-link {{ request()->routeIs('admin-report') ? 'active' : '' }}"
-                                style="font-size:15px; padding-left:29px;">
-                                <i class="bi bi-clipboard-data me-2"></i> Admin
+                            class="nav-link {{ request()->routeIs('admin-report') ? 'active' : '' }}"
+                            style="font-size:15px; padding-left:29px;">
+                            <i class="bi bi-clipboard-data me-2"></i> Admin
                             </a>
                         </li>
                     @endcan
@@ -115,9 +117,9 @@
                     @can('view teacher_report')
                         <li>
                             <a href="{{ route('teacher-report') }}"
-                                class="nav-link {{ request()->routeIs('teacher-report') ? 'active' : '' }}"
-                                style="font-size:15px; padding-left:29px;">
-                                <i class="bi bi-file-earmark-text me-2"></i> Teacher
+                            class="nav-link {{ request()->routeIs('teacher-report') ? 'active' : '' }}"
+                            style="font-size:15px; padding-left:29px;">
+                            <i class="bi bi-file-earmark-text me-2"></i> Teacher
                             </a>
                         </li>
                     @endcan
@@ -125,9 +127,9 @@
                     @can('view student_report')
                         <li>
                             <a href="{{ route('student-report') }}"
-                                class="nav-link {{ request()->routeIs('student-report') ? 'active' : '' }}"
-                                style="font-size:15px; padding-left:29px;">
-                                <i class="bi bi-mortarboard me-2"></i> Student
+                            class="nav-link {{ request()->routeIs('student-report') ? 'active' : '' }}"
+                            style="font-size:15px; padding-left:29px;">
+                            <i class="bi bi-mortarboard me-2"></i> Student
                             </a>
                         </li>
                     @endcan

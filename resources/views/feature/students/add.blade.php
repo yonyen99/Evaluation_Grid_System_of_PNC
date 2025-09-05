@@ -69,9 +69,19 @@
                     </div>
                 </div>
 
-                <div class="mb-4">
-                    <label for="profile" class="form-label">Profile Image</label>
-                    <input class="form-control" type="file" name="profile" accept="image/*">
+                <div class="row">
+                
+                    <div class="col-md-4 mb-3">
+                        <label for="profile" class="form-label">Profile</label>
+                        <input class="form-control" type="file" name="profile" accept="image/*" id="student-profile">
+                    </div>
+                    
+                    <div class="col-md-4 mb-3">
+                        <div class="text-center" style="width: 3rem;">
+                            <label for="preview-student-profile" class="form-label text-secondary">Profile</label>
+                            <img id="preview-student-profile" class="img-fluid rounded border" alt="Show your Gallery" >
+                        </div>
+                    </div>
                 </div>
 
                 <div class="row mb-4">
@@ -126,5 +136,29 @@
                 passwordInput.type = this.checked ? "text" : "password";
             });
         });
+
+
+        $(document).ready(function() {
+            $('#student-profile').change(function() {
+                const State = this.files,
+                    SizeInMb = ((State[0].size) / 1048576.2);
+
+                // validate thumbnail file size
+                let size_in_mb = (this.files[0].size) / 1048576.2;
+                if (SizeInMb > 2.5) {
+                    alert('Image file size can not greater than 2.5mb !');
+                    return false;
+                }
+
+                // validate thumbnail and read file
+                if (State && State[0]) {
+                    let reader = new FileReader();
+                    reader.onload = (e) => {
+                        $('#preview-student-profile').attr('src', e.target.result);
+                    }
+                    reader.readAsDataURL(this.files[0]);
+                }
+            });
+        })
     </script>
 @endsection

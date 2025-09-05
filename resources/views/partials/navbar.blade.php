@@ -10,8 +10,11 @@
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" id="navbarDropdown" role="button"
                        data-bs-toggle="dropdown" aria-expanded="false">
-                        <img src="{{ asset('dashboard/img/anime3.png') }}" alt="Profile Photo"
-                             class="rounded-circle me-2" width="40" height="40">
+                        <img src="{{ Auth::user()->profile 
+                                    ? asset('storage/' . Auth::user()->profile) 
+                                    : asset('dashboard/img/anime3.png') }}" 
+                            alt="Profile Photo"
+                            class="rounded-circle me-2" width="40" height="40">
                         <span class="d-none d-lg-inline">{{ Auth::user()->username ?? 'Guest' }}</span>
                     </a>
                     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
