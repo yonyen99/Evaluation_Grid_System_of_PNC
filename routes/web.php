@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\dashboard\adminReportController;
 use App\Http\Controllers\Dashboard\DashboardController;
 use App\Http\Controllers\Dashboard\GenerationController;
 use App\Http\Controllers\Dashboard\SubjectController;
@@ -13,20 +14,51 @@ use App\Http\Controllers\StudentController;
 use App\Http\Controllers\Dashboard\ClassController;
 use App\Http\Controllers\Dashboard\LogHistoryController;
 use App\Http\Controllers\Dashboard\RoleController;
+use App\Http\Controllers\dashboard\studentReportController;
+use App\Http\Controllers\dashboard\teacherReportController;
 use App\Http\Controllers\Dashboard\TermController;
 use App\Http\Controllers\EvaluationController;
 use App\Http\Controllers\EvaluationScoreStudentController;
 use App\Http\Controllers\GridTypeController;
 use GuzzleHttp\Middleware;
+use App\Http\Controllers\Auth\ForgotPasswordController;
+use App\Http\Controllers\Auth\ResetPasswordController;
 
 // Login Routes (Accessible without authentication)
 Route::get('/login', [LoginController::class, 'showLogin'])->name('login')->middleware('guest');
 Route::post('/login', [LoginController::class, 'login'])->middleware('guest');
 
+
+// Show forgot password form
+Route::get('/forgot-password', [ForgotPasswordController::class, 'showForgotForm'])->name('password.request');
+
+// Send reset link
+Route::post('/forgot-password', [ForgotPasswordController::class, 'sendResetLinkEmail'])->name('password.email');
+
+// Show reset password form
+Route::get('/reset-password/{token}', [ResetPasswordController::class, 'showResetForm'])->name('password.reset');
+
+// Handle new password submission
+Route::post('/reset-password', [ResetPasswordController::class, 'reset'])->name('password.update');
+
+
+
+// Route for forget password
+// Route::get('/forget-password', [ForgetPasswordManager::class, 'forgetPassword'])
+//     ->name('forget.password');
+// Route::post('/forget-password', [ForgetPasswordManager::class, 'forgetPasswordPost'])
+//     ->name('forget.password.post');
+// Route::get('/reset-password/{token}', [ForgetPasswordManager::class, 'resetPassword'])
+//     ->name('reset.password');
+// Route::post('/reset-password', [ForgetPasswordManager::class, 'resetPasswordPost'])
+//     ->name('reset.password.post');
+
+
 // Routes requiring authentication
 Route::middleware(['auth'])->group(function () {
     Route::get('/', [DashboardController::class, 'index'])->name('home');
     Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
+    Route::patch('/{id}/profile', [DashboardController::class ,'updateProfile'])->name('update-profile');
 
     // Log History Router [BEGIN]
     Route::group([
@@ -72,17 +104,21 @@ Route::middleware(['auth'])->group(function () {
         Route::patch('{id}/edit', [GenerationController::class, 'update'])->name('generation-update'); // update data to database
         Route::delete('{id}', [GenerationController::class, 'destroy'])->name('generation-delete'); // delete data
         Route::get('{id}/downloadCsv', [GenerationController::class, 'generationExport'])->name('downloadCsv');
-        Route::post('/import', [GenerationController::class, 'generationImport'])->name('importCsv');
+        Route::post('/import', [GenerationController::class, 'generationImport'])->name('importCsvGeneration');
     });
 
     // student 
     Route::group(['prefix' => 'student'], function () {
         Route::get('/', [StudentController::class, 'index'])->name('student');
         Route::get('/add', [StudentController::class, 'create'])->name('student-add');
+        
         Route::post('/create', [StudentController::class, 'store'])->name('student-create');
         Route::get('{id}/edit', [StudentController::class, 'edit'])->name('student-edit');
         Route::patch('{id}/edit', [StudentController::class, 'update'])->name('student-update');
         Route::delete('{id}', [StudentController::class, 'destroy'])->name('student-delete');
+        Route::get('/import', [StudentController::class, 'importform'])->name('importForm');
+        Route::post('/import', [StudentController::class, 'studentImport'])->name('importCsvStudent');
+        Route::get('/{id}/detail', [StudentController::class, 'studentDetail'])->name('studentShow');
     });
 
     // Subject 
@@ -123,6 +159,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/grid-types', [GridTypeController::class, 'latest'])->name('grid-types.latest');
     Route::get('/grid-types/class/{class}', [GridTypeController::class, 'index'])->name('grid-types.index');
     Route::post('/grid-types/update-score', [GridTypeController::class, 'updateScore'])->name('grid-types.update-score');
+    Route::get('/grid-types/{classId}/export', [GridTypeController::class, 'gridTypeExport'])->name('grid-types.export');
 
     Route::prefix('evaluations')->group(function () {
         // Show list of evaluations
@@ -155,4 +192,34 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/class/{id}/edit', [ClassController::class, 'edit'])->name('class-edit');
     Route::put('/class/{id}', [ClassController::class, 'update'])->name('class-update');
     Route::delete('/classes/{id}', [ClassController::class, 'destroy'])->name('classes.destroy');
+
+    Route::get('/evaluations/{evaluation}/scores/{scoreType}/detail', [EvaluationController::class, 'scoreTypeDetail'])->name('evaluations.scoreType.detail');
+    Route::post('/evaluations/{evaluation}/scores/save-details', [EvaluationController::class, 'saveDetailedScores'])->name('evaluations.scores.saveDetails');
+
+    // Reoport Route ..
+    Route::group(['prefix' => 'report'], function () {
+        // Component routes of report
+        Route::get('/terms/{generation_id}', [adminReportController::class, 'showTermsBasedonGeneration']);
+        Route::get('/class/{terms_id}', [adminReportController::class, 'showClassBasedOnTerm']);
+        Route::get('/download-subject-report', [adminReportController::class, 'downloadSubjectReport'])->name('download.subject.report');
+
+        // List all terms grouped by admin
+        Route::get('/admin', [adminReportController::class, 'index'])->name('admin-report');
+        // your route ...................        
+
+        // List all terms grouped by teacher
+        Route::get('/teacher', [teacherReportController::class, 'index'])->name('teacher-report');
+
+        // your route ...................       
+
+        // List all terms grouped by student
+        Route::get('/student', [studentReportController::class, 'index'])->name('student-report');
+
+        // your route ...................   
+
+
+    });
+
+    // Forgot Password Routes
+
 });

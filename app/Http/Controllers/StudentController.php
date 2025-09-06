@@ -7,6 +7,7 @@ use App\Models\Generation;
 use App\Models\LogHistory;
 use App\Models\Province;
 use App\Models\User;
+use App\Models\Role;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -14,14 +15,14 @@ use Illuminate\Support\Facades\Hash;
 
 class StudentController extends Controller
 {
-    public function index(Request $request)
+   public function index(Request $request)
     {
         $query = Student::query();
 
         if ($request->filled('search')) {
             $query->where(function ($q) use ($request) {
                 $q->where('first_name', 'like', '%' . $request->search . '%')
-                    ->orWhere('last_name', 'like', '%' . $request->search . '%');
+                ->orWhere('last_name', 'like', '%' . $request->search . '%');
             });
         }
 
@@ -37,7 +38,12 @@ class StudentController extends Controller
             $query->where('gender', $request->gender);
         }
 
-        $students = $query->with('generation')->get();
+        $query->with('generation');
+
+        $query->orderBy('first_name'); // or 'id', 'last_name', etc.
+
+        $students = $query->paginate(10)->appends($request->query());
+
         $generations = Generation::all();
         $provinces = Province::all();
 
@@ -46,23 +52,15 @@ class StudentController extends Controller
 
     public function create()
     {
-        $roles = User::getRoles();
-        if (!$roles->data) {
-            return back()->with('error', $roles->message);
-        }
-        $roles = $roles->data;
-
         $provinces = Province::all();
         $generations = Generation::all();
-        return view('feature.students.add', compact('provinces', 'generations','roles'));
+        return view('feature.students.add', compact('provinces', 'generations'));
     }
 
     public function store(Request $request)
     {
-        // dd(request()->all());
         // Validate input
         $request->validate([
-            'student_id'    => 'required|string|unique:students,student_id',
             'first_name'    => 'required|string|max:255',
             'last_name'     => 'required|string|max:255',
             'password'      => 'required|string|min:6',
@@ -74,23 +72,20 @@ class StudentController extends Controller
             'generation_id' => 'required|exists:generations,id',
             'profile'       => 'nullable|image|max:2048', // max 2MB
         ]);
-
         // Handle profile image upload if exists
         $profilePath = null;
         if ($request->hasFile('profile')) {
             $profilePath = $request->file('profile')->store('profiles', 'public');
         }
 
-        $role = User::getRole($request['role']);
-        if (!$role->data) {
-            return back()->with('error', $role->message);
-        }
-        $role = $role->data;
-        // dd(Hash::make($request->password));
+        $role = Role::where('name', 'Student')->first();
+        $role = $role->name;
+
+        $generation = generation::where('id',$request->generation_id)->first();
 
         // Create student
         $student = Student::create([
-            'student_id'    => $request->student_id,
+            'student_id'    => $generation->name,
             'first_name'    => $request->first_name,
             'last_name'     => $request->last_name,
             'gender'        => $request->gender,
@@ -102,8 +97,9 @@ class StudentController extends Controller
             'generation_id' => $request->generation_id,
             'profile'       => $request->profile,
         ]);
-
         $student->save();
+        $student->student_id = $generation->name. 00 .$student->id;
+        $student->update();
         $user = new User([
             'lastname'          => $request->last_name,
             'firstname'         => $request->first_name,
@@ -209,16 +205,19 @@ class StudentController extends Controller
     public function destroy($id)
     {
         $student = Student::find($id);
-
         if (!$student) {
             return back()->with('error', 'Student not found.');
         }
+        $user = User::where('student_id', $id)->first();
+
 
         try {
             DB::beginTransaction();
 
             $student->delete();
-
+            $user->roles()->detach();
+            $user->permissions()->detach();
+            $user->delete();
             DB::commit();
 
             $currentUser = auth()->user();
@@ -235,5 +234,82 @@ class StudentController extends Controller
             DB::rollBack();
             return back()->with('error', 'Error occurred while deleting the student: ' . $e->getMessage());
         }
+    }
+
+    public function importform()
+    {
+        $roles = User::getRoles();
+        if (!$roles->data) {
+            return back()->with('error', $roles->message);
+        }
+        $roles = $roles->data;
+
+        $provinces = Province::all();
+        $generations = Generation::all();
+        return view('feature.students.import', compact('provinces', 'generations', 'roles'));
+    }
+
+    public function studentImport(Request $request)
+    {
+        $request->validate([
+            'importCsv' => 'required|file|mimes:csv,txt',
+        ]);
+
+        $role = Role::where('name', 'Student')->first();
+        $role = $role->name;
+
+        DB::beginTransaction();
+
+        $file = $request->file('importCsv');
+        $data = array_map('str_getcsv', file($file));
+        $header = array_map('trim', $data[0]); // First row = header
+        unset($data[0]); // Remove header
+
+        
+        foreach ($data as $key=> $row) {
+            
+            $rowData = array_combine($header, $row);
+            $province_id = Province::where('name', $rowData['province'])->value('id');
+
+            $student = student::create([
+                'student_id'    => $rowData['studentid'],
+                'username'      => $rowData['username'],
+                'first_name'    => $rowData['first_name'],
+                'last_name'     => $rowData['last_name'],
+                'gender'        => $rowData['gender'],
+                'email'         => $rowData['email'],
+                'province_id'   => $province_id,
+                'phone'         => $rowData['phone'],
+                'password'      => Hash::make($rowData['password']),
+                'generation_id' => $request['generation_id'],
+                'profile'       => null,
+                'db'            => $rowData['bate_of_birth'],
+            ]);
+            $student->save();
+            $user= User::create([
+                'lastname'          => $rowData['last_name'],
+                'firstname'         => $rowData['first_name'],
+                'email'             => $rowData['email'],
+                'phone'             => $rowData['phone'],
+                'username'          => $rowData['username'],
+                'password'          => Hash::make($rowData['password']),
+                'profile'           => null,
+                'teacher_id'        => null,
+                'student_id'        => $student->id,
+                'email_verified_at' => Carbon::now()->toDateTimeString(),
+                'display'           => 'student',
+            ]);
+            $user->save();
+            // attach user with role
+            $user->assignRole($role);
+        }
+        DB::commit();
+        return redirect()->route('student')->with('success', 'CSV imported successfully!.');
+    }
+
+    public function studentDetail($id)
+    {
+        $student = Student::find($id);
+        return view('feature.students.detail',compact('student'));
     }
 }

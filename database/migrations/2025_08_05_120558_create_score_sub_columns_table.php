@@ -11,10 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('tests', function (Blueprint $table) {
+        Schema::create('score_sub_columns', function (Blueprint $table) {
             $table->id();
-            $table->string('name')->nullable();
-            $table->integer('salery')->nullable();
+            $table->foreignId('student_id')->constrained()->onDelete('cascade');
+            $table->decimal('set_score', 5, 2)->default(0); // decimal instead of integer
+            $table->foreignId('score_table_id')->constrained()->onDelete('cascade');
             $table->timestamps();
         });
     }
@@ -24,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('tests');
+        Schema::dropIfExists('score_sub_columns');
     }
 };

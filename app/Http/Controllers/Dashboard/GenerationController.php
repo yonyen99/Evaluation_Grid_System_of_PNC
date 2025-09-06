@@ -20,18 +20,21 @@ class GenerationController extends Controller
      */
     public function index(Request $request)
     {
-        $allGenerations = Generation::all(); // for the dropdown
+        $allGenerations = Generation::all(); // for dropdown
 
-        // Pass filters (from query params)
-        $result = Generation::getGenerations([
-            'generation_id' => $request->input('generation_id'),
-        ]);
+        // Build query manually instead of getGenerations()
+        $query = Generation::query();
 
-        if (!$result->data) {
-            return back()->with('error', $result->message);
+        // Apply filter if generation_id is given
+        if ($request->filled('generation_id')) {
+            $query->where('id', $request->input('generation_id'));
         }
 
-        $generations = $result->data;
+        // Order by latest (optional, you can adjust)
+        $query->orderBy('id', 'desc');
+
+        // Paginate (10 per page) & keep query params for filters
+        $generations = $query->paginate(10)->appends($request->query());
 
         return view('feature.generation.index', compact('generations', 'allGenerations'));
     }
@@ -47,42 +50,61 @@ class GenerationController extends Controller
     /**
      * Store a newly created resource in storage.
      */
+    /**
+     * Store a newly created Generation and its Terms in storage.
+     */
     public function store(Request $request)
     {
+        // Validate input
+        $request->validate([
+            'name'          => 'required|string|max:255',
+            'term_name'     => 'required|array|min:1',
+            'term_name.*'   => 'required|string|max:50',
+            'start_date'    => 'nullable|array',
+            'start_date.*'  => 'nullable|date',
+            'end_date'      => 'nullable|array',
+            'end_date.*'    => 'nullable|date',
+        ]);
+
         try {
             DB::beginTransaction();
-            $generation = new Generation([
-                'name'         => $request['name'],
+
+            // Create Generation
+            $generation = Generation::create([
+                'name' => $request->input('name'),
             ]);
-            $generation->save();
-            try {
-                $termNames = $request['term_name'];
-                foreach ($termNames as $key => $value) {
-                    $Terms = new Term([
-                        'name'           => $termNames[$key],
-                        'generation_id'  => $generation->id,
-                    ]);
-                    $Terms->save();
-                }
-            } catch (\Throwable $th) {
-                DB::rollBack();
-                return back()->with('error', 'Terms cant add, pls try again!');
+
+            // Create Terms with start_date and end_date
+            $termNames  = $request->input('term_name');
+            $startDates = $request->input('start_date', []);
+            $endDates   = $request->input('end_date', []);
+
+            foreach ($termNames as $key => $termName) {
+                Term::create([
+                    'name'          => $termName,
+                    'generation_id' => $generation->id,
+                    'start_date'    => $startDates[$key] ?? null,
+                    'end_date'      => $endDates[$key] ?? null,
+                ]);
             }
+
+            DB::commit();
+
+            // Log History
+            $currentUser = auth()->user();
+            LogHistory::create([
+                'log_header'      => 'create generation',
+                'permission_slug' => 'view generation_history',
+                'username'        => $currentUser->username,
+                'user_id'         => $currentUser->id,
+                'description'     => 'Generation [ ' . ucwords($generation->name) . ' ] was created on [ ' . Carbon::now() . ' ] by ' . $currentUser->username,
+            ]);
+
+            return redirect()->route('generation')->with('success', 'Generation and terms created successfully.');
         } catch (\Throwable $th) {
             DB::rollBack();
-            return back()->with('error', 'Generation cant add , pls try again!');
+            return back()->with('error', 'Failed to create generation. Please try again!');
         }
-        DB::commit();
-        $currentUser = auth()->user();
-        $logHistory  = new LogHistory([
-            'log_header'      => 'create role',
-            'permission_slug' => 'view role_history',
-            'username'        => $currentUser->username,
-            'user_id'         => $currentUser->id,
-            'description'     => 'Generation [ ' . ucwords($generation->name) . ' ] was created on [ ' . Carbon::now() . ' ] by ' . $currentUser->username . ' user',
-        ]);
-        $logHistory->save();
-        return redirect()->route('generation');
     }
 
     /**
@@ -128,12 +150,24 @@ class GenerationController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $generation = Generation::getGenerationById($id);
-        if (!$generation->data) {
-            return back()->with('error', $generation->message);
+        $generationResponse = Generation::getGenerationById($id);
+        if (!$generationResponse->data) {
+            return back()->with('error', $generationResponse->message);
         }
 
-        $generation = $generation->data;
+        $generation = $generationResponse->data;
+
+        // Validate input
+        $request->validate([
+            'name'          => 'required|string|max:255',
+            'term_name'     => 'required|array|min:1',
+            'term_name.*'   => 'required|string|max:50',
+            'term_id'       => 'nullable|array',
+            'start_date'    => 'nullable|array',
+            'start_date.*'  => 'nullable|date',
+            'end_date'      => 'nullable|array',
+            'end_date.*'    => 'nullable|date',
+        ]);
 
         try {
             DB::beginTransaction();
@@ -149,22 +183,30 @@ class GenerationController extends Controller
             }
 
             // Update existing and newly added terms
-            $termNames = $request->input('term_name', []);
-            $termIds = $request->input('term_id', []);
+            $termNames  = $request->input('term_name', []);
+            $termIds    = $request->input('term_id', []);
+            $startDates = $request->input('start_date', []);
+            $endDates   = $request->input('end_date', []);
 
             foreach ($termNames as $index => $termName) {
-                $termId = $termIds[$index] ?? null;
+                $termId    = $termIds[$index] ?? null;
+                $startDate = $startDates[$index] ?? null;
+                $endDate   = $endDates[$index] ?? null;
 
                 if ($termId) {
                     // Update existing term
                     Term::where('id', $termId)->update([
-                        'name' => $termName,
+                        'name'       => $termName,
+                        'start_date' => $startDate,
+                        'end_date'   => $endDate,
                     ]);
                 } else {
                     // Create new term
                     Term::create([
-                        'name' => $termName,
+                        'name'          => $termName,
                         'generation_id' => $generation->id,
+                        'start_date'    => $startDate,
+                        'end_date'      => $endDate,
                     ]);
                 }
             }
@@ -176,6 +218,7 @@ class GenerationController extends Controller
             return back()->with('error', 'Something went wrong during update!');
         }
     }
+
 
 
     /**
@@ -242,7 +285,8 @@ class GenerationController extends Controller
     /**
      * import csv
      */
-    public function generationImport(Request $request){
+    public function generationImport(Request $request)
+    {
         $request->validate([
             'importCsv' => 'required|file|mimes:csv,txt',
         ]);
@@ -254,7 +298,7 @@ class GenerationController extends Controller
         $header = array_map('trim', $data[0]); // First row = header
         unset($data[0]); // Remove header
 
-        
+
         foreach ($data as $row) {
             $rowData = array_combine($header, $row); // Map headers to values
 
@@ -264,19 +308,17 @@ class GenerationController extends Controller
             ]);
             $generation->save();
 
-        // Split terms (delimiter: | )
-        $terms = explode('|', $rowData['Terms']);
+            // Split terms (delimiter: | )
+            $terms = explode('|', $rowData['Terms']);
 
-        foreach ($terms as $term) {
-            Term::create([
-                'generation_id' => $generation->id,
-                'name' => trim($term),
-            ]);
-        }
-
+            foreach ($terms as $term) {
+                Term::create([
+                    'generation_id' => $generation->id,
+                    'name' => trim($term),
+                ]);
+            }
         }
         DB::commit();
-        return back()->with('success', 'CSV imported successfully!');     
-            
+        return back()->with('success', 'CSV imported successfully!');
     }
 }

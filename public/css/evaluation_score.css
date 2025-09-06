@@ -1,0 +1,53 @@
+/* Disable editing on readonly inputs */
+input[readonly] {
+    background-color: #f2f2f2;
+    cursor: not-allowed;
+}
+
+/* Score table header */
+.score-header {
+    width: 60px;
+    font-size: 13px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    vertical-align: middle;
+    padding: 4px;
+    position: relative;
+}
+
+/* Checkbox always visible */
+.checkbox-hover {
+    display: block; /* always show */
+}
+
+/* Bold & clear checkbox */
+.small-checkbox {
+    width: 20px;               /* bigger */
+    height: 20px;
+    opacity: 1;                /* full visibility */
+    accent-color: #212529;     /* dark checkmark */
+    border: 2px solid #000;    /* bold border */
+    border-radius: 4px;        /* slightly rounded */
+    cursor: pointer;
+    transform: scale(1.05);    /* subtle enlargement */
+}
+
+/* Small link in header */
+.small-link {
+    font-size: 12px;
+    display: block;
+}
+
+/* Table alignment */
+th,
+td {
+    vertical-align: middle;
+}
+
+/* Smaller form control inside cells */
+.form-control-sm {
+    padding: 2px 4px;
+    font-size: 13px;
+    text-align: center;
+}

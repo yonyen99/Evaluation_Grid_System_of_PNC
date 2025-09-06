@@ -3,28 +3,7 @@
 @section('page_title', 'Grid Type Report')
 
 @section('stylesheet')
-    <style>
-        table th,
-        table td {
-            text-align: center;
-            vertical-align: middle;
-            padding: 0.75rem 1rem;
-        }
-
-        input.score-input {
-            width: 80px;
-            padding: 0.25rem 0.5rem;
-            text-align: center;
-            font-size: 1rem;
-            max-width: 100%;
-            box-sizing: border-box;
-        }
-
-        .input-disabled-clickable {
-            cursor: pointer;
-            background-color: #e9ecef;
-        }
-    </style>
+    <link href="{{ asset('css/grid_type.css') }}" rel="stylesheet" />
 @endsection
 
 @section('content')
@@ -34,39 +13,41 @@
                 {{ strtoupper(optional($class->term)->name ?? 'NO TERM') }} -
                 {{ strtoupper(optional($class->generation)->name ?? 'NO GENERATION') }} FOLLOWUP
             </h4>
-
-            {{-- Class Filter --}}
-            <form method="GET" class="mb-3">
-                <div class="row g-2 align-items-center">
-                    <div class="col-auto">
-                        <label for="classSelector" class="col-form-label fw-bold">Select Class:</label>
-                    </div>
-                    <div class="col-auto">
-                        <select id="classSelector" class="form-select" onchange="onClassChange(this)">
-                            @foreach (\App\Models\Classe::with('generation')->get() as $c)
-                                <option value="{{ route('grid-types.index', $c->id) }}"
-                                    {{ $class->id == $c->id ? 'selected' : '' }}>
-                                    {{ $c->name }} ({{ $c->generation->name }})
-                                </option>
-                            @endforeach
-                        </select>
-                    </div>
+            <div class="row">
+                <div class="col-md-6">
+                    {{-- Class Filter --}}
+                    <form method="GET" class="mb-3">
+                        <div class="row g-2 align-items-center">
+                            <div class="col-auto">
+                                <label for="classSelector" class="col-form-label fw-bold">Select Class:</label>
+                            </div>
+                            <div class="col-auto">
+                                <select id="classSelector" class="form-select" onchange="onClassChange(this)">
+                                    @foreach (\App\Models\Classe::with('generation')->get() as $c)
+                                        <option value="{{ route('grid-types.index', $c->id) }}"
+                                            {{ $class->id == $c->id ? 'selected' : '' }}>
+                                            {{ $c->name }} ({{ $c->generation->name }})
+                                        </option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+                    </form>
                 </div>
-            </form>
-
+                <div class="col-md-6">
+                    <a href="{{ route('grid-types.export', ['classId' => $class->id]) }}" class="btn btn-success mb-3 float-end">
+                    ⬇️ Export Grid Types CSV
+                    </a>
+                </div>
+            </div>
+            
             {{-- Subject Tabs --}}
             <ul class="nav nav-tabs mb-3" id="subjectTab" role="tablist">
                 @foreach ($subjects as $index => $subject)
                     <li class="nav-item" role="presentation">
-                        {{-- <button class="nav-link {{ $index === 0 ? 'active' : '' }}" id="tab-{{ $subject->id }}"
-                            data-bs-toggle="tab" data-bs-target="#subject-{{ $subject->id }}" type="button" role="tab"
-                            aria-controls="subject-{{ $subject->id }}"
-                            aria-selected="{{ $index === 0 ? 'true' : 'false' }}">
-                            {{ $subject->name }}
-                        </button> --}}
                         <button class="nav-link {{ $index === 0 ? 'active' : '' }}" id="tab-{{ $subject->id }}"
-                            data-bs-toggle="tab" data-bs-target="#subject-{{ $subject->id }}" type="button" role="tab"
-                            aria-controls="subject-{{ $subject->id }}"
+                            data-bs-toggle="tab" data-bs-target="#subject-{{ $subject->id }}" type="button"
+                            role="tab" aria-controls="subject-{{ $subject->id }}"
                             aria-selected="{{ $index === 0 ? 'true' : 'false' }}">
                             {{ $subject->name }}
                         </button>
@@ -167,90 +148,8 @@
 
 @section('script')
     <script>
-        function onClassChange(select) {
-            window.location.href = select.value;
-        }
-
-        document.addEventListener('DOMContentLoaded', () => {
-            // Prevent form submission on Enter and trigger blur to save
-            document.querySelectorAll('input.score-input').forEach(input => {
-                input.addEventListener('keydown', e => {
-                    if (e.key === 'Enter') {
-                        e.preventDefault();
-                        input.blur(); // trigger blur to save data
-                    }
-                });
-            });
-
-            // Handle update on blur (when input loses focus)
-            document.querySelectorAll('.score-input:not([readonly])').forEach(input => {
-                input.addEventListener('blur', sendUpdateAndReload);
-            });
-
-            // Handle click on readonly inputs to navigate to score page
-            document.querySelectorAll('.input-disabled-clickable').forEach(input => {
-                input.addEventListener('click', () => {
-                    const url = input.getAttribute('data-url');
-                    if (url && url !== '#') {
-                        window.location.href = url;
-                    }
-                });
-            });
-        });
-
-        function sendUpdateAndReload() {
-            const value = parseFloat(this.value);
-            const classeStudentId = this.dataset.classeStudentId;
-            const subjectGridId = this.dataset.subjectGridId;
-
-            if (isNaN(value) || value < 0 || value > 100) {
-                alert('Please enter a number between 0 and 100');
-                return;
-            }
-
-            fetch("{{ route('grid-types.update-score') }}", {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                    },
-                    body: JSON.stringify({
-                        classe_student_id: classeStudentId,
-                        subject_grid_id: subjectGridId,
-                        value: value
-                    })
-                })
-                .then(res => res.json())
-                .then(data => {
-                    if (data.status === 'success') {
-                        // Reload the page so total recalculates on server
-                        window.location.reload();
-                    } else {
-                        alert('Failed to update score');
-                    }
-                })
-                .catch(() => alert('Error updating score'));
-        }
-
-        document.addEventListener('DOMContentLoaded', function() {
-            // === Save tab to localStorage when clicked ===
-            const subjectTabs = document.querySelectorAll('#subjectTab button[data-bs-toggle="tab"]');
-            subjectTabs.forEach(tab => {
-                tab.addEventListener('shown.bs.tab', function(e) {
-                    const subjectId = e.target.getAttribute('data-bs-target'); // e.g. "#subject-2"
-                    localStorage.setItem('activeSubjectTab', subjectId);
-                });
-            });
-
-            // === Load tab from localStorage ===
-            const savedTab = localStorage.getItem('activeSubjectTab');
-            if (savedTab) {
-                const tabTrigger = document.querySelector(`#subjectTab button[data-bs-target="${savedTab}"]`);
-                if (tabTrigger) {
-                    const tab = new bootstrap.Tab(tabTrigger);
-                    tab.show();
-                }
-            }
-        });
+        window.csrfToken = "{{ csrf_token() }}";
+        window.gridTypeUpdateUrl = "{{ route('grid-types.update-score') }}";
     </script>
+    <script src="{{ asset('dashboard/js/feature/grid_type.js') }}"></script>
 @endsection

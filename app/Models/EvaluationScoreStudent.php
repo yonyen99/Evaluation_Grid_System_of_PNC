@@ -25,4 +25,8 @@ class EvaluationScoreStudent extends Model
     {
         return $this->belongsTo(EvaluationScore::class, 'evaluation_score_id');
     }
+    public function scoreTables()
+    {
+        return $this->hasMany(ScoreTable::class);
+    }
 }

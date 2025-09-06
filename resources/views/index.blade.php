@@ -16,7 +16,7 @@
                 <div class="card-body d-flex align-items-center justify-content-between">
                     <div>
                         <h5 class="card-title">Total Students</h5>
-                        <h3>{{ $studentCount ?? '---' }}</h3>
+                        <h3>{{ $totalStudentCurrentYears }}</h3>
                     </div>
                     <i class="bi bi-person-lines-fill fs-1"></i>
                 </div>
@@ -27,7 +27,7 @@
                 <div class="card-body d-flex align-items-center justify-content-between">
                     <div>
                         <h5 class="card-title">Total Teachers</h5>
-                        <h3>{{ $teacherCount ?? '---' }}</h3>
+                        <h3>{{ $totalTeacherCurrentYears }}</h3>
                     </div>
                     <i class="bi bi-person-badge fs-1"></i>
                 </div>
@@ -38,7 +38,7 @@
                 <div class="card-body d-flex align-items-center justify-content-between">
                     <div>
                         <h5 class="card-title">Total Classes</h5>
-                        <h3>{{ $classCount ?? '---' }}</h3>
+                        <h3>{{ $totalClassesCurrentYears }}</h3>
                     </div>
                     <i class="bi bi-door-open fs-1"></i>
                 </div>

@@ -56,12 +56,14 @@ class PermissionsTableSeeder extends Seeder
             Permission::updateOrCreate(['name' => 'edit teacher']);
             Permission::updateOrCreate(['name' => 'delete teacher']);
         // teacher Permission seeder [END]
+
         // term Permission seeder [BEGIN]
             Permission::updateOrCreate(['name' => 'view term']);
             Permission::updateOrCreate(['name' => 'create term']);
             Permission::updateOrCreate(['name' => 'edit term']);
             Permission::updateOrCreate(['name' => 'delete term']);
         // term Permission seeder [END]
+
         // subject Permission seeder [BEGIN]
             Permission::updateOrCreate(['name' => 'view subject']);
             Permission::updateOrCreate(['name' => 'create subject']);
@@ -75,6 +77,7 @@ class PermissionsTableSeeder extends Seeder
             Permission::updateOrCreate(['name' => 'edit class']);
             Permission::updateOrCreate(['name' => 'delete class']);
         // class Permission seeder [END]
+
         // grid Permission seeder [BEGIN]
             Permission::updateOrCreate(['name' => 'view grid']);
             Permission::updateOrCreate(['name' => 'create grid']);
@@ -86,11 +89,43 @@ class PermissionsTableSeeder extends Seeder
             Permission::updateOrCreate(['name' => 'view loghistory']);
         // Log History Permissions Seeder [END]
 
+        //Report permission seeder[BEGIN]
+            Permission::updateOrCreate(['name' => 'view admin_report']);
+            Permission::updateOrCreate(['name' => 'view teacher_report']);
+            Permission::updateOrCreate(['name' => 'view student_report']);
+        //Report permission seeder[END]
+
         // give permissions to role
         $adminRole = Role::where('name', 'admin')->get()->first();
-        $adminRole->givePermissionTo(Permission::all());
+        $adminermissions = Permission::whereNotIn('name', [
+            'view teacher_report',
+            'view student_report'
+        ])->get();
+        $adminRole->givePermissionTo( $adminermissions );
 
         $adminUser = User::where('email', env('ADMIN_EMAIL'))->get()->first();
         $adminUser->assignRole('admin');
+       
+        // Get the Teacher role
+        $teacherRole = Role::where('name', 'Teacher')->first();
+        // Get all permissions except the ones you don’t want
+        $teacherPermissions = Permission::whereNotIn('name', [
+            'view system_user',
+            'view role',
+            'view admin_report',
+            'view student_report'
+        ])->get();
+
+        // Give permissions to Teacher role
+        $teacherRole->givePermissionTo($teacherPermissions);
+
+       // Get the Student role
+        $studentRole = Role::where('name', 'Student')->first();
+        if ($studentRole) {
+            // Give permissions to Student Role
+            $studentRole->givePermissionTo([
+                'view student_report'
+            ]);
+        }
     }
 }

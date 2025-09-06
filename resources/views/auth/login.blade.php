@@ -17,7 +17,8 @@
         <div class="container">
             <div class="row justify-content-center align-items-center">
                 <div class="col-lg-6 school-image text-center">
-                    <img src="https://avpn.asia/wp-content/uploads/2024/02/PN-Round-Logo1.png" alt="School Logo" class="img-fluid w-50">
+                    <img src="https://avpn.asia/wp-content/uploads/2024/02/PN-Round-Logo1.png" alt="School Logo"
+                        class="img-fluid w-50">
                     <h2 class="mt-4 fw-bold">PNC Evaluation System</h2>
                     <p class="text-muted">Please log in with your credentials to continue.</p>
                 </div>
@@ -26,7 +27,8 @@
                 <div class="col-lg-5">
                     <div class="login-box">
                         <div class="text-center mb-4">
-                            <img src="https://avpn.asia/wp-content/uploads/2024/02/PN-Round-Logo1.png" alt="School Logo" class="school-logo mb-2">
+                            <img src="https://avpn.asia/wp-content/uploads/2024/02/PN-Round-Logo1.png" alt="School Logo"
+                                class="school-logo mb-2">
                             <h4 class="fw-bold">Login</h4>
                         </div>
 
@@ -35,12 +37,14 @@
 
                             <div class="mb-3">
                                 <label for="email" class="form-label">Email Address</label>
-                                <input type="email" name="email" id="email" class="form-control" required placeholder="you@example.com">
+                                <input type="email" name="email" id="email" class="form-control" required
+                                    placeholder="you@example.com">
                             </div>
 
                             <div class="mb-3">
                                 <label for="password" class="form-label">Password</label>
-                                <input type="password" name="password" id="password" class="form-control" required placeholder="Enter password">
+                                <input type="password" name="password" id="password" class="form-control" required
+                                    placeholder="Enter password">
                             </div>
 
                             <div class="d-flex justify-content-between align-items-center mb-3">
@@ -50,7 +54,10 @@
                                         Remember me
                                     </label>
                                 </div>
-                                <a href="#" class="text-decoration-none text-primary">Forgot password?</a>
+                                {{-- <a href={{ route('password.request') }} class="text-decoration-none text-primary">Forgot password?</a> --}}
+                                <a href="{{ route('password.request') }}">Forgot password?</a>
+
+
                             </div>
 
                             <div class="d-grid">

@@ -16,18 +16,10 @@
                 enctype="multipart/form-data">
                 @csrf
                 <div class="row mb-3">
-                    <div class="col-md-6">
-                        <label for="student_id" class="form-label">Student ID</label>
-                        <input type="text" name="student_id" class="form-control" value="{{ old('student_id') }}"
-                            required>
-                    </div>
-                    <div class="col-md-6">
+                    <div class="col-md-4">
                         <label for="email" class="form-label">Email Address</label>
                         <input type="email" name="email" class="form-control" value="{{ old('email') }}" required>
                     </div>
-                </div>
-
-                <div class="row mb-3">
                     <div class="col-md-4">
                         <label for="first_name" class="form-label">First Name</label>
                         <input type="text" name="first_name" class="form-control" value="{{ old('first_name') }}"
@@ -36,17 +28,6 @@
                     <div class="col-md-4">
                         <label for="last_name" class="form-label">Last Name</label>
                         <input type="text" name="last_name" class="form-control" value="{{ old('last_name') }}" required>
-                    </div>
-                    <div class="col-md-4 mb-3">
-                        <label for="role" class="form-label">Role</label>
-                        <select class="form-select" name="role" id="role" required>
-                            <option value="" selected hidden></option>
-                            @foreach ($roles as $role)
-                                <option value="{{ $role->id }}" data-name="{{ $role->name }}">
-                                    {{ $role->name }}
-                                </option>
-                            @endforeach
-                        </select>
                     </div>
                 </div>
 

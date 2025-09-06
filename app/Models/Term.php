@@ -30,7 +30,9 @@ class Term extends Model
      */
     protected $fillable = [
         'name',
-        'generation_id'
+        'generation_id',
+        'start_date',
+        'end_date'
 
     ];
 

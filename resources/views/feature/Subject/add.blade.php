@@ -5,69 +5,6 @@
 @endsection
 {{-- BEGIN:: Table Content --}}
 @section('content')
-    {{-- <div class="row">
-        <div class="col-md-12">
-            <div class="card ">
-                <div class="card-header">
-                    <h4 class="card-title">Create Subject</h4>
-                </div>
-                <div class="card-body">
-                    <form action="{{ route('subject-create') }}" method="POST">
-                        @csrf
-
-                        <!-- Subject Name Only -->
-                        <div class="form-group">
-                            <label>Name *</label>
-                            <input type="text" name="name" class="form-control" placeholder="Subject name" required>
-                        </div>
-
-                        <!-- Subject Grids -->
-                        <div id="grid-wrapper">
-                            <div class="form-row grid-item align-items-end">
-                                <div class="form-group col-md-6">
-                                    <label>Assessment Name</label>
-                                    <input type="text" name="grids[0][name]" class="form-control"
-                                        placeholder="e.g. Quiz 1" required>
-                                </div>
-                                <div class="form-group col-md-4">
-                                    <label>Percentage</label>
-                                    <div class="input-group">
-                                        <input type="number" step="0.01" min="0" max="100"
-                                            name="grids[0][percentage]" class="form-control percentage-input"
-                                            placeholder="e.g. 10" required>
-                                        <div class="input-group-append">
-                                            <span class="input-group-text">%</span>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="form-group col-md-2">
-                                    <button type="button" class="btn btn-danger remove-grid">X</button>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Total Percentage Display -->
-                        <div class="form-group mt-2">
-                            <strong>Total Percentage: <span id="total-percentage">0.00%</span></strong>
-                        </div>
-
-                        <!-- Add more grids -->
-                        <button type="button" id="add-grid" class="btn btn-secondary mb-3">Add Grid</button>
-
-                        <!-- Submit Buttons -->
-                        <div class="form-section">
-                            <input type="submit" class="btn btn-outline-info mr-2" value="Add">
-                            <button type="reset" class="btn btn-outline-danger">Reset</button>
-                        </div>
-                    </form>
-
-
-                </div>
-            </div>
-        </div>
-        <!-- your ui-->
-    </div> --}}
-
     <div class="row d-flex justify-content-center">
         <div class="col-sm-12 col-md-12 col-xl-12">
 
