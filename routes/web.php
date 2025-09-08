@@ -23,6 +23,7 @@ use App\Http\Controllers\GridTypeController;
 use GuzzleHttp\Middleware;
 use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\Auth\ResetPasswordController;
+use App\Http\Controllers\GridImportController;
 use App\Http\Controllers\TranscriptController;
 
 // Login Routes (Accessible without authentication)
@@ -216,4 +217,7 @@ Route::middleware(['auth'])->group(function () {
     });
 
     Route::get('/transcript', [TranscriptController::class, 'index'])->name('transcript.index');
+
+    // routes/web.php
+    Route::post('/import-grid/{grid}', [GridImportController::class, 'import'])->name('import.grid');
 });

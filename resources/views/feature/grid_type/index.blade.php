@@ -35,12 +35,13 @@
                     </form>
                 </div>
                 <div class="col-md-6">
-                    <a href="{{ route('grid-types.export', ['classId' => $class->id]) }}" class="btn btn-success mb-3 float-end">
-                    ⬇️ Export Grid Types CSV
+                    <a href="{{ route('grid-types.export', ['classId' => $class->id]) }}"
+                        class="btn btn-success mb-3 float-end">
+                        ⬇️ Export
                     </a>
                 </div>
             </div>
-            
+
             {{-- Subject Tabs --}}
             <ul class="nav nav-tabs mb-3" id="subjectTab" role="tablist">
                 @foreach ($subjects as $index => $subject)
@@ -67,7 +68,24 @@
                                         <th>First Name</th>
                                         <th>Last Name</th>
                                         @foreach ($subject->subjectGrids as $grid)
-                                            <th>{{ $grid->grid_name }}<br><small>({{ $grid->percentage }}%)</small></th>
+                                            {{-- dd({{$grid->id}}) --}}
+                                            {{-- <th>{{ $grid->grid_name }}<br><small>({{ $grid->percentage }}%)</small></th> --}}
+                                            <th onclick="document.getElementById('csvInput{{ $grid->id }}').click()"
+                                                style="cursor: pointer; position: relative;"
+                                                title="Click to import CSV for {{ $grid->grid_name }}">
+
+                                                <span class="grid-header">
+                                                    {{ $grid->grid_name }}<br>
+                                                    <small>({{ $grid->percentage }}%)</small>
+                                                </span>
+
+                                                <form action="{{ route('import.grid', $grid->id) }}" method="POST"
+                                                    enctype="multipart/form-data" style="display:none;">
+                                                    @csrf
+                                                    <input type="file" id="csvInput{{ $grid->id }}" name="csv_file"
+                                                        accept=".csv" onchange="this.form.submit()">
+                                                </form>
+                                            </th>
                                         @endforeach
                                         <th>Total</th>
                                     </tr>
