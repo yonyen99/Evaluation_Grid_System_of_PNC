@@ -33,9 +33,9 @@ class ClassController extends Controller
         }
 
         $classes = $query->with('generation')
-                        ->orderBy('name')
-                        ->paginate(10) // ✅ pagination
-                        ->appends($request->query());
+            ->orderBy('name')
+            ->paginate(10) // ✅ pagination
+            ->appends($request->query());
 
         $generations = Generation::all();
 
@@ -207,6 +207,13 @@ class ClassController extends Controller
 
         return redirect()->route('class')->with('success', 'Class updated successfully.');
     }
+    public function show($id)
+    {
+        $class = Classe::with(['generation', 'term', 'students'])->findOrFail($id);
+
+        return view('feature.class.detail', compact('class'));
+    }
+
 
 
     public function destroy($id)

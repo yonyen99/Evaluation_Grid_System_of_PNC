@@ -135,6 +135,20 @@
                                                 <ul class="dropdown-menu dropdown-menu-end shadow-lg border-0 rounded-3 py-3"
                                                     aria-labelledby="actionsDropdown{{ $class->id }}"
                                                     style="min-width: 160px;">
+
+                                                    <!-- View Detail -->
+                                                    <li>
+                                                        {{-- <a href=""
+                                                            class="btn btn-sm btn-info dropdown-item d-flex align-items-center gap-2"
+                                                            title="View Detail">
+                                                            <i class="bi bi-eye-fill text-info"></i> View Detail
+                                                        </a> --}}
+                                                        <a href="{{ route('class-detail', $class->id) }}"
+                                                            class="btn btn-sm btn-info dropdown-item d-flex align-items-center gap-2"
+                                                            title="View Detail">
+                                                            <i class="bi bi-eye-fill text-info"></i> View Detail
+                                                        </a>
+                                                    </li>
                                                     <li>
                                                         <a href="{{ route('class-student-form', $class->id) }}"
                                                             class="btn btn-sm btn-success assign-student-btn dropdown-item d-flex align-items-center gap-2"

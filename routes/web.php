@@ -151,6 +151,7 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/create', [ClassController::class, 'store'])->name('class-create');
         Route::get('/{id}/students', [ClassController::class, 'assignStudentForm'])->name('class-student-form');
         Route::post('/{id}/students', [ClassController::class, 'storeAssignedStudents'])->name('class-student-store');
+        Route::get('/{id}/detail', [ClassController::class, 'show'])->name('class-detail');
     });
 
     Route::group(['prefix' => 'term'], function () {
