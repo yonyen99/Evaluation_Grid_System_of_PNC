@@ -2,8 +2,8 @@
 @section('page_title', 'Teacher')
 @section('stylesheet')
     <link href="{{ asset('css/teacher.css') }}" rel="stylesheet" />
-  <style>
-        .table-responsive {
+    <style>
+        /* .table-responsive {
             overflow: visible !important;
         }
 
@@ -13,7 +13,7 @@
             padding: 8px 14px;
             font-size: 14px;
             border-radius: 6px;
-        }
+        } */
 
         /* Hover effect */
         .dropdown-menu .dropdown-item:hover {
@@ -31,7 +31,7 @@
             color: #dc3545 !important;
         }
     </style>
-    @endsection
+@endsection
 {{-- BEGIN:: Table Content --}}
 @section('content')
     <div class="row">
@@ -108,6 +108,16 @@
                                                 <ul class="dropdown-menu dropdown-menu-end shadow-lg border-0 rounded-3 py-3"
                                                     aria-labelledby="actionsDropdown{{ $teacher->id }}"
                                                     style="min-width: 160px;">
+                                                    @can('view teacher')
+                                                        <li>
+                                                           <a class="btn btn-sm btn-info dropdown-item d-flex align-items-center gap-2"
+   href="{{ route('teacher-show', ['id' => $teacher->id]) }}" title="View Detail">
+   <i class="bi bi-eye-fill"></i>
+   View Detail
+</a>
+
+                                                        </li>
+                                                    @endcan
 
                                                     @can('edit teacher')
                                                         <li>
@@ -141,7 +151,7 @@
                     </div>
                 </div>
             </div>
-           
+
 
         </div>
         <!-- Pagination -->

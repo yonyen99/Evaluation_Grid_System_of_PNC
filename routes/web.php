@@ -141,6 +141,8 @@ Route::middleware(['auth'])->group(function () {
         Route::get('{id}/edit', [TeacherController::class, 'edit'])->name('teacher-edit');
         Route::patch('{id}/edit', [TeacherController::class, 'update'])->name('teacher-update');
         Route::delete('{id}', [TeacherController::class, 'destroy'])->name('teacher-delete');
+        Route::get('/teacher/{id}', [TeacherController::class, 'show'])->name('teacher-show');
+
         // your crud .................route
     });
 

@@ -25,14 +25,14 @@ class TeacherController extends Controller
         if ($request->filled('search')) {
             $query->where(function ($q) use ($request) {
                 $q->where('first_name', 'like', '%' . $request->search . '%')
-                ->orWhere('last_name', 'like', '%' . $request->search . '%');
+                    ->orWhere('last_name', 'like', '%' . $request->search . '%');
             });
         }
 
         // Order + paginate + keep query params
         $teachers = $query->orderBy('first_name')
-                        ->paginate(10)
-                        ->appends($request->query());
+            ->paginate(10)
+            ->appends($request->query());
 
         return view('feature.teacher.index', compact('teachers'));
     }
@@ -148,23 +148,23 @@ class TeacherController extends Controller
      */
     public function update(Request $request, $id)
     {
-    
+
         $response = Teacher::getTeacherById($id);
         if (!$response->data) {
             return back()->with('error', $response->message);
         }
         $teacher = $response->data;
-      
+
         // Get user record
         $user = User::where('teacher_id', $id)->first();
         if (!$user) {
             return back()->with('error', 'User linked to this teacher not found.');
         }
-       
+
         // Get role record
         $role = Role::where('name', 'Teacher')->first();
         $role = $role->name;
-        
+
         try {
             DB::beginTransaction();
 
@@ -173,7 +173,7 @@ class TeacherController extends Controller
             if ($request->hasFile('profile')) {
                 $filePath = $request->file('profile')->store('profiles', 'public');
             }
-           
+
             // Update teacher
             $teacher->username   = $request['username'];
             $teacher->first_name = $request['first_name'];
@@ -182,7 +182,7 @@ class TeacherController extends Controller
             $teacher->phone      = $request->phone;
             $teacher->profile    = $filePath;
             $teacher->save();
-          
+
             // Update user
             $user->username   = $request->username;
             $user->firstname  = $request->first_name;
@@ -213,6 +213,13 @@ class TeacherController extends Controller
             return back()->with('error', 'Error occurred while updating the teacher: ' . $e->getMessage());
         }
     }
+
+    public function show($id)
+    {
+        $teacher = Teacher::findOrFail($id);
+        return view('feature/teacher.detail', compact('teacher'));
+    }
+
 
 
     /**
