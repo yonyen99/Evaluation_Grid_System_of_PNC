@@ -131,6 +131,8 @@ Route::middleware(['auth'])->group(function () {
         Route::get('{id}/edit', [SubjectController::class, 'edit'])->name('subject-edit');
         Route::patch('{id}/edit', [SubjectController::class, 'update'])->name('subject-update');
         Route::delete('{id}', [SubjectController::class, 'destroy'])->name('subject-delete');
+        Route::get('{id}', [SubjectController::class, 'show'])->name('subject.show'); // ✅ corrected
+
         // your crud .................route
     });
 
