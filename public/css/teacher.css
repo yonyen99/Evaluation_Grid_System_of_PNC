@@ -60,7 +60,7 @@
     border: none;
     padding: 0.75rem 0.5rem;
     vertical-align: middle;
-    border-bottom: 1px solid #f1f3f4;
+    /* border-bottom: 1px solid #f1f3f4; */
 }
 
 /* Form Create */
