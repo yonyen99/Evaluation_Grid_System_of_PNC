@@ -3,17 +3,18 @@
 @section('stylesheet')
     <link href="{{ asset('css/subject.css') }}" rel="stylesheet" />
     <style>
-        /* .table-responsive {
-                overflow: visible !important;
-            } */
+        .table-responsive {
+            overflow: visible !important;
+        }
+
 
         /* Make menu items feel clickable */
         /* .dropdown-menu .dropdown-item {
-                transition: background-color 0.15s ease, color 0.15s ease;
-                padding: 8px 14px;
-                font-size: 14px;
-                border-radius: 6px;
-            } */
+                                transition: background-color 0.15s ease, color 0.15s ease;
+                                padding: 8px 14px;
+                                font-size: 14px;
+                                border-radius: 6px;
+                            } */
 
         /* Hover effect */
         .dropdown-menu .dropdown-item:hover {
@@ -34,82 +35,6 @@
 @endsection
 {{-- BEGIN:: Table Content --}}
 @section('content')
-    {{-- <div class="row">
-        <div class="col-md-12">
-            @can('create subject')
-                <div class="create-link-wrapper">
-                    <a href="{{ route('subject-add') }}" class="btn btn-outline-success">New Subject</a>
-                </div>
-            @endcan
-
-            <!-- Filter Form -->
-            <form action="{{ route('subject') }}" method="GET" class="card p-3 shadow-sm mb-4 mt-2">
-                <div class="row align-items-end">
-                    <!-- Search by subject name -->
-                    <div class="col-md-3 mb-3">
-                        <label for="search" class="form-label">Search Subject Name</label>
-                        <input type="text" name="search" id="search" class="form-control" 
-                            value="{{ request('search') }}" placeholder="Enter Subject Name...">
-                    </div>
-                    <!-- Submit and Reset -->
-                    <div class="col-md-3 mb-3 d-flex gap-2">
-                        <button type="submit" class="btn btn-primary w-100">Filter</button>
-                        <a href="{{ route('subject') }}" class="btn btn-outline-secondary w-100">Reset</a>
-                    </div>
-                </div>
-            </form>
-            <div class="card ">
-                <div class="card-header">
-                    <h4 class="card-title"> Student List</h4>
-                </div>
-                <div class="card-body">
-                    <div class="table-responsive">
-                        <table class="table tablesorter " id="">
-                            <thead class=" text-primary">
-                                <tr>
-                                    <th>No</th>
-                                    <th>Name</th>
-                                    <th class="text-center">Action</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach ($subjects as $key => $subject)
-                                    <tr>
-                                        <td>{{ $key + 1 }}</td>
-                                        <td>{{ $subject->name }}</td>
-                                        <td class="text-center">
-                                            <div class="d-flex justify-content-center gap-2">
-                                                @can('edit subject')
-                                                    <a href="{{ url("subject/$subject->id/edit") }}"
-                                                        class="btn btn-sm btn-primary" title="Edit">
-                                                        <i class="bi bi-pencil-square"></i>
-                                                    </a>
-                                                @endcan
-                                                @can('delete subject')
-                                                    <form action="{{ route('subject-delete', $subject->id) }}" method="POST"
-                                                        class="d-inline delete-form">
-                                                        @csrf
-                                                        @method('DELETE')
-                                                        <button type="submit" class="btn btn-sm btn-danger" title="Delete">
-                                                            <i class="bi bi-trash3"></i>
-                                                        </button>
-                                                    </form>
-                                                @endcan
-                                            </div>
-                                        </td>
-
-                                        </td>
-                                    </tr>
-                                @endforeach
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!-- your ui-->
-    </div> --}}
-
     <div class="row">
         <div class="col-md-12 position-relative mt-5 mb-3">
             <h4 class="title">Subject List</h4>
@@ -172,76 +97,50 @@
                                     <tr class="subject-row">
                                         <td class="text-center">{{ $key + 1 }}</td>
                                         <td class="text-center">{{ $subject->name }}</td>
-                                        {{-- <td class="text-center">
-                                            <div class="d-flex justify-content-center gap-2">
-                                                @can('edit subject')
-                                                    <a href="{{ url("subject/$subject->id/edit") }}"
-                                                        class="btn btn-sm btn-primary" title="Edit">
-                                                        <i class="bi bi-pencil-square"></i>
-                                                    </a>
-                                                @endcan
-                                                @can('delete subject')
-                                                    <form action="{{ route('subject-delete', $subject->id) }}" method="POST"
-                                                        class="d-inline delete-form">
-                                                        @csrf
-                                                        @method('DELETE')
-                                                        <button type="submit" class="btn btn-sm btn-danger" title="Delete">
-                                                            <i class="bi bi-trash3"></i>
-                                                        </button>
-                                                    </form>
-                                                @endcan
-                                            </div>
-                                        </td> --}}
-                                        <td class="py-3 d-flex justify-content-center align-items-center">
-                                            <div class="dropdown d-flex justify-content-center gap-2 action-btns">
-                                                <button
-                                                    class="btn btn-sm btn-light rounded-circle d-flex align-items-center "
-                                                    id="actionsDropdown{{ $subject->id }}" data-bs-toggle="dropdown"
-                                                    aria-expanded="false" style="width: 36px; height: 36px;">
-                                                    <i class="text-center bi bi-three-dots-vertical fs-5"></i>
-                                                </button>
-                                                <ul class="dropdown-menu dropdown-menu-end shadow-lg border-0 rounded-3 py-3"
-                                                    aria-labelledby="actionsDropdown{{ $subject->id }}"
-                                                    style="min-width: 160px;">
-
-                                                    <li>
-                                                        <a href="{{ url("subject/$subject->id") }}"
-                                                            class="btn btn-sm btn-primary text-secondary dropdown-item d-flex align-items-center gap-2"
-                                                            title="Edit">
-                                                            <i class="bi bi-eye text-secondary "></i>
-                                                            View Detail
-                                                        </a>
-                                                    </li>
-
-
-                                                    <li>
-                                                        <a href="{{ url("subject/$subject->id/edit") }}"
-                                                            class="btn btn-sm btn-primary text-warning dropdown-item d-flex align-items-center gap-2"
-                                                            title="Edit">
-                                                            <i class="bi bi-pencil-square text-warning"></i>
-                                                            Edit
-                                                        </a>
-                                                    </li>
-
-
-                                                    @can('delete subject')
-                                                        <form action="{{ route('subject-delete', $subject->id) }}"
-                                                            method="POST" class="d-inline delete-form">
-                                                            @csrf
-                                                            @method('DELETE')
-                                                            <button type="submit"
-                                                                class="btn btn-sm btn-danger dropdown-item d-flex align-items-center gap-2 text-danger"
-                                                                title="Delete">
-                                                                <i class="bi bi-trash-fill"></i>
-                                                                Delete
-                                                            </button>
-                                                        </form>
-                                                    @endcan
-
-
-                                                </ul>
-
-
+                                        <td class="align-middle text-center">
+                                            <div class="d-flex justify-content-center align-items-center">
+                                                <div class="dropdown">
+                                                    <button
+                                                        class="btn btn-sm btn-light rounded-circle d-flex align-items-center justify-content-center shadow-none border-0 dropdown-toggle-icon"
+                                                        id="actionsDropdown{{ $subject->id }}" data-bs-toggle="dropdown"
+                                                        aria-expanded="false" style="width: 36px; height: 36px;">
+                                                        <i class="bi bi-three-dots-vertical fs-5"></i>
+                                                    </button>
+                                                    <ul class="dropdown-menu dropdown-menu-end shadow-lg border-0 rounded-3 py-2"
+                                                        aria-labelledby="actionsDropdown{{ $subject->id }}"
+                                                        style="min-width: 160px;">
+                                                        @can('view subject')
+                                                            <li>
+                                                                <a href="{{ url("subject/$subject->id") }}"
+                                                                    class="dropdown-item d-flex align-items-center gap-2">
+                                                                    <i class="bi bi-eye-fill text-primary"></i> View Detail
+                                                                </a>
+                                                            </li>
+                                                        @endcan
+                                                        @can('edit subject')
+                                                            <li>
+                                                                <a href="{{ url("subject/$subject->id/edit") }}"
+                                                                    class="dropdown-item d-flex align-items-center gap-2">
+                                                                    <i class="bi bi-pencil-square text-warning"></i> Edit
+                                                                </a>
+                                                            </li>
+                                                        @endcan
+                                                        @can('delete subject')
+                                                            <li>
+                                                                <form method="POST"
+                                                                    action="{{ route('subject-delete', ['id' => $subject->id]) }}"
+                                                                    onsubmit="return confirm('Do you really want to delete this subject record?')">
+                                                                    @csrf
+                                                                    @method('delete')
+                                                                    <button type="submit"
+                                                                        class="dropdown-item d-flex align-items-center gap-2 text-danger">
+                                                                        <i class="bi bi-trash-fill"></i> Delete
+                                                                    </button>
+                                                                </form>
+                                                            </li>
+                                                        @endcan
+                                                    </ul>
+                                                </div>
                                             </div>
                                         </td>
                                     </tr>

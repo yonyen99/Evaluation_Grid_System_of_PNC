@@ -60,7 +60,6 @@
         <h3 class="title mt-5">Teacher Detail</h3>
 
         <div class="col-sm-12 ">
-
             <div class="teacher-detail-card">
                 <div class="row align-items-center mb-4">
                     <div class="col-md-3 text-center">
@@ -111,7 +110,7 @@
 
                     <div class="d-flex gap-2">
                         @can('edit teacher')
-                            <a href="{{ route('teacher-edit', $teacher->id) }}" class="btn btn-primary">
+                            <a href="{{ route('teacher-edit', $teacher->id) }}" class="btn btn-outline-primary">
                                 <i class="bi bi-pencil-square me-1"></i> Edit
                             </a>
                         @endcan

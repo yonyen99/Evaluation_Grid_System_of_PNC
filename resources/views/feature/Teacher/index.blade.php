@@ -98,55 +98,7 @@
                                         <td class="text-center py-3 fw-semibold">{{ $teacher->first_name }}</td>
                                         <td class="text-center py-3">{{ $teacher->last_name }}</td>
                                         <td class="text-center py-3">{{ $teacher->phone }}</td>
-                                        {{-- <td class="text-center py-3">
-                                            <div class="dropdown">
-                                                <button
-                                                    class="btn btn-sm btn-light rounded-circle d-flex align-items-center"
-                                                    id="actionsDropdown{{ $teacher->id }}" data-bs-toggle="dropdown"
-                                                    aria-expanded="false" style="width: 36px; height: 36px;">
-                                                    <i class="bi bi-three-dots-vertical fs-5"></i>
-                                                </button>
-                                                <ul class="dropdown-menu dropdown-menu-end shadow-lg border-0 rounded-3 py-2"
-                                                    aria-labelledby="actionsDropdown{{ $teacher->id }}"
-                                                    style="min-width: 160px;">
-                                                    @can('view teacher')
-                                                        <li>
-                                                            <a href="{{ route('teacher-show', ['id' => $teacher->id]) }}"
-                                                                class="dropdown-item d-flex align-items-center gap-2">
-                                                                <i class="bi bi-eye-fill text-primary"></i>
-                                                                View Detail
-                                                            </a>
-                                                        </li>
-                                                    @endcan
-                                                    @can('edit teacher')
-                                                        <li>
-                                                            <a href="{{ url("teacher/$teacher->id/edit") }}"
-                                                                class="dropdown-item d-flex align-items-center gap-2">
-                                                                <i class="bi bi-pencil-square text-warning"></i>
-                                                                Edit
-                                                            </a>
-                                                        </li>
-                                                    @endcan
-                                                    @can('delete teacher')
-                                                        <li>
-                                                            <form method="POST"
-                                                                action="{{ route('teacher-delete', ['id' => $teacher->id]) }}"
-                                                                onsubmit="return confirm('Do you really want to delete this teacher record?')">
-                                                                @csrf
-                                                                @method('delete')
-                                                                <button type="submit"
-                                                                    class="dropdown-item d-flex align-items-center gap-2 text-danger">
-                                                                    <i class="bi bi-trash-fill"></i>
-                                                                    Delete
-                                                                </button>
-                                                            </form>
-                                                        </li>
-                                                    @endcan
-
-                                                </ul>
-
-                                            </div>
-                                        </td> --}}
+                                       
                                         <td class="align-middle text-center">
                                             <div class="d-flex justify-content-center align-items-center">
                                                 <div class="dropdown">
