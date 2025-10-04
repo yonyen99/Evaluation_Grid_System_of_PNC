@@ -1,40 +1,40 @@
 @extends('layout.app')
 @section('page_title', 'Teacher')
+
 @section('stylesheet')
     <link href="{{ asset('css/teacher.css') }}" rel="stylesheet" />
     <style>
-        /* .table-responsive {
+        .table-responsive {
             overflow: visible !important;
         }
 
-        /* Make menu items feel clickable */
+        /* Dropdown menu styles */
         .dropdown-menu .dropdown-item {
             transition: background-color 0.15s ease, color 0.15s ease;
             padding: 8px 14px;
             font-size: 14px;
             border-radius: 6px;
-        } */
+        }
 
-        /* Hover effect */
         .dropdown-menu .dropdown-item:hover {
             background-color: #f1f3f5;
         }
 
-        /* Soft shadow for modern look */
         .dropdown-menu {
             box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
         }
 
-        /* Delete action more obvious */
         .dropdown-menu .dropdown-item.text-danger:hover {
             background-color: #ffe5e5;
             color: #dc3545 !important;
         }
     </style>
 @endsection
+
 {{-- BEGIN:: Table Content --}}
 @section('content')
     <div class="row">
+        <!-- Title with button -->
         <div class="col-md-12 position-relative mt-5 mb-3">
             <h4 class="title">Teacher List</h4>
             @can('create student')
@@ -49,9 +49,10 @@
                 </a>
             @endcan
         </div>
+
         <!-- Filter Form -->
-        <form action="{{ route('teacher') }}" method="GET" class="card filter-card p-3 shadow-sm mb-4">
-            <div class="row align-items-end p-2">
+        <form action="{{ route('teacher') }}" method="GET" class="filter-card shadow-sm mb-4 p-3 mt-2">
+            <div class="row align-items-end">
                 <div class="col-md-3 mb-3">
                     <label for="search" class="form-label">Search Teacher Name</label>
                     <input type="text" name="search" id="search" class="form-control" value="{{ request('search') }}"
@@ -64,114 +65,163 @@
             </div>
         </form>
 
-        <!-- Teacher List -->
+        <!-- Teacher Table -->
         <div class="col-md-12">
             <div class="card teacher-table-card">
-                <div class=" teacher-table-header">
+                <div class="teacher-table-header">
                     <h5 class="card-title mb-0">
                         <i class="bi bi-person-workspace me-2"></i>
-                        Teacher List
+                        Teacher
                     </h5>
                 </div>
                 <div class="card-body p-0">
                     <div class="table-responsive">
-                        <table class="table table-hover align-middle">
-                            <thead class="table-light">
+                        <table class="table table-hover align-middle mb-0">
+                            <thead class="">
                                 <tr>
-                                    <th>No</th>
-                                    <th>Profile</th>
-                                    <th>First Name</th>
-                                    <th>Last Name</th>
-                                    <th>Phone</th>
-                                    <th class="text-center">Action</th>
+                                    <th class="text-start py-3" style="width: 60px;">No</th>
+                                    <th class="text-center py-3">Profile</th>
+                                    <th class="text-center py-3">First Name</th>
+                                    <th class="text-center py-3">Last Name</th>
+                                    <th class="text-center py-3">Phone</th>
+                                    <th class="text-center py-3" style="width: 140px;">Action</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($teachers as $key => $teacher)
-                                    <tr>
-                                        <td>{{ $key + 1 }}</td>
-                                        <td>
+                                @forelse ($teachers as $index => $teacher)
+                                    <tr class="border-bottom">
+                                        <td class="text-start py-3 fw-medium">{{ $index + 1 }}</td>
+                                        <td class="text-center py-3">
                                             <img src="{{ asset('storage/' . $teacher->profile) }}" class="rounded-circle"
                                                 width="40" height="40" alt="Profile">
                                         </td>
-                                        <td>{{ $teacher->first_name }}</td>
-                                        <td class="">{{ $teacher->last_name }}</td>
-                                        <td>{{ $teacher->phone }}</td>
-                                        <td class="py-3 d-flex justify-content-center align-items-center">
-                                            <div class="dropdown d-flex justify-content-center gap-2">
+                                        <td class="text-center py-3 fw-semibold">{{ $teacher->first_name }}</td>
+                                        <td class="text-center py-3">{{ $teacher->last_name }}</td>
+                                        <td class="text-center py-3">{{ $teacher->phone }}</td>
+                                        {{-- <td class="text-center py-3">
+                                            <div class="dropdown">
                                                 <button
-                                                    class="btn btn-sm btn-light rounded-circle d-flex align-items-center "
+                                                    class="btn btn-sm btn-light rounded-circle d-flex align-items-center"
                                                     id="actionsDropdown{{ $teacher->id }}" data-bs-toggle="dropdown"
                                                     aria-expanded="false" style="width: 36px; height: 36px;">
-                                                    <i class="text-center bi bi-three-dots-vertical fs-5"></i>
+                                                    <i class="bi bi-three-dots-vertical fs-5"></i>
                                                 </button>
-                                                <ul class="dropdown-menu dropdown-menu-end shadow-lg border-0 rounded-3 py-3"
+                                                <ul class="dropdown-menu dropdown-menu-end shadow-lg border-0 rounded-3 py-2"
                                                     aria-labelledby="actionsDropdown{{ $teacher->id }}"
                                                     style="min-width: 160px;">
                                                     @can('view teacher')
                                                         <li>
-                                                           <a class="btn btn-sm btn-info dropdown-item d-flex align-items-center gap-2"
-   href="{{ route('teacher-show', ['id' => $teacher->id]) }}" title="View Detail">
-   <i class="bi bi-eye-fill"></i>
-   View Detail
-</a>
-
+                                                            <a href="{{ route('teacher-show', ['id' => $teacher->id]) }}"
+                                                                class="dropdown-item d-flex align-items-center gap-2">
+                                                                <i class="bi bi-eye-fill text-primary"></i>
+                                                                View Detail
+                                                            </a>
                                                         </li>
                                                     @endcan
-
                                                     @can('edit teacher')
                                                         <li>
-                                                            <a class="btn btn-sm btn-primary ms-1 dropdown-item d-flex align-items-center gap-2"
-                                                                href="{{ url("teacher/$teacher->id/edit") }}" title="Edit">
+                                                            <a href="{{ url("teacher/$teacher->id/edit") }}"
+                                                                class="dropdown-item d-flex align-items-center gap-2">
                                                                 <i class="bi bi-pencil-square text-warning"></i>
-                                                                Edit </a>
+                                                                Edit
+                                                            </a>
                                                         </li>
                                                     @endcan
-
                                                     @can('delete teacher')
-                                                        <form class="d-inline delete-form" method="POST"
-                                                            action="{{ route('teacher-delete', ['id' => $teacher->id]) }}">
-                                                            @csrf
-                                                            @method('delete')
-                                                            <button type="submit"
-                                                                class="btn btn-sm btn-danger dropdown-item d-flex align-items-center gap-2 text-danger"
-                                                                title="Delete">
-                                                                <i class="bi bi-trash-fill"></i>
-                                                                Delete </button>
-                                                        </form>
+                                                        <li>
+                                                            <form method="POST"
+                                                                action="{{ route('teacher-delete', ['id' => $teacher->id]) }}"
+                                                                onsubmit="return confirm('Do you really want to delete this teacher record?')">
+                                                                @csrf
+                                                                @method('delete')
+                                                                <button type="submit"
+                                                                    class="dropdown-item d-flex align-items-center gap-2 text-danger">
+                                                                    <i class="bi bi-trash-fill"></i>
+                                                                    Delete
+                                                                </button>
+                                                            </form>
+                                                        </li>
                                                     @endcan
 
                                                 </ul>
+
+                                            </div>
+                                        </td> --}}
+                                        <td class="align-middle text-center">
+                                            <div class="d-flex justify-content-center align-items-center">
+                                                <div class="dropdown">
+                                                    <button
+                                                        class="btn btn-sm btn-light rounded-circle d-flex align-items-center justify-content-center shadow-none border-0 dropdown-toggle-icon"
+                                                        id="actionsDropdown{{ $teacher->id }}" data-bs-toggle="dropdown"
+                                                        aria-expanded="false" style="width: 36px; height: 36px;">
+                                                        <i class="bi bi-three-dots-vertical fs-5"></i>
+                                                    </button>
+                                                    <ul class="dropdown-menu dropdown-menu-end shadow-lg border-0 rounded-3 py-2"
+                                                        aria-labelledby="actionsDropdown{{ $teacher->id }}"
+                                                        style="min-width: 160px;">
+                                                        @can('view teacher')
+                                                            <li>
+                                                                <a href="{{ route('teacher-show', ['id' => $teacher->id]) }}"
+                                                                    class="dropdown-item d-flex align-items-center gap-2">
+                                                                    <i class="bi bi-eye-fill text-primary"></i> View Detail
+                                                                </a>
+                                                            </li>
+                                                        @endcan
+                                                        @can('edit teacher')
+                                                            <li>
+                                                                <a href="{{ url("teacher/$teacher->id/edit") }}"
+                                                                    class="dropdown-item d-flex align-items-center gap-2">
+                                                                    <i class="bi bi-pencil-square text-warning"></i> Edit
+                                                                </a>
+                                                            </li>
+                                                        @endcan
+                                                        @can('delete teacher')
+                                                            <li>
+                                                                <form method="POST"
+                                                                    action="{{ route('teacher-delete', ['id' => $teacher->id]) }}"
+                                                                    onsubmit="return confirm('Do you really want to delete this teacher record?')">
+                                                                    @csrf
+                                                                    @method('delete')
+                                                                    <button type="submit"
+                                                                        class="dropdown-item d-flex align-items-center gap-2 text-danger">
+                                                                        <i class="bi bi-trash-fill"></i> Delete
+                                                                    </button>
+                                                                </form>
+                                                            </li>
+                                                        @endcan
+                                                    </ul>
+                                                </div>
                                             </div>
                                         </td>
                                     </tr>
-                                @endforeach
+                                @empty
+                                    <tr>
+                                        <td colspan="6" class="text-center py-4 text-muted fst-italic">
+                                            No teachers found
+                                        </td>
+                                    </tr>
+                                @endforelse
                             </tbody>
                         </table>
                     </div>
                 </div>
             </div>
 
-
-        </div>
-        <!-- Pagination -->
-        <div class="mt-4">
-            {{ $teachers->links() }}
+            <!-- Pagination -->
+            <div class="mt-4">
+                {{ $teachers->links() }}
+            </div>
         </div>
     </div>
-    </div>
-
-
 @endsection
-{{-- END:: Table Content --}}
 
-{{-- custom script --}}
+{{-- END:: Table Content --}}
 @section('script')
     <script>
-        // One-click confirm before form submit
-        document.querySelectorAll('.delete-form').forEach(function(form) {
-            form.addEventListener('submit', function(e) {
-                if (!confirm('Do you really want to delete this Generation record?')) {
+        // Confirm delete with warning
+        document.querySelectorAll('.delete-form').forEach(form => {
+            form.addEventListener('submit', e => {
+                if (!confirm('Do you really want to delete this teacher record?')) {
                     e.preventDefault();
                 }
             });
