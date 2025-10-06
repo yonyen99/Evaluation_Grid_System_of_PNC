@@ -7,13 +7,14 @@
             overflow: visible !important;
         }
 
+
         /* Make menu items feel clickable */
-        .dropdown-menu .dropdown-item {
-            transition: background-color 0.15s ease, color 0.15s ease;
-            padding: 8px 14px;
-            font-size: 14px;
-            border-radius: 6px;
-        }
+        /* .dropdown-menu .dropdown-item {
+                                transition: background-color 0.15s ease, color 0.15s ease;
+                                padding: 8px 14px;
+                                font-size: 14px;
+                                border-radius: 6px;
+                            } */
 
         /* Hover effect */
         .dropdown-menu .dropdown-item:hover {
@@ -34,7 +35,6 @@
 @endsection
 {{-- BEGIN:: Table Content --}}
 @section('content')
-
     <div class="row">
         <div class="col-md-12 position-relative mt-5 mb-3">
             <h4 class="title">Subject List</h4>
@@ -97,47 +97,50 @@
                                     <tr class="subject-row">
                                         <td class="text-center">{{ $key + 1 }}</td>
                                         <td class="text-center">{{ $subject->name }}</td>
-                                        <td class="py-3 d-flex justify-content-center align-items-center">
-                                            <div class="dropdown d-flex justify-content-center gap-2">
-                                                <button
-                                                    class="btn btn-sm btn-light rounded-circle d-flex align-items-center "
-                                                    id="actionsDropdown{{ $subject->id }}" data-bs-toggle="dropdown"
-                                                    aria-expanded="false" style="width: 36px; height: 36px;">
-                                                    <i class="text-center bi bi-three-dots-vertical fs-5"></i>
-                                                </button>
-                                                <ul class="dropdown-menu dropdown-menu-end shadow-lg border-0 rounded-3 py-3"
-                                                    aria-labelledby="actionsDropdown{{ $subject->id }}"
-                                                    style="min-width: 160px;">
-
-                                                    @can('edit subject')
-                                                        <li>
-                                                            <a href="{{ url("subject/$subject->id/edit") }}"
-                                                                class="btn btn-sm btn-primary dropdown-item d-flex align-items-center gap-2"
-                                                                title="Edit">
-                                                                <i class="bi bi-pencil-square text-warning"></i>
-                                                                Edit
-                                                            </a>
-                                                        </li>
-                                                    @endcan
-
-                                                    @can('delete subject')
-                                                        <form action="{{ route('subject-delete', $subject->id) }}"
-                                                            method="POST" class="d-inline delete-form">
-                                                            @csrf
-                                                            @method('DELETE')
-                                                            <button type="submit"
-                                                                class="btn btn-sm btn-danger dropdown-item d-flex align-items-center gap-2 text-danger"
-                                                                title="Delete">
-                                                                <i class="bi bi-trash-fill"></i>
-                                                                Delete
-                                                            </button>
-                                                        </form>
-                                                    @endcan
-
-
-                                                </ul>
-
-
+                                        <td class="align-middle text-center">
+                                            <div class="d-flex justify-content-center align-items-center">
+                                                <div class="dropdown">
+                                                    <button
+                                                        class="btn btn-sm btn-light rounded-circle d-flex align-items-center justify-content-center shadow-none border-0 dropdown-toggle-icon"
+                                                        id="actionsDropdown{{ $subject->id }}" data-bs-toggle="dropdown"
+                                                        aria-expanded="false" style="width: 36px; height: 36px;">
+                                                        <i class="bi bi-three-dots-vertical fs-5"></i>
+                                                    </button>
+                                                    <ul class="dropdown-menu dropdown-menu-end shadow-lg border-0 rounded-3 py-2"
+                                                        aria-labelledby="actionsDropdown{{ $subject->id }}"
+                                                        style="min-width: 160px;">
+                                                        @can('view subject')
+                                                            <li>
+                                                                <a href="{{ url("subject/$subject->id") }}"
+                                                                    class="dropdown-item d-flex align-items-center gap-2">
+                                                                    <i class="bi bi-eye-fill text-primary"></i> View Detail
+                                                                </a>
+                                                            </li>
+                                                        @endcan
+                                                        @can('edit subject')
+                                                            <li>
+                                                                <a href="{{ url("subject/$subject->id/edit") }}"
+                                                                    class="dropdown-item d-flex align-items-center gap-2">
+                                                                    <i class="bi bi-pencil-square text-warning"></i> Edit
+                                                                </a>
+                                                            </li>
+                                                        @endcan
+                                                        @can('delete subject')
+                                                            <li>
+                                                                <form method="POST"
+                                                                    action="{{ route('subject-delete', ['id' => $subject->id]) }}"
+                                                                    onsubmit="return confirm('Do you really want to delete this subject record?')">
+                                                                    @csrf
+                                                                    @method('delete')
+                                                                    <button type="submit"
+                                                                        class="dropdown-item d-flex align-items-center gap-2 text-danger">
+                                                                        <i class="bi bi-trash-fill"></i> Delete
+                                                                    </button>
+                                                                </form>
+                                                            </li>
+                                                        @endcan
+                                                    </ul>
+                                                </div>
                                             </div>
                                         </td>
                                     </tr>

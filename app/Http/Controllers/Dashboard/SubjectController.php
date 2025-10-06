@@ -170,6 +170,12 @@ class SubjectController extends Controller
         }
     }
 
+    public function show($id)
+    {
+        $subject = Subject::findOrFail($id);
+        return view('feature/subject.detail', compact('subject'));
+    }
+
 
     /**
      * Delete test from DB\
