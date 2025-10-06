@@ -4,6 +4,13 @@
 
 @section('stylesheet')
     <link href="{{ asset('css/class.css') }}" rel="stylesheet" />
+    <style>
+      /* .table-responsive {
+            overflow: visible !important;
+        } */
+
+
+    </style>
 @endsection
 
 
@@ -66,16 +73,16 @@
                 </div>
                 <div class="card-body p-0">
                     <div class="table-responsive">
-                        <table class="table table-hover align-middle text-center mb-0">
-                            <thead class="table-light">
-                                <tr>
+                        <table class="table table-hover  text-center mb-0">
+                            <thead class="table-header-enhanced">
+                                <tr class="">
                                     <th style="width: 60px;">ID</th>
                                     <th>Class Name</th>
                                     <th style="min-width: 180px;">Generation & Term</th>
                                     <th style="width: 150px;">Actions</th>
                                 </tr>
                             </thead>
-                            <tbody>
+                            <tbody role="rowgroup">
                                 @forelse ($classes as $index => $class)
                                     <tr>
                                         <td>{{ $index + 1 }}</td>
@@ -97,32 +104,7 @@
                                                 <span class="text-muted">No term</span>
                                             @endif
                                         </td>
-                                        {{-- <td>
-                                            <div class="d-flex gap-2 justify-content-center action-btns">
-                                                <a href="{{ route('class-student-form', $class->id) }}"
-                                                    class="btn btn-sm btn-success assign-student-btn"
-                                                    title="Assign Students">
-                                                    <i class="bi bi-person-plus-fill"></i>
-                                                </a>
-
-                                                <a href="{{ route('class-edit', $class->id) }}"
-                                                    class="btn btn-sm btn-primary" title="Edit">
-                                                    <i class="bi bi-pencil-square"></i>
-                                                </a>
-
-                                                @can('delete class')
-                                                    <form action="{{ route('classes.destroy', $class->id) }}" method="POST"
-                                                        onsubmit="return confirm('Are you sure you want to delete this class?');"
-                                                        style="display:inline-block;">
-                                                        @csrf
-                                                        @method('DELETE')
-                                                        <button type="submit" class="btn btn-sm btn-danger" title="Delete">
-                                                            <i class="bi bi-trash"></i>
-                                                        </button>
-                                                    </form>
-                                                @endcan
-                                            </div>
-                                        </td> --}}
+                                       
                                         <td class="py-3 d-flex justify-content-center align-items-center">
                                             <div class="dropdown d-flex gap-3 justify-content-center action-btns">
                                                 <button
@@ -138,11 +120,7 @@
 
                                                     <!-- View Detail -->
                                                     <li>
-                                                        {{-- <a href=""
-                                                            class="btn btn-sm btn-info dropdown-item d-flex align-items-center gap-2"
-                                                            title="View Detail">
-                                                            <i class="bi bi-eye-fill text-info"></i> View Detail
-                                                        </a> --}}
+                                                      
                                                         <a href="{{ route('class-detail', $class->id) }}"
                                                             class="btn btn-sm btn-info dropdown-item d-flex align-items-center gap-2"
                                                             title="View Detail">
