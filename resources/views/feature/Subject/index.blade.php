@@ -112,7 +112,7 @@
                                                         @can('view subject')
                                                             <li>
                                                                 <a href="{{ url("subject/$subject->id") }}"
-                                                                    class="dropdown-item d-flex align-items-center gap-2">
+                                                                    class="dropdown-item d-flex align-items-center gap-2" style>
                                                                     <i class="bi bi-eye-fill text-primary"></i> View Detail
                                                                 </a>
                                                             </li>

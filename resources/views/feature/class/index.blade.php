@@ -5,11 +5,13 @@
 @section('stylesheet')
     <link href="{{ asset('css/class.css') }}" rel="stylesheet" />
     <style>
-      /* .table-responsive {
+        .table-responsive {
             overflow: visible !important;
-        } */
+        }
 
-
+        ul.show {
+            margin-bottom: -43px;
+        }
     </style>
 @endsection
 
@@ -104,9 +106,20 @@
                                                 <span class="text-muted">No term</span>
                                             @endif
                                         </td>
-                                       
+
                                         <td class="py-3 d-flex justify-content-center align-items-center">
-                                            <div class="dropdown d-flex gap-3 justify-content-center action-btns">
+                                            {{-- <li>
+                                                <a href="{{ route('class-student-form', $class->id) }}"
+                                                    class="btn btn-sm btn-success assign-student-btn dropdown-item d-flex align-items-center gap-2"
+                                                    title="Assign Students">
+                                                    <i class="bi bi-person-plus-fill text-primary"></i> Add Students
+                                                </a>
+                                            </li> --}}
+                                            <a href="{{ route('class-student-form', $class->id) }}" class="btn btn-sm "
+                                                title="Assign Students" data-bs-toggle="tooltip">
+                                                <i class="bi bi-person-plus-fill text-primary" style="font-size: 20px;"></i>
+                                            </a>
+                                            <div class=" dropdown dropup  d-flex gap-3 justify-content-center action-btns">
                                                 <button
                                                     class="btn btn-sm btn-light rounded-circle d-flex align-items-center "
                                                     id="actionsDropdown{{ $class->id }}" data-bs-toggle="dropdown"
@@ -114,24 +127,16 @@
                                                     <i class="text-center bi bi-three-dots-vertical fs-5"></i>
                                                 </button>
 
-                                                <ul class="dropdown-menu dropdown-menu-end shadow-lg border-0 rounded-3 py-3"
+                                                <ul class="dropdown-menu dropdown-menu-end shadow-lg border-0 rounded-3 py-3 "
                                                     aria-labelledby="actionsDropdown{{ $class->id }}"
                                                     style="min-width: 160px;">
 
                                                     <!-- View Detail -->
                                                     <li>
-                                                      
                                                         <a href="{{ route('class-detail', $class->id) }}"
                                                             class="btn btn-sm btn-info dropdown-item d-flex align-items-center gap-2"
                                                             title="View Detail">
-                                                            <i class="bi bi-eye-fill text-info"></i> View Detail
-                                                        </a>
-                                                    </li>
-                                                    <li>
-                                                        <a href="{{ route('class-student-form', $class->id) }}"
-                                                            class="btn btn-sm btn-success assign-student-btn dropdown-item d-flex align-items-center gap-2"
-                                                            title="Assign Students">
-                                                            <i class="bi bi-person-plus-fill text-primary"></i> Add Students
+                                                            <i class="bi bi-eye-fill text-primary"></i> View Detail
                                                         </a>
                                                     </li>
 

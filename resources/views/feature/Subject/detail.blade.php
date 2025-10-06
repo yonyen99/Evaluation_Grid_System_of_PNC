@@ -6,16 +6,18 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
     <style>
         .table {
-    border-radius: 10px;
-    overflow: hidden;
-}
-.table th {
-    background: #f8f9fa;
-    font-weight: 600;
-}
-.table td {
-    vertical-align: middle;
-}
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .table th {
+            background: #f8f9fa;
+            font-weight: 600;
+        }
+
+        .table td {
+            vertical-align: middle;
+        }
 
         .subject-detail-card {
             border-radius: 14px;
@@ -24,18 +26,20 @@
             box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05);
             padding: 2rem;
         }
-                .divider {
+
+        .divider {
             border-top: 1px solid #e9ecef;
             margin: 1.5rem 0;
         }
+
         .section-title {
-    font-size: 1.1rem;
-    font-weight: 600;
-    color: #0d3b66;
-    margin-bottom: 1rem;
-    border-left: 4px solid #0d3b66;
-    padding-left: 0.75rem;
-}
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #0d3b66;
+            margin-bottom: 1rem;
+            border-left: 4px solid #0d3b66;
+            padding-left: 0.75rem;
+        }
     </style>
 @endsection
 
@@ -73,7 +77,7 @@
                             <p class="info-value text-secondary">{{ $subject->updated_at->format('d M Y') }}</p>
                         </div>
                     </div>
-                <div class="divider"></div>
+                    <div class="divider"></div>
 
                     <h5 class="section-title fw-semibold ">Assessment Grids</h5>
                     @if ($subject->grids->count() > 0)
