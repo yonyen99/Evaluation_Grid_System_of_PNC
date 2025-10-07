@@ -25,6 +25,7 @@ use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\Auth\ResetPasswordController;
 use App\Http\Controllers\GridImportController;
 use App\Http\Controllers\TranscriptController;
+use App\Http\Controllers\StudentDetailController;
 
 // Login Routes (Accessible without authentication)
 Route::get('/login', [LoginController::class, 'showLogin'])->name('login')->middleware('guest');
@@ -121,6 +122,15 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/import', [StudentController::class, 'importform'])->name('importForm');
         Route::post('/import', [StudentController::class, 'studentImport'])->name('importCsvStudent');
         Route::get('/{id}/detail', [StudentController::class, 'studentDetail'])->name('studentShow');
+    });
+    // Student Detail Routes
+    Route::prefix('student')->group(function () {
+        Route::get('{student}/detail', [StudentDetailController::class, 'index'])->name('studentDetail.index');
+        Route::get('{student}/detail/create', [StudentDetailController::class, 'create'])->name('studentDetail.create');
+        Route::post('{student}/detail', [StudentDetailController::class, 'store'])->name('studentDetail.store');
+        Route::get('{student}/detail/edit', [StudentDetailController::class, 'edit'])->name('studentDetail.edit');
+        Route::patch('{student}/detail', [StudentDetailController::class, 'update'])->name('studentDetail.update');
+
     });
 
     // Subject 

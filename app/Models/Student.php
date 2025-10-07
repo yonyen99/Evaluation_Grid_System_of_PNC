@@ -44,6 +44,6 @@ class Student extends Model
 
     public function studentDetail()
     {
-        return $this->hasOne(studentDetail::class);
+        return $this->hasOne(StudentDetail::class, 'student_id');
     }
 }

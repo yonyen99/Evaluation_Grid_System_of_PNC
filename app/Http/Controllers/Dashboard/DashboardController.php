@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Dashboard;
 
 use App\Http\Controllers\Controller;
 use App\Models\Classe;
+use App\Models\LogHistory;
 use App\Models\Student;
 use App\Models\Teacher;
 use Carbon\Carbon;
@@ -23,11 +24,12 @@ class DashboardController extends Controller
         $totalStudentCurrentYears  = count($students);
         // Get total teachers
         $teachers  = Teacher::whereYear('created_at', $currentYear)->get();
+        $lastFiveActions = LogHistory::latest()->take(5)->get();
         $totalTeacherCurrentYears  = count($teachers);
         // Get total Classes 
         $classes  = Classe::whereYear('created_at', $currentYear)->get();
         $totalClassesCurrentYears  = count($classes);
-        return view('index',compact('totalStudentCurrentYears','totalTeacherCurrentYears','totalClassesCurrentYears'));
+        return view('index',compact('totalStudentCurrentYears','totalTeacherCurrentYears','totalClassesCurrentYears','lastFiveActions'));
     }
 
     /**

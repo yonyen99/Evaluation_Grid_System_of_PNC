@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('first_name');
             $table->string('last_name');
             $table->string('profile')->nullable(); 
-            $table->string('db');
+            $table->date('db')->nullable();
             $table->unsignedBigInteger('generation_id')->nullable();
             $table->foreign('generation_id')->references('id')->on('generations')->onDelete('cascade');
             $table->string('username')->nullable()->unique();

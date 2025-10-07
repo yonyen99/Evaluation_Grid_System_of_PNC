@@ -69,6 +69,11 @@
                     </div>
                 </div>
 
+                <div class="col-4">
+                    <label for="date_of_birth" class="form-label">Date of Birth</label>
+                    <input type="date" name="date_of_birth" class="form-control" value="{{ old('db') }}">
+                </div>
+
                 <div class="row">
                 
                     <div class="col-md-4 mb-3">

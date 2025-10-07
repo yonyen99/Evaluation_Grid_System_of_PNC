@@ -12,6 +12,7 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use App\Models\studentDetail;
 
 class StudentController extends Controller
 {
@@ -71,6 +72,7 @@ class StudentController extends Controller
             'province_id'   => 'required|exists:provinces,id',
             'generation_id' => 'required|exists:generations,id',
             'profile'       => 'nullable|image|max:2048', // max 2MB
+            'db' => 'nullable|date',
         ]);
         // Handle profile image upload if exists
         $profilePath = null;
@@ -96,6 +98,7 @@ class StudentController extends Controller
             'password'     => Hash::make($request->password),
             'generation_id' => $request->generation_id,
             'profile'       => $request->profile,
+            'db' => $request->date_of_birth,
         ]);
         $student->profile = $profilePath;
         $student->save();
@@ -134,8 +137,9 @@ class StudentController extends Controller
         return redirect()->route('student')->with('success', 'Student created successfully.');
     }
 
-    public function show(Student $student)
+    public function show($id)
     {
+        $student = Student::with('studentDetail')->findOrFail($id);
         return view('students.show', compact('student'));
     }
 
@@ -177,6 +181,7 @@ class StudentController extends Controller
             'last_name'    => 'required|string',
             'profile'      => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
             'generation_id' => 'nullable|integer',
+            'db' => 'nullable|date',
         ]);
 
         try {
@@ -190,6 +195,7 @@ class StudentController extends Controller
             $student->first_name    = $request->first_name;
             $student->last_name     = $request->last_name;
             $student->generation_id = $request->generation_id;
+            $student->db = $request->date_of_birth;
             $student->save();
 
             DB::commit();
@@ -284,7 +290,7 @@ class StudentController extends Controller
                 'password'      => Hash::make($rowData['password']),
                 'generation_id' => $request['generation_id'],
                 'profile'       => null,
-                'db'            => $rowData['bate_of_birth'],
+                'db' => $rowData['date_of_birth'],
             ]);
             $student->save();
             $user= User::create([

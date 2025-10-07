@@ -19,8 +19,8 @@
                     </a>
                     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
                         <li>
-                            <a class="dropdown-item" href="">
-                                <i class="bi bi-person me-2"></i> Profile
+                            <a class="dropdown-item" href="{{ route('user-detail', Auth::user()->id) }}">
+                                <i class="bi bi-person-circle me-2"></i> Profile
                             </a>
                         </li>
                         <li>
@@ -31,27 +31,7 @@
                                 </button>
                             </form>
                         </li>
-                        {{-- <li>
-                            <form id="update-profile-form" 
-                                action="{{ route('update-profile', Auth::user()->id) }}" 
-                                method="POST" 
-                                enctype="multipart/form-data" 
-                                class="d-flex align-items-center gap-2 p-2">
-                                @csrf
-                                @method('patch')
-
-                                <!-- File Input -->
-                                <input type="file" 
-                                    name="profile" 
-                                    class="form-control form-control-sm" 
-                                    accept="image/*">
-
-                                <!-- Submit Button -->
-                                <button type="submit" class="btn btn-sm btn-primary d-flex align-items-center">
-                                    <i class="bi bi-camera me-1"></i> Update
-                                </button>
-                            </form>
-                        </li> --}}
+                        
                     </ul>
                 </li>
             </ul>

@@ -3,80 +3,120 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-
+use App\Models\studentDetail;
+use App\Models\Student;
 class studentDetailController extends Controller
 {
    public function index()
     {
-        $details = StudentDetail::with('student')->paginate(10);
-        return view('student_details.index', compact('details'));
+        $families = studentDetail::with('student')->latest()->paginate(10);
+        return view('feature.students.studentDetail.index', compact('families'));
     }
 
-    public function create()
+    /**
+     * Show the form for creating a new family info.
+     */
+    public function create($studentId)
     {
-        $students = Student::all(); // For dropdown
-        return view('student_details.create', compact('students'));
+        $student = Student::findOrFail($studentId);
+        return view('feature.students.studentDetail.add', compact('student'));
     }
 
-    public function store(Request $request)
+    /**
+     * Store a newly created family info in storage.
+     */
+    public function store(Request $request, $student)
     {
-        $request->validate([
-            'student_id'   => 'required|exists:students,id',
-            'father'       => 'nullable|string',
-            'mother'       => 'nullable|string',
-            'phone'        => 'nullable|string',
-            'address'      => 'nullable|string',
-            'mom_contract' => 'nullable|file|mimes:pdf,jpg,png|max:2048',
+        $validated = $request->validate([
+            'father' => 'required|string|max:255',
+            'mother' => 'required|string|max:255',
+            'phone' => 'required|string|max:20',
+            'address' => 'required|string|max:255',
+            'mom_contract' => 'nullable|file|mimes:pdf|max:2048',
         ]);
 
-        $data = $request->all();
+        $validated['student_id'] = $student;
 
-        // Handle file upload
         if ($request->hasFile('mom_contract')) {
-            $data['mom_contract'] = $request->file('mom_contract')->store('contracts', 'public');
+            $validated['mom_contract'] = $request->file('mom_contract')->store('contracts', 'public');
         }
 
-        StudentDetail::create($data);
+        studentDetail::create($validated);
 
-        return redirect()->route('student-details.index')->with('success', 'Student detail created successfully.');
+        return redirect()->route('studentShow', $student)
+            ->with('success', 'Family information added successfully.');
     }
 
-    public function show(StudentDetail $studentDetail)
+
+
+    /**
+     * Display the specified family info.
+     */
+    public function show($id)
     {
-        return view('student_details.show', compact('studentDetail'));
+        $family = studentDetail::with('student')->findOrFail($id);
+        return view('feature.students.studentDetail.add', compact('family'));
+        
     }
 
-    public function edit(StudentDetail $studentDetail)
+    /**
+     * Show the form for editing the specified family info.
+     */
+    public function edit($student)
     {
-        $students = Student::all();
-        return view('student_details.edit', compact('studentDetail', 'students'));
+        // Get the student
+        $student = Student::findOrFail($student);
+
+        // Get the studentDetail for this student
+        $family = $student->studentDetail;
+
+        if (!$family) {
+            return redirect()->route('studentShow', $student)
+                ->with('error', 'No family information found. Please create it first.');
+        }
+
+        return view('feature.students.studentDetail.edit', compact('student', 'family'));
     }
 
-    public function update(Request $request, StudentDetail $studentDetail)
+
+    /**
+     * Update the specified family info in storage.
+     */
+    public function update(Request $request, $student)
     {
-        $request->validate([
-            'student_id' => 'required|exists:students,id',
-            'father'     => 'nullable|string',
-            'mother'     => 'nullable|string',
-            'phone'      => 'nullable|string',
-            'address'    => 'nullable|string',
-            'mom_contract' => 'nullable|file|mimes:pdf,jpg,png|max:2048',
+        $family = studentDetail::where('student_id', $student)->firstOrFail();
+
+        $validated = $request->validate([
+            'father' => 'required|string|max:255',
+            'mother' => 'required|string|max:255',
+            'phone' => 'required|string|max:20',
+            'address' => 'required|string|max:255',
+            'mom_contract' => 'nullable|file|mimes:pdf|max:2048',
         ]);
 
-        $data = $request->all();
-
         if ($request->hasFile('mom_contract')) {
-            $data['mom_contract'] = $request->file('mom_contract')->store('contracts', 'public');
+            $validated['mom_contract'] = $request->file('mom_contract')->store('contracts', 'public');
         }
 
-        $studentDetail->update($data);
+        $family->update($validated);
 
-        return redirect()->route('student-details.index')->with('success', 'Student detail updated successfully.');
+        return redirect()->route('studentShow', $student)
+            ->with('success', 'Family information updated successfully.');
     }
 
-    public function destroy(StudentDetail $studentDetail)
+
+
+    /**
+     * Remove the specified family info from storage.
+     */
+    public function destroy($id)
     {
-        $studentDetail->delete();
-        return redirect()->route('student-details.index')->with('success', 'Student detail deleted successfully.');
+        $family = studentDetail::findOrFail($id);
+        $studentId = $family->student_id;
+        $family->delete();
+
+        return redirect()
+            ->route('studentShow', $studentId)
+            ->with('success', 'Family information deleted successfully.');
     }
 }

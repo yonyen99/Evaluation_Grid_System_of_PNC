@@ -1,4 +1,3 @@
-                        
 @extends('layout.app')
 
 @section('page_title', 'Detail Student')
@@ -8,22 +7,9 @@
 @endsection
 
 @section('content')
-    <div class="container mt-4">
-          <div class="row">
-        <div class="col-md-12 position-relative mt-5 mb-3">
-            <h4 class="title">student Detail</h4>
-            @can('create student')
-                <a href="{{ route('student-add') }}" class="btn btn-primary d-flex align-items-center position-absolute f"
-                    style="top: -2px; right: 150px;">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                        class="bi bi-plus-circle-fill me-2" viewBox="0 0 16 16">
-                        <path
-                            d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M8.5 4.5a.5.5 0 0 0-1 0v3h-3a.5.5 0 0 0 0 1h3v3a.5.5 0 0 0 1 0v-3h3a.5.5 0 0 0 0-1h-3z" />
-                    </svg>
-                    student Detail
-                </a>
-            @endcan
-        </div>
+<div class="container mt-4">
+    <div class="row">
+        <h4 class="title">student Detail</h4>
         <div class="card shadow-lg p-4">
             <div class="row">
                 <!-- Student Picture -->
@@ -43,27 +29,44 @@
                         <li class="list-group-item"><strong>Date of Birth:</strong> {{ $student->db }}</li>
                     </ul>
 
-                    <h4><i class="bi bi-people"></i> Family Information </h4>
-                    <ul class="list-group mb-3">
-                        <li class="list-group-item"><strong>Father:</strong>Zilong</li>
-                        <li class="list-group-item"><strong>Mother:</strong>NANA</li>
-                        <li class="list-group-item"><strong>Phone:</strong>09096765</li>
-                        <li class="list-group-item"><strong>Address:</strong>ឧត្តរមានជ័យ</li>
-                    </ul>
+                    <div class="d-flex justify-content-between align-items-center mb-2">
+                        <h4><i class="bi bi-people"></i> Family Information</h4>
+                        @if($student->studentDetail)
+                            <a href="{{ route('studentDetail.edit', $student->id) }}" class="btn btn-warning">
+                                <i class="bi bi-pencil-fill me-2"></i> Edit Family Info
+                            </a>
+                        @else
+                            <a href="{{ route('studentDetail.create', $student->id) }}" class="btn btn-primary">
+                                <i class="bi bi-plus-circle-fill me-2"></i> Add Family Info
+                            </a>
+                        @endif
+                    </div>
 
-                    <h4><i class="bi bi-file-earmark-text"></i> Mom Contract</h4>
-                    @if($student->mom_contract)
-                        <a href="{{ asset('storage/' . $student->mom_contract) }}" 
-                        class="btn btn-outline-primary" target="_blank">
-                            <i class="bi bi-file-earmark-pdf"></i> View Contract
-                        </a>
+                    @if($student->studentDetail)
+                        <ul class="list-group mb-3">
+                            <li class="list-group-item"><strong>Father:</strong> {{ $student->studentDetail->father }}</li>
+                            <li class="list-group-item"><strong>Mother:</strong> {{ $student->studentDetail->mother }}</li>
+                            <li class="list-group-item"><strong>Phone:</strong> {{ $student->studentDetail->phone }}</li>
+                            <li class="list-group-item"><strong>Address:</strong> {{ $student->studentDetail->address }}</li>
+                        </ul>
+
+                        <h4><i class="bi bi-file-earmark-text"></i> Mom Contract</h4>
+                        @if($student->studentDetail->mom_contract)
+                            <a href="{{ asset('storage/' . $student->studentDetail->mom_contract) }}" 
+                                class="btn btn-outline-primary" target="_blank">
+                                <i class="bi bi-file-earmark-pdf"></i> View Contract
+                            </a>
+                        @else
+                            <p>No contract uploaded.</p>
+                        @endif
                     @else
-                        <p>No contract uploaded.</p>
+                        <p class="text-muted">No family information found.</p>
                     @endif
-            </div>
+                </div>
             </div>
         </div>
     </div>
+</div>
 @endsection
 
 @section('script')

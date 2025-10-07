@@ -254,4 +254,17 @@ class UserController extends Controller
         DB::commit();
         return redirect()->route('user-list')->with('success', 'User delete successfully');
     }
+
+    public function show($id)
+    {
+        // get user record
+        $user = User::getUser($id);
+        if (!$user->data) {
+            return back()->with('error', $user->message);
+        }
+        $user = $user->data;
+
+        return view('feature.user.detail', compact('user'));
+    }
+
 }

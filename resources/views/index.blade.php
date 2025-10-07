@@ -61,9 +61,10 @@
                 <div class="card-header fw-bold">Recent Activities</div>
                 <div class="card-body">
                     <ul class="list-group list-group-flush">
-                        <li class="list-group-item">Teacher John updated Term 2 Grid</li>
-                        <li class="list-group-item">New student added: Alice P.</li>
-                        <li class="list-group-item">Class A2 schedule updated</li>
+                        @foreach($lastFiveActions as $action)   
+                            <li class="list-group-item">{{$action->description}}</li>
+                        @endforeach
+                        <
                     </ul>
                 </div>
             </div>
